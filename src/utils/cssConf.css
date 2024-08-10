@@ -1,0 +1,340 @@
+.font-primary-type {
+    font-family: Nunito, sans-serif;
+    font-weight: bold;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.text-with-border {
+    text-shadow:
+        -1px -1px 0 #000,
+        /* Sombra no canto superior esquerdo */
+        1px -1px 0 #000,
+        /* Sombra no canto superior direito */
+        -1px 1px 0 #000,
+        /* Sombra no canto inferior esquerdo */
+        1px 1px 0 #000;
+    /* Sombra no canto inferior direito */
+}
+
+.sombras {
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* color text /////////////////////////////////////////////////////////////////////////////////// */
+
+.primary-text {
+    color: #6C4F8B;
+}
+
+.secundary-text {
+    color: gray;
+}
+
+.light-text {
+    color: white;
+}
+
+/* position /////////////////////////////////////////////////////////////////////////////////// */
+
+.start {
+    display: flex;
+    justify-content: start;
+    height: auto;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    height: auto;
+}
+
+.end {
+    display: flex;
+    justify-content: end;
+    height: auto;
+}
+
+/* margin ///////////////////////////////////////////////////////////////////////////////////// */
+
+.m-1 {
+    margin: 10px;
+}
+
+.m-2 {
+    margin: 20px;
+}
+
+.m-3 {
+    margin: 30px;
+}
+
+.m-4 {
+    margin: 40px;
+}
+
+.m-5 {
+    margin: 50px;
+}
+
+.mt-1 {
+    margin-top: 10px;
+}
+
+.mt-2 {
+    margin-top: 20px;
+}
+
+.mt-3 {
+    margin-top: 30px;
+}
+
+.mt-4 {
+    margin-top: 40px;
+}
+
+.mt-5 {
+    margin-top: 50px;
+}
+
+.mb-1 {
+    margin-bottom: 10px;
+}
+
+.mb-2 {
+    margin-bottom: 20px;
+}
+
+.mb-3 {
+    margin-bottom: 30px;
+}
+
+.mb-4 {
+    margin-bottom: 40px;
+}
+
+.mb-5 {
+    margin-bottom: 50px;
+}
+
+.ml-1 {
+    margin-left: 10px;
+}
+
+.ml-2 {
+    margin-left: 20px;
+}
+
+.ml-3 {
+    margin-left: 30px;
+}
+
+.ml-4 {
+    margin-left: 40px;
+}
+
+.ml-5 {
+    margin-left: 50px;
+}
+
+.mr-1 {
+    margin-right: 10px;
+}
+
+.mr-2 {
+    margin-right: 20px;
+}
+
+.mr-3 {
+    margin-right: 30px;
+}
+
+.mr-4 {
+    margin-right: 40px;
+}
+
+.mr-5 {
+    margin-right: 50px;
+}
+
+/* pading /////////////////////////////////////////////////////////////////////*/
+
+.p-1 {
+    padding: 10px;
+}
+
+.p-2 {
+    padding: 20px;
+}
+
+.p-3 {
+    padding: 30px;
+}
+
+.p-4 {
+    padding: 40px;
+}
+
+.p-5 {
+    padding: 50px;
+}
+
+.pt-1 {
+    padding-top: 10px;
+}
+
+.pt-2 {
+    padding-top: 20px;
+}
+
+.pt-3 {
+    padding-top: 30px;
+}
+
+.pt-4 {
+    padding-top: 40px;
+}
+
+.pt-5 {
+    padding-top: 50px;
+}
+
+.pb-1 {
+    padding-bottom: 10px;
+}
+
+.pb-2 {
+    padding-bottom: 20px;
+}
+
+.pb-3 {
+    padding-bottom: 30px;
+}
+
+.pb-4 {
+    padding-bottom: 40px;
+}
+
+.pb-5 {
+    padding-bottom: 50px;
+}
+
+.pl-1 {
+    padding-left: 10px;
+}
+
+.pl-2 {
+    padding-left: 20px;
+}
+
+.pl-3 {
+    padding-left: 30px;
+}
+
+.pl-4 {
+    padding-left: 40px;
+}
+
+.pl-5 {
+    padding-left: 50px;
+}
+
+.pr-1 {
+    padding-right: 10px;
+}
+
+.pr-2 {
+    padding-right: 20px;
+}
+
+.pr-3 {
+    padding-right: 30px;
+}
+
+.pr-4 {
+    padding-right: 40px;
+}
+
+.pr-5 {
+    padding-right: 50px;
+}
+
+/* Flex /////////////////////////////////////////////////////////////////////// */
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Font size /////////////////////////////////////////////////////////////////// */
+
+.fs-10 {
+    font-size: 10pt;
+}
+
+.fs-12 {
+    font-size: 12pt;
+}
+
+.fs-14 {
+    font-size: 14pt;
+}
+
+.fs-16 {
+    font-size: 16pt;
+}
+
+.fs-18 {
+    font-size: 18pt;
+}
+
+.fs-20 {
+    font-size: 20pt;
+}
+
+.fs-22 {
+    font-size: 22pt;
+}
+
+.fs-24 {
+    font-size: 24pt;
+}
+
+.fs-26 {
+    font-size: 26pt;
+}
+
+.fs-28 {
+    font-size: 28pt;
+}
+
+.fs-30 {
+    font-size: 30pt;
+}
+
+.fs-32 {
+    font-size: 32pt;
+}
+
+.fs-34 {
+    font-size: 34pt;
+}
+
+.fs-36 {
+    font-size: 36pt;
+}
+
+.fs-38 {
+    font-size: 38pt;
+}
+
+.fs-40 {
+    font-size: 40pt;
+}

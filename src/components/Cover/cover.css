@@ -1,0 +1,55 @@
+.background-cover {
+    margin-inline: auto;
+    width: 80%;
+    background-image: url("../../img/cover.jpg");
+    background-size: cover;
+    transform: skewY(-3deg);
+    transform-origin: top left;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 100px;
+}
+
+.cover-info {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    background-color: rgba(108, 79, 139, 0.4);
+    padding: 20px;
+    padding-left: 50px;
+    border-bottom-left-radius: 100px;
+}
+
+.logo-text {
+    display: flex;
+    align-items: center;
+    font-family: Nunito, sans-serif;
+    font-weight: bold;
+    font-size: 45px;
+    color: #fff;
+    cursor: default;
+}
+
+.cover-info h1 {
+    font-family: Nunito, sans-serif;
+    font-weight: bolder;
+    color: #fff;
+    cursor: default;
+}
+
+.cover-info p {
+    font-family: Nunito, sans-serif;
+    font-weight: lighter;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .cover-info {
+        width: 100%;
+        border-bottom-right-radius: 30%;
+    }
+
+    .background-cover {
+        width: 95%;
+    }
+}

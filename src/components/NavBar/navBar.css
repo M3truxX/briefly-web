@@ -1,0 +1,55 @@
+.menu {
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    z-index: 99;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: 0.5s ease-out;
+}
+
+#logo {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 35px;
+}
+
+#logo-text {
+    font-family: Nunito, sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: #fff;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 100px;
+    cursor: default;
+}
+
+.text-modal body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+.text-modal h1,
+h2 {
+    color: #333;
+}
+
+.text-modal p,
+li {
+    color: #555;
+}
+
+.text-modal ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.text-modal li {
+    margin-bottom: 10px;
+}

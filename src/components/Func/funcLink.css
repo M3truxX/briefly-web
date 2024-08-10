@@ -1,0 +1,48 @@
+.container-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.container-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.card-base {
+  height: 100px;
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 5px;
+  margin: 25px;
+  transition: 0.2s ease-out;
+}
+
+.card-base:hover {
+  transform: scale(1) translate(1px, -10px);
+}
+
+.img-res {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.area-text {
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.area-text h1 {
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .container-card {
+    flex-direction: column;
+  }
+}

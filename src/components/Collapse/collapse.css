@@ -1,0 +1,35 @@
+.collapse-container {
+    margin-top: 10px;
+}
+
+.collapse-button {
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    padding-right: 20px;
+}
+
+.collapse-button::after {
+    margin-left: 5px;
+    content: '▼';
+    position: absolute;
+    transition: transform 0.2s ease-out;
+}
+
+.collapse-button.open::after {
+    transform: rotate(180deg);
+}
+
+.collapse-content {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease-out;
+}
+
+.collapse-content.open {
+    max-height: 1000px;
+    transition: max-height 0.4s ease-in;
+}
