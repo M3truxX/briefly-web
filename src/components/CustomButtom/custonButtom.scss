@@ -11,33 +11,22 @@
     background-color: $primary-color;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    position: relative;
 
-    &.dark:hover {
+    &.button:hover {
         background-color: $primary-color-hover;
         color: $light-color;
     }
 
-    &.light:hover {
-        background-color: $light-color ;
-        color: $primary-color-hover;
-    }
-
-    &:disabled {
+    &:disabled, &:disabled:hover {
         background-color: #cccccc;
         cursor: not-allowed;
     }
 }
 
 .loading {
-    cursor: wait;
     background-color: #6c757d;
-    color: transparent;
 
     .spinner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         margin-inline: auto;
         border: 4px solid $button-hover-color;
         border-top: 4px solid $primary-color;
@@ -45,9 +34,6 @@
         width: 24px;
         height: 24px;
         animation: spin 1s linear infinite;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
     }
 }
 

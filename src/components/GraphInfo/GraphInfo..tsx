@@ -1,14 +1,14 @@
 import "./graphInfo.scss";
+import '../../utils/cssConf.scss'
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip } from 'chart.js';
 import Modal from "../Modal/Modal";
-import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
-import { formatDate } from "../../utils/formatDate";
-import { ClickerResponse } from "../../data/models/interfaces/ClickerResponse";
-import '../../utils/cssConf.scss'
 import CustonButtom from "../CustomButtom/CustonButtom";
+import { formatDate } from "../../utils/formatDate";
+import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
+import { ClickerResponse } from "../../data/models/interfaces/ClickerResponse";
 
 Chart.register(ArcElement, Tooltip);
 
@@ -71,7 +71,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
   };
 
   return (
-    <div className="mt-20">
+    <div>
       <Modal isVisible={isModalVisible} onClose={closeModal}>
         {receiveResponse ? (
           <div className={` ${receiveResponse ? 'visible' : ''}`}>

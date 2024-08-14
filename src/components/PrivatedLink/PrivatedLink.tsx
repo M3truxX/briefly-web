@@ -1,17 +1,16 @@
 import './privatedLink.css';
 import '../../utils/cssConf.scss'
-import { useParams } from 'react-router-dom'
+import 'react-toastify/dist/ReactToastify.css';
 import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import { LinkProtectedResponse } from '../../data/models/interfaces/LinkProtectedResponse';
 import { LinkProtectedRequest } from '../../data/models/interfaces/LinkProtectedRequest';
+import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
+import { Errors } from '../../data/models/enums/Errors';
 import { ChangeEvent, useState } from 'react';
+import { useParams } from 'react-router-dom'
 import CustonButtom from '../CustomButtom/CustonButtom';
 import axios, { AxiosError } from 'axios';
-import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Errors } from '../../data/models/enums/Errors';
-
 
 function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
     const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +29,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
     };
 
     async function requestPrivateLinkinfo() {
-        if (inputValue.length == 0) {
+        if (inputValue.length === 0) {
             toast(Errors.SENHA_VAZIA)
         } else {
             setIsLoading(true);
@@ -60,7 +59,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
     }
 
     return (
-        <div className='input-pass-container mt-50'>
+        <div className='input-pass-container mt-100 mb-100'>
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -73,7 +72,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                 pauseOnHover
                 theme="colored"
             />
-            <h1 className='fs-18 primary-text'>Insira a senha para acessar o link</h1>
+            <h1 className='fs-20 primary-text'>Insira a senha para acessar o link</h1>
             <div className="input-pass">
                 <form onSubmit={(e) => e.preventDefault()}>
                     <input className="input-text p-10"
@@ -93,8 +92,5 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
         </div>
     )
 }
-
-
-
 
 export default PrivatedLink

@@ -1,14 +1,3 @@
-// export const formatDate = (dateString: string) => {
-//     const date = new Date(dateString)
-
-//     if (isNaN(date.getTime())) {
-//         return "Link sem tempo de expiração"
-//     }
-
-//     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }
-//     return date.toLocaleDateString(undefined, options)
-// }
-
 export const formatDate = (dateString: string) => {
     const date = new Date(dateString);
 

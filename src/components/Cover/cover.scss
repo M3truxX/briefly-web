@@ -1,9 +1,5 @@
 @import '../../utils/variables';
 
-.titulo-click{
-    cursor: pointer;
-}
-
 .background-cover {
     margin-inline: auto;
     width: 80%;
@@ -17,38 +13,19 @@
 
 .cover-info {
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 45%;
-    height: 100%;
     background-color: $back-tranparent-color;
     padding: 20px;
     padding-left: 50px;
     border-bottom-left-radius: 100px;
 }
 
-.logo-text {
-    display: flex;
-    align-items: center;
-    font-family: Nunito, sans-serif;
-    font-weight: bold;
-    font-size: 45px;
+.titulo-click {
     color: $light-color;
-    cursor: default;
-}
-
-.cover-info h1 {
-    font-family: Nunito, sans-serif;
-    font-weight: bolder;
-    color: $light-color;
-    cursor: default;
+    cursor: pointer;
 }
 
 .cover-info p {
-    font-family: Nunito, sans-serif;
-    font-weight: lighter;
     color: $light-color;
 }
 

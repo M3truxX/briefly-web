@@ -2,39 +2,19 @@
 
 .container-link {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    height: auto;
-}
-
-.left {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
     text-align: center;
 }
 
 .input-container {
     margin-top: 20px;
     display: flex;
-    align-items: center;
     justify-content: center;
-}
-
-a {
-    text-decoration: none;
-    color: blue;
-    font-weight: bold;
-}
-
-a:hover {
-    color: darkblue;
 }
 
 .input-text {
     font-size: 12pt;
     border-radius: 4px;
-    border: none;
     width: 270px;
     height: 40px;
     border: 2px solid #ccc;
@@ -43,34 +23,14 @@ a:hover {
 
 .input-text:focus {
     border-color: $primary-color;
-    outline: none;
-}
-
-.a {
-    text-decoration: none;
-    color: #000;
-    transition: all 0.5s;
-}
-
-.a:hover {
-    color:  $light-color;
 }
 
 @media (max-width: 768px) {
     .container-link {
-        display: flex;
         flex-direction: column;
-        margin-inline: auto;
     }
 
     .right {
         margin-top: 30px;
     }
-
-    .button-style {
-        margin-top: 10px;
-    }
 }
-
-
-

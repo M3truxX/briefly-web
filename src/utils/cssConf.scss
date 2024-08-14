@@ -13,9 +13,9 @@
 .text-with-border {
     text-shadow:
         -1px -1px 0 #000,
-        1px -1px 0 #000, 
-        -1px 1px 0 #000, 
-        1px 1px 0 #000;  
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
 }
 
 .sombras {
@@ -52,10 +52,41 @@
     height: auto;
 }
 
+
 // Margens
 @for $i from 1 through 9999 {
     .m-#{$i} {
         margin: #{$i}px;
+    }
+}
+
+// width
+@for $i from 1 through 9999 {
+    .w-#{$i} {
+        width: #{$i}px;
+    }
+}
+
+// height
+@for $i from 1 through 9999 {
+    .h-#{$i} {
+        height: #{$i}px;
+    }
+}
+
+
+// Margens
+@for $i from 1 through 9999 {
+    .m-#{$i} {
+        margin: #{$i}px;
+    }
+
+    .mi-#{$i} {
+        margin-inline: #{$i}px;
+    }
+
+    .mb-#{$i} {
+        margin-block: #{$i}px;
     }
 
     .mt-#{$i} {
@@ -86,7 +117,7 @@
     }
 
     .pb-#{$i} {
-        padding-inline: #{$i}px;
+        padding-block: #{$i}px;
     }
 
     .pt-#{$i} {

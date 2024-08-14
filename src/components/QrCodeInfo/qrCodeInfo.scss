@@ -1,15 +1,12 @@
 @import '../../utils/variables';
 
 .qrcode-container {
-    margin-left: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    margin-left: 45px;
     text-align: center;
     background-color: $button-color;
     border-radius: 30px;
     transition: 0.2s ease-out;
+    width: 400px;
     opacity: 0;
     animation: fadeIn 0.5s ease-in-out forwards;
 }
@@ -18,11 +15,22 @@
     background-color: $button-hover-color;
 }
 
+.link-mostrar {
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+}
+
+.link-mostrar:hover {
+    color: darkblue;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -39,5 +47,9 @@
 @media (max-width: 768px) {
     .qrcode-container {
         margin-left: 0px;
+    }
+
+    .tamanho-img {
+        width: 200px;
     }
 }

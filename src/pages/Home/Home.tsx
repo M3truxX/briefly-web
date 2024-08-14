@@ -1,4 +1,3 @@
-import './home.scss';
 import '../../utils/cssConf.scss'
 import { ApiService } from '../../api/ApiService';
 import Cover from '../../components/Cover/Cover';

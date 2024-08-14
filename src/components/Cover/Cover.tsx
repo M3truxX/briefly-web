@@ -13,8 +13,8 @@ function Cover() {
         <div className="background-cover">
             <div className="cover-info">
                 <div>
-                    <h1 className='titulo-click fs-40' onClick={handleClick}>Briefly</h1>
-                    <h1 className='fs-20'>Encurtando links</h1>
+                    <h1 className='fs-40 titulo-click' onClick={handleClick}>Briefly</h1>
+                    <p className='fs-20'>Encurtando links</p>
                 </div>
                 <p className='fs-12'>Solução rápida e prática para encurtamento de links.</p>
             </div>

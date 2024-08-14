@@ -1,3 +1,6 @@
+import './LinkGenerator.scss';
+import '../../utils/cssConf.scss'
+import 'react-toastify/dist/ReactToastify.css';
 import { ChangeEvent, useState } from "react";
 import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
@@ -8,11 +11,7 @@ import Collapse from "../Collapse/Collapse";
 import { ToastContainer, toast } from 'react-toastify';
 import CustonButtom from "../CustomButtom/CustonButtom";
 import { Errors } from "../../data/models/enums/Errors";
-import './LinkGenerator.scss';
-import '../../utils/cssConf.scss'
-import 'react-toastify/dist/ReactToastify.css';
 import { Config } from '../../Config';
-
 
 function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +59,6 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     setInputValueSurname(newValue);
   }
 
-
   const handleBlurSurname = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length < 6 && event.target.value.length > 0) {
       toast(Errors.LIMITE_CARACTERE_APELIDO);
@@ -98,6 +96,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
   }
 
   async function GetShortLinkInfos() {
+    setIsLoading(true)
     try {
       const linkDataResponse: LinkDataResponse = await repository.getLinkDataInfo(inputValue);
       if (linkDataResponse?.originalLink) {
@@ -125,8 +124,8 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
         theme="colored"
       />
       <div className="container-link mt-50">
-        <div className="left">
-          <h1 className="primary-text">Coloque seu link para encurtá-lo!</h1>
+        <div>
+          <h1 className="titulo-link primary-text">Coloque seu link para encurtá-lo!</h1>
           <p className="primary-text">Ou informe um link gerado para saber seus detalhes.</p>
           <div className="input-container">
             <form onSubmit={(e) => e.preventDefault()}>
@@ -167,7 +166,9 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
             </Collapse>
           ) : null}
           {receiveResponse && tipoConsulta ? (
-            <GraphInfo receiveResponse={receiveResponse} />
+            <div className='input-container'>
+              <GraphInfo receiveResponse={receiveResponse} />
+            </div>
           ) : null}
         </div>
         <div className="right">

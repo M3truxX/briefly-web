@@ -1,24 +1,16 @@
-.funcLink-container{
+.funcLink-container {
   text-align: center;
-}
-
-.container-cards {
-  display: flex;
-  flex-direction: column;
 }
 
 .container-card {
   display: flex;
-  flex-direction: row;
 }
 
 .card-base {
   height: 100px;
   width: 300px;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  border-radius: 5px;
   margin: 25px;
   transition: 0.2s ease-out;
 }
@@ -34,15 +26,7 @@
 }
 
 .area-text {
-  display: flex;
   width: 200px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.area-text h1 {
-  font-weight: bold;
 }
 
 @media (max-width: 768px) {
