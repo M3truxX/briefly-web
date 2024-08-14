@@ -1,5 +1,5 @@
-import './home.css';
-import '../../utils/cssConf.css'
+import './home.scss';
+import '../../utils/cssConf.scss'
 import { ApiService } from '../../api/ApiService';
 import Cover from '../../components/Cover/Cover';
 import Divider from '../../components/Divider/Divider';
@@ -15,16 +15,16 @@ function Home() {
     const database: DatabaseRepository = new DefaultRepository(apiService)
 
     return (
-        <div>
+        <div className='theme-type'>
             <Cover />
-            <div className='body-link'>
+            <div>
                 <div className='center'>
                     <LinkGenerator repository={database} />
                 </div>
-                <div className="mt-5 mb-5">
+                <div className="mt-50 mb-50">
                     <Divider />
                 </div>
-                <div className="center mb-5">
+                <div className="center mb-50">
                     <CardFunc />
                 </div>
             </div>

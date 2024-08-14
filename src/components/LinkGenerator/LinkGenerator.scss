@@ -1,3 +1,5 @@
+@import '../../utils/_variables.scss';
+
 .container-link {
     display: flex;
     flex-direction: row;
@@ -14,6 +16,9 @@
 
 .input-container {
     margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 a {
@@ -37,21 +42,8 @@ a:hover {
 }
 
 .input-text:focus {
-    border-color: #6C4F8B;
+    border-color: $primary-color;
     outline: none;
-}
-
-.button-style {
-    border: 0;
-    outline: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.5s;
-}
-
-.button-style:hover {
-    background-color: #6C4F8B;
-    color: #FFF;
 }
 
 .a {
@@ -61,7 +53,7 @@ a:hover {
 }
 
 .a:hover {
-    color: #FFF;
+    color:  $light-color;
 }
 
 @media (max-width: 768px) {
@@ -79,3 +71,6 @@ a:hover {
         margin-top: 10px;
     }
 }
+
+
+

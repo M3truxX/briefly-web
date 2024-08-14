@@ -1,4 +1,4 @@
-import "./graphInfo.css";
+import "./graphInfo.scss";
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Pie } from 'react-chartjs-2';
@@ -7,7 +7,8 @@ import Modal from "../Modal/Modal";
 import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
 import { formatDate } from "../../utils/formatDate";
 import { ClickerResponse } from "../../data/models/interfaces/ClickerResponse";
-import '../../utils/cssConf.css'
+import '../../utils/cssConf.scss'
+import CustonButtom from "../CustomButtom/CustonButtom";
 
 Chart.register(ArcElement, Tooltip);
 
@@ -70,14 +71,14 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
   };
 
   return (
-    <div className="mt-2">
+    <div className="mt-20">
       <Modal isVisible={isModalVisible} onClose={closeModal}>
         {receiveResponse ? (
-          <div>
-            <p className="mb-5">Visitas Totais: {receiveResponse.totalVisits.length}</p>
-            <ul className="mb-3">
+          <div className={` ${receiveResponse ? 'visible' : ''}`}>
+            <p className="mb-40 primary-text font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
+            <ul className="mb-30">
               {receiveResponse.totalVisits.map((visit, index) => (
-                <li className="xiuu mb-2 ml-2 mr-2" key={index}>
+                <li className="list-remove mb-15 ml-20 mr-20" key={index}>
                   {visit.deviceInfo.deviceType} - {visit.region.city}, {visit.region.country} - {formatDate(visit.clickedAt)}
                 </li>
               ))}
@@ -86,14 +87,12 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
         ) : null}
       </Modal>
       {receiveResponse ? (
-        <div className="visit-container pt-2 pb-2 pl-5 pr-5">
-          <p>Visitas Totais: {receiveResponse.totalVisits.length}</p>
-          <div className="mt-1 graph-size">
+        <div className="visit-container pt-20 pb-20 pl-50 pr-50">
+          <p className="primary-text font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
+          <div className="mt-10 graph-size">
             <Pie data={data} />
           </div>
-          <button onClick={openModal} className="button-style-2 mt-1 fs-14 sombras">
-            Mais detalhes
-          </button>
+          <span className="mt-10"><CustonButtom text="Detalhes" onClick={openModal} /></span>
         </div>
       ) : null}
     </div>

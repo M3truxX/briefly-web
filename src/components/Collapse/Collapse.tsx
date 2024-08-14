@@ -1,5 +1,5 @@
-import './collapse.css'
-import '../../utils/cssConf.css'
+import './collapse.scss'
+import '../../utils/cssConf.scss'
 import { useState } from 'react';
 import { CollapseProps } from '../../data/models/interfaces/CollapseProps';
 

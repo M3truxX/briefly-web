@@ -1,10 +1,12 @@
+@import '../../utils/variables';
+
 .collapse-container {
     margin-top: 10px;
 }
 
 .collapse-button {
     font-size: 16px;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: $transparent-color;
     border: none;
     cursor: pointer;
     outline: none;
@@ -16,7 +18,7 @@
     margin-left: 5px;
     content: '▼';
     position: absolute;
-    transition: transform 0.2s ease-out;
+    transition: transform 0.4s ease-out;
 }
 
 .collapse-button.open::after {
@@ -26,10 +28,10 @@
 .collapse-content {
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.4s ease-out;
+    transition: max-height 0.3s ease-out;
 }
 
 .collapse-content.open {
     max-height: 1000px;
-    transition: max-height 0.4s ease-in;
+    transition: max-height 0.3s ease-in;
 }

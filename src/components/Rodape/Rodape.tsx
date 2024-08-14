@@ -1,5 +1,5 @@
-import './rodape.css';
-import '../../utils/cssConf.css'
+import './rodape.scss';
+import '../../utils/cssConf.scss'
 
 function Rodape() {
     return (

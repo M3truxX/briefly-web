@@ -1,3 +1,7 @@
+.funcLink-container{
+  text-align: center;
+}
+
 .container-cards {
   display: flex;
   flex-direction: column;
