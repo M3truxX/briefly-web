@@ -65,12 +65,20 @@
     .w-#{$i} {
         width: #{$i}px;
     }
+
+    .mw-#{$i} {
+        max-width: #{$i}px;
+    }
 }
 
 // height
 @for $i from 1 through 9999 {
     .h-#{$i} {
         height: #{$i}px;
+    }
+
+    .mh-#{$i} {
+        max-height: #{$i}px;
     }
 }
 

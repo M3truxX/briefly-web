@@ -11,7 +11,7 @@ function QrCodeInfo({ receiveResponse, tipoConsulta }: { receiveResponse: LinkDa
                     {tipoConsulta ? (
                         <div>
                             <h1 className="mb-10 primary-text">Link Original</h1>
-                            <a className="link-mostrar" href={receiveResponse.originalLink} target="blank">{receiveResponse.originalLink}</a>
+                            <a className="link-mostrar" href={receiveResponse.originalLink} target="blank">{receiveResponse.originalLink.slice(0, 40) + '...'}</a>
                         </div>
                     ) : (
                         <div>

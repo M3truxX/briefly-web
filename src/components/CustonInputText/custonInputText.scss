@@ -1,0 +1,39 @@
+.section-style {
+    display: flex;
+    margin-bottom: 12px;
+    background-color: white;
+    width: 270px;
+    height: 40px;
+    border-bottom: 2px solid gray;
+    border-radius: 4px;
+    padding: 0 10px;
+
+    &.border-gray {
+        border-color: gray;
+    }
+
+    &.border-red {
+        border-color: red;
+    }
+
+    &.border-green {
+        border-color: green;
+    }
+}
+
+.text-input-custon {
+    flex: 1;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+
+.text-coment {
+    color: red;
+
+}
+
+.fading-container {
+    transition: opacity 0.7s ease-in-out;
+    max-width: 270px;;
+}

@@ -11,7 +11,7 @@ const CustonButtom: React.FC<CustomButtomProps> = ({ text, activate = true, load
 
     return (
         <button
-            className={`button ${activate ? '' : 'desable'} ${loading ? 'loading' : ''}`}
+            className={`button sombras ${activate ? '' : 'desable'} ${loading ? 'loading' : ''}`}
             onClick={handleClick}
             type="submit"
             disabled={!activate || loading}

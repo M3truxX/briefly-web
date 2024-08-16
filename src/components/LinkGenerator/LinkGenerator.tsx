@@ -1,7 +1,7 @@
 import './LinkGenerator.scss';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
 import { LinkDataRequest } from "../../data/models/interfaces/LinkDataRequest";
@@ -12,62 +12,85 @@ import { ToastContainer, toast } from 'react-toastify';
 import CustonButtom from "../CustomButtom/CustonButtom";
 import { Errors } from "../../data/models/enums/Errors";
 import { Config } from '../../Config';
+import CustonInputText from '../CustonInputText/CustonInputText';
+import axios, { AxiosError } from 'axios';
+import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 
 function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
+  const [resetEntlink, setResetEntlink] = useState(false);
+  const [resetEntSenha, setResetEntSenha] = useState(false);
+  const [resetEntApelido, setResetEntApelido] = useState(false);
+
+  const [ctrllEntlink, setCtrlEntlink] = useState(0);
+  const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
+  const [ctrlEntApelido, setCtrlEntApelido] = useState(0);
+
+  const entLink = (text: string) => { checkInputLink(text); setLinkText(text) }
+  const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) }
+  const entApelido = (text: string) => { checkInputApelido(text); setApelidoText(text) }
+
+  const [linkText, setLinkText] = useState('');
+  const [senhaText, setSenhaText] = useState('');
+  const [apelidoText, setApelidoText] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
   const [tipoConsulta, setTipoConsulta] = useState(false);
   const [nomeBotaoAction, setNomeBotaoAction] = useState('Encurtar')
   const [receiveResponse, setReceiveResponse] = useState<LinkDataResponse | null>(null);
-  const [inputValue, setInputValue] = useState('');
-  const [inputValuePassword, setInputValuePassword] = useState('');
-  const [inputValueSurname, setInputValueSurname] = useState('');
   const [activateButton, setActivateButton] = useState(false)
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    setInputValue(newValue);
-    if (newValue.includes(Config.BASE_NAME_DOMAIN)) {
-      setTipoConsulta(true);
+  useEffect(() => {
+    if (checkInputLink(linkText) && checkInputSenha(senhaText) && checkInputApelido(apelidoText)) {
+      setActivateButton(true)
+    } else {
+      setActivateButton(false)
+    }
+  }, [entLink, entSenha, entApelido]);
+
+  function checkInputLink(text: string): boolean {
+    if (text === '') {
+      setCtrlEntlink(0);
+      setNomeBotaoAction('Encurtar');
+      return false;
+    }
+    setCtrlEntlink(2);
+    if (text.includes(Config.BASE_NAME_DOMAIN)) {
       setNomeBotaoAction('Pesquisar');
-      setActivateButton(true)
-    } else if (!event.target.value) {
-      setTipoConsulta(false);
-      setNomeBotaoAction('Encurtar');
-      setReceiveResponse(null);
-      setActivateButton(false)
     } else {
-      setTipoConsulta(false);
       setNomeBotaoAction('Encurtar');
-      setActivateButton(true)
     }
-  };
-
-  const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    setInputValuePassword(newValue);
+    return true;
   }
 
-  const handleChangeSurname = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
-    if (event.target.value.length >= 6) {
-      setActivateButton(true)
-    } else if (event.target.value.length < 6 && event.target.value.length > 0) {
-      setActivateButton(false)
-    } else {
-      setActivateButton(true)
+  function checkInputSenha(text: string): boolean {
+    if (text === '') {
+      setCtrlEntSenha(0);
+      return true;
     }
-    setInputValueSurname(newValue);
+    if (text.length < 3) {
+      setCtrlEntSenha(1);
+      return false;
+    }
+    setCtrlEntSenha(2);
+    return true;
   }
 
-  const handleBlurSurname = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value.length < 6 && event.target.value.length > 0) {
-      toast(Errors.LIMITE_CARACTERE_APELIDO);
+  function checkInputApelido(text: string): boolean {
+    if (text === '') {
+      setCtrlEntApelido(0);
+      return true;
     }
+    if (text.length < 6 || text.length > 15) {
+      setCtrlEntApelido(1);
+      return false;
+    }
+    setCtrlEntApelido(2);
+    return true;
   }
 
   const handleClick = () => {
     if (activateButton) {
-      return tipoConsulta ? GetShortLinkInfos() : generatorShortLink();
+      return nomeBotaoAction === "Pesquisar" ? GetShortLinkInfos() : generatorShortLink();
     }
     return undefined;
   };
@@ -75,31 +98,46 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
   async function generatorShortLink() {
     setIsLoading(true);
     const linkDataRequest: LinkDataRequest = {
-      link: inputValue,
-      personalizedCode: inputValueSurname !== '' ? inputValueSurname : null,
-      password: inputValuePassword !== '' ? inputValuePassword : null,
+      link: linkText,
+      personalizedCode: apelidoText !== '' ? apelidoText : null,
+      password: senhaText !== '' ? senhaText : null,
       expiresIn: null
     }
 
     try {
       const linkDataResponse: LinkDataResponse = await repository.generateLinkData(linkDataRequest);
       if (linkDataResponse?.originalLink) {
-        setIsLoading(false)
-        setInputValuePassword('');
-        setInputValueSurname('');
-        setReceiveResponse(linkDataResponse)
+        setIsLoading(false);
+        setTipoConsulta(false);
+        setReceiveResponse(linkDataResponse);
+        setResetEntlink(prev => !prev);
+        setResetEntSenha(prev => !prev);
+        setResetEntApelido(prev => !prev);
+        setTimeout(() => {
+          setCtrlEntlink(0);
+          setCtrlEntSenha(0);
+          setCtrlEntApelido(0);
+        }, 100);
       }
     } catch (error) {
       setIsLoading(false)
-      toast(Errors.APELIDO_JA_CADASTRADO);
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<AxiosErrorResponse>;
+        if (axiosError.response?.status === 409) {
+          toast(Errors.APELIDO_JA_CADASTRADO);
+        } else {
+          toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+        }
+      }
     }
   }
 
   async function GetShortLinkInfos() {
     setIsLoading(true)
     try {
-      const linkDataResponse: LinkDataResponse = await repository.getLinkDataInfo(inputValue);
+      const linkDataResponse: LinkDataResponse = await repository.getLinkDataInfo(linkText);
       if (linkDataResponse?.originalLink) {
+        setTipoConsulta(true);
         setIsLoading(false)
         setReceiveResponse(linkDataResponse)
       }
@@ -129,12 +167,11 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
           <p className="primary-text">Ou informe um link gerado para saber seus detalhes.</p>
           <div className="input-container">
             <form onSubmit={(e) => e.preventDefault()}>
-              <input className="input-text p-10"
-                type="text"
-                id="input"
-                value={inputValue}
-                onChange={handleChange}
-                placeholder="Cole seu texto aqui"
+              <CustonInputText
+                textPlaceholder="Cole ou insira seu link"
+                estado={ctrllEntlink}
+                travelInfo={entLink}
+                resetText={resetEntlink}
               />
             </form>
             <CustonButtom
@@ -143,29 +180,36 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
               loading={isLoading}
               onClick={handleClick} />
           </div>
-          {!tipoConsulta ? (
+          {nomeBotaoAction === "Encurtar" ? (
             <Collapse title='Mais opções'>
               <p className="mt-10 mb-10 fs-14 primary-text font-bold">Digite uma senha</p>
-              <input className="input-text p-10"
-                type="password"
-                id="input"
-                value={inputValuePassword}
-                onChange={handleChangePassword}
-                placeholder="Digite uma senha"
-              />
+              <div className='center'>
+                <CustonInputText
+                  textPlaceholder="Digite uma senha"
+                  estado={ctrlEntSenha}
+                  color='black'
+                  travelInfo={entSenha}
+                  type="password"
+                  resetText={resetEntSenha}
+                  showTextdescription={ctrlEntSenha == 1 ? true : false}
+                  textdescription='Deve conter no mínimo 3 caracteres.'
+                />
+              </div>
               <p className="mt-10 mb-10 fs-14 primary-text font-bold">Digite um nome customizado</p>
-              <input className="input-text p-10"
-                type="text"
-                id="input"
-                value={inputValueSurname}
-                onChange={handleChangeSurname}
-                onBlur={handleBlurSurname}
-                placeholder="Digite um apelido"
-              />
-              <p className="fs-12 mt-5 secundary-text">O apelido deve ter no mínimo 6 caracteres</p>
+              <div className='center'>
+                <CustonInputText
+                  textPlaceholder="Digite um apelido"
+                  estado={ctrlEntApelido}
+                  color='black'
+                  travelInfo={entApelido}
+                  resetText={resetEntApelido}
+                  showTextdescription={ctrlEntApelido == 1 ? true : false}
+                  textdescription='Deve conter no mínimo 6 e máximo 15 caracteres.'
+                />
+              </div>
             </Collapse>
           ) : null}
-          {receiveResponse && tipoConsulta ? (
+          {nomeBotaoAction === 'pesquisar' && tipoConsulta ? (
             <div className='input-container'>
               <GraphInfo receiveResponse={receiveResponse} />
             </div>

@@ -2,6 +2,10 @@
 
 .rodape {
     position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);

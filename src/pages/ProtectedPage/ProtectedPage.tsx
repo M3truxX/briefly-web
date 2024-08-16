@@ -6,7 +6,7 @@ import { DefaultRepository } from '../../data/repository/DefaultRepository';
 import { Config } from '../../Config';
 import PrivatedLink from '../../components/PrivatedLink/PrivatedLink';
 import Rodape from '../../components/Rodape/Rodape';
-import CardFunc from '../../components/Func/FuncLink';
+import CardFunc from '../../components/FuncLink/FuncLink';
 import Divider from '../../components/Divider/Divider';
 
 function protectedPage() {
