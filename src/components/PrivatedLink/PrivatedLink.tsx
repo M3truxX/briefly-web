@@ -1,3 +1,4 @@
+// Importa estilos globais e bibliotecas necessárias
 import './privatedLink.css';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
@@ -5,31 +6,33 @@ import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import { LinkProtectedResponse } from '../../data/models/interfaces/LinkProtectedResponse';
 import { LinkProtectedRequest } from '../../data/models/interfaces/LinkProtectedRequest';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
-import { Errors } from '../../data/models/enums/Errors';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
-import CustonButtom from '../CustomButtom/CustonButtom';
 import axios, { AxiosError } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { Errors } from '../../data/models/enums/Errors';
+import CustonButtom from '../CustomButtom/CustonButtom';
 import CustonInputText from '../CustonInputText/CustonInputText';
 
 function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
-    const [resetEntSenha, setResetEntSenha] = useState(false);
-    const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
-    const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) }
-    const [senhaText, setSenhaText] = useState('');
-    const [isLoading, setIsLoading] = useState(false)
-    const { id } = useParams();
-    const [activateButton, setActivateButton] = useState(false)
+    const [resetEntSenha, setResetEntSenha] = useState(false); // Estado para reset de senha
+    const [ctrlEntSenha, setCtrlEntSenha] = useState(0); // Controle do estado de senha
+    const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) } // Função de entrada de senha
+    const [senhaText, setSenhaText] = useState(''); // Estado da senha
+    const [isLoading, setIsLoading] = useState(false); // Controle de loading
+    const { id } = useParams(); // Obtém o parâmetro de rota
+    const [activateButton, setActivateButton] = useState(false); // Estado de ativação do botão
 
+    // Verifica senha ao digitar
     useEffect(() => {
         if (checkInputSenha(senhaText)) {
             setActivateButton(true)
         } else {
             setActivateButton(false)
         }
-    }, [entSenha]);
+    }, [senhaText]);
 
+    // Verifica a validade da senha
     function checkInputSenha(text: string): boolean {
         if (text === '') {
             setCtrlEntSenha(0);
@@ -43,6 +46,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
         return true;
     }
 
+    // Solicita dados do link protegido
     async function requestPrivateLinkinfo() {
         setIsLoading(true);
         const dataRequestPrivate: LinkProtectedRequest = {
@@ -73,6 +77,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
         }
     }
 
+    // Renderiza o componente de link protegido
     return (
         <div className='input-pass-container mt-100 mb-100'>
             <ToastContainer
@@ -97,7 +102,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                         travelInfo={entSenha}
                         type="password"
                         resetText={resetEntSenha}
-                        showTextdescription={ctrlEntSenha == 1 ? true : false}
+                        showTextdescription={ctrlEntSenha === 1 ? true : false}
                         textdescription='Deve conter no mínimo 3 caracteres.'
                     />
                 </form>

@@ -1,3 +1,4 @@
+// Importa estilos e bibliotecas necessárias
 import "./graphInfo.scss";
 import '../../utils/cssConf.scss'
 import React from 'react';
@@ -10,13 +11,17 @@ import { formatDate } from "../../utils/formatDate";
 import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
 import { ClickerResponse } from "../../data/models/interfaces/ClickerResponse";
 
+// Registra elementos do gráfico
 Chart.register(ArcElement, Tooltip);
 
+// Tipos de propriedades aceitas pelo componente
 interface GraphInfoProps {
   receiveResponse: LinkDataResponse | null;
 }
 
+// Componente para exibir gráfico de visitas
 const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
+  // Estado inicial dos dados do gráfico
   const [data, setData] = useState({
     labels: ['Desktop', 'Mobile'],
     datasets: [
@@ -28,6 +33,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
     ]
   });
 
+  // Conta tipos de dispositivos e atualiza o gráfico
   const contDevice = () => {
     const countDeviceTypes = (visits: ClickerResponse[]): { desktop: number; mobile: number } => {
       return visits.reduce((count, visit) => {
@@ -55,17 +61,21 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
     }
   };
 
+  // Atualiza o gráfico quando os dados mudam
   useEffect(() => {
     contDevice();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receiveResponse]);
 
+  // Estado de visibilidade do modal
   const [isModalVisible, setModalVisible] = useState(false);
 
+  // Abre o modal
   const openModal = () => {
     setModalVisible(true);
   };
 
+  // Fecha o modal
   const closeModal = () => {
     setModalVisible(false);
   };
@@ -78,7 +88,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
             <p className="mb-40 primary-text font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
             <ul className="mb-30">
               {receiveResponse.totalVisits.map((visit, index) => (
-                <li className="list-remove mb-15 ml-20 mr-20" key={index}>
+                <li className="list-remove mb-15 mi-20" key={index}>
                   {visit.deviceInfo.deviceType} - {visit.region.city}, {visit.region.country} - {formatDate(visit.clickedAt)}
                 </li>
               ))}
@@ -87,7 +97,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
         ) : null}
       </Modal>
       {receiveResponse ? (
-        <div className="visit-container pt-20 pb-20 pl-50 pr-50">
+        <div className="visit-container pbl-20 pi-50">
           <p className="primary-text font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
           <div className="mt-10 graph-size">
             <Pie data={data} />

@@ -1,3 +1,4 @@
+// Importa estilos globais e bibliotecas necessárias
 import './LinkGenerator.scss';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,7 +17,9 @@ import CustonInputText from '../CustonInputText/CustonInputText';
 import axios, { AxiosError } from 'axios';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 
+// Componente principal de geração de links
 function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
+  // Estados para controle de entradas e comportamento
   const [resetEntlink, setResetEntlink] = useState(false);
   const [resetEntSenha, setResetEntSenha] = useState(false);
   const [resetEntApelido, setResetEntApelido] = useState(false);
@@ -25,6 +28,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
   const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
   const [ctrlEntApelido, setCtrlEntApelido] = useState(0);
 
+  // Funções para manipulação de inputs
   const entLink = (text: string) => { checkInputLink(text); setLinkText(text) }
   const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) }
   const entApelido = (text: string) => { checkInputApelido(text); setApelidoText(text) }
@@ -33,20 +37,23 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
   const [senhaText, setSenhaText] = useState('');
   const [apelidoText, setApelidoText] = useState('');
 
+  // Estados para controle do botão e requisições
   const [isLoading, setIsLoading] = useState(false);
   const [tipoConsulta, setTipoConsulta] = useState(false);
   const [nomeBotaoAction, setNomeBotaoAction] = useState('Encurtar')
   const [receiveResponse, setReceiveResponse] = useState<LinkDataResponse | null>(null);
   const [activateButton, setActivateButton] = useState(false)
 
+  // Verifica a validade dos inputs ao serem alterados
   useEffect(() => {
     if (checkInputLink(linkText) && checkInputSenha(senhaText) && checkInputApelido(apelidoText)) {
       setActivateButton(true)
     } else {
       setActivateButton(false)
     }
-  }, [entLink, entSenha, entApelido]);
+  }, [linkText, senhaText, apelidoText]);
 
+  // Verifica a validade do link inserido
   function checkInputLink(text: string): boolean {
     if (text === '') {
       setCtrlEntlink(0);
@@ -54,7 +61,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
       return false;
     }
     setCtrlEntlink(2);
-    if (text.includes(Config.BASE_NAME_DOMAIN)) {
+    if (text.includes(Config.BASE_DOMAIN)) {
       setNomeBotaoAction('Pesquisar');
     } else {
       setNomeBotaoAction('Encurtar');
@@ -62,6 +69,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     return true;
   }
 
+  // Verifica a validade da senha inserida
   function checkInputSenha(text: string): boolean {
     if (text === '') {
       setCtrlEntSenha(0);
@@ -75,6 +83,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     return true;
   }
 
+  // Verifica a validade do apelido inserido
   function checkInputApelido(text: string): boolean {
     if (text === '') {
       setCtrlEntApelido(0);
@@ -88,6 +97,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     return true;
   }
 
+  // Lida com o clique do botão principal
   const handleClick = () => {
     if (activateButton) {
       return nomeBotaoAction === "Pesquisar" ? GetShortLinkInfos() : generatorShortLink();
@@ -95,6 +105,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     return undefined;
   };
 
+  // Gera um link encurtado
   async function generatorShortLink() {
     setIsLoading(true);
     const linkDataRequest: LinkDataRequest = {
@@ -132,6 +143,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     }
   }
 
+  // Obtém informações de um link já encurtado
   async function GetShortLinkInfos() {
     setIsLoading(true)
     try {
@@ -182,7 +194,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
           </div>
           {nomeBotaoAction === "Encurtar" ? (
             <Collapse title='Mais opções'>
-              <p className="mt-10 mb-10 fs-14 primary-text font-bold">Digite uma senha</p>
+              <p className="mbl-10 fs-14 primary-text font-bold">Digite uma senha</p>
               <div className='center'>
                 <CustonInputText
                   textPlaceholder="Digite uma senha"
@@ -191,11 +203,11 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
                   travelInfo={entSenha}
                   type="password"
                   resetText={resetEntSenha}
-                  showTextdescription={ctrlEntSenha == 1 ? true : false}
+                  showTextdescription={ctrlEntSenha === 1 ? true : false}
                   textdescription='Deve conter no mínimo 3 caracteres.'
                 />
               </div>
-              <p className="mt-10 mb-10 fs-14 primary-text font-bold">Digite um nome customizado</p>
+              <p className="mbl-10 fs-14 primary-text font-bold">Digite um nome customizado</p>
               <div className='center'>
                 <CustonInputText
                   textPlaceholder="Digite um apelido"
@@ -203,13 +215,13 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
                   color='black'
                   travelInfo={entApelido}
                   resetText={resetEntApelido}
-                  showTextdescription={ctrlEntApelido == 1 ? true : false}
+                  showTextdescription={ctrlEntApelido === 1 ? true : false}
                   textdescription='Deve conter no mínimo 6 e máximo 15 caracteres.'
                 />
               </div>
             </Collapse>
           ) : null}
-          {nomeBotaoAction === 'pesquisar' && tipoConsulta ? (
+          { tipoConsulta ? (
             <div className='input-container'>
               <GraphInfo receiveResponse={receiveResponse} />
             </div>

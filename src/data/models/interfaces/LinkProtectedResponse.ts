@@ -1,3 +1,3 @@
 export interface LinkProtectedResponse {
-    originalLink: string
+    originalLink: string; // O link original protegido que foi solicitado
 }

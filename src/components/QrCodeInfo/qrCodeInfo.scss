@@ -1,3 +1,4 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
 @import '../../utils/variables';
 
 .qrcode-container {
@@ -17,12 +18,12 @@
 
 .link-mostrar {
     text-decoration: none;
-    color: blue;
+    color: $link-clor;
     font-weight: bold;
 }
 
 .link-mostrar:hover {
-    color: darkblue;
+    color: $link-clor-hover;
 }
 
 @keyframes fadeIn {

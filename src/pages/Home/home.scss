@@ -1,0 +1,15 @@
+.theme-type {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.rodape-container {
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .theme-type {
+        margin-inline: 30px;
+    }
+}

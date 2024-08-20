@@ -1,3 +1,4 @@
+// Importa o arquivo de variáveis SCSS, onde são definidos valores reutilizáveis como cores e tamanhos
 @import 'variables';
 
 // Fontes
@@ -93,7 +94,7 @@
         margin-inline: #{$i}px;
     }
 
-    .mb-#{$i} {
+    .mbl-#{$i} {
         margin-block: #{$i}px;
     }
 
@@ -124,7 +125,7 @@
         padding-inline: #{$i}px;
     }
 
-    .pb-#{$i} {
+    .pbl-#{$i} {
         padding-block: #{$i}px;
     }
 

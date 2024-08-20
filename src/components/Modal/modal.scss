@@ -1,10 +1,13 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
+@import '../../utils/variables';
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: $back-tranparent-color;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,11 +15,11 @@
 }
 
 .modal-content {
-  background: white;
+  background: $light-color;
   border-radius: 8px;
   width: 500px;
   max-height: 70vh;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: $box-shadow;
   position: relative;
   display: flex;
 }

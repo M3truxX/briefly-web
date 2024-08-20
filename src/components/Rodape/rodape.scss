@@ -1,35 +1,59 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
 @import '../../utils/variables';
 
 .rodape {
-    position: fixed;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 75%;
-    padding-top: 5px;
-    background: linear-gradient(to top, $primary-color, lighten($primary-color, 5%), lighten($primary-color, 10%));
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    box-shadow: 0 0px 5px 0px $dark-color;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: $button-color;
 }
 
-.termos-link {
-    font-weight: bold;
-    text-decoration: none;
+.Links-midea {
+    align-items: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
 }
 
-.rodape h1 {
+.creditos {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-top: 1px solid #cbd0d3;
+}
+
+.copyright {
+    margin-left: 10px;
+}
+
+.card-base-midia {
     font-weight: lighter;
+    display: flex;
+    align-items: center;
     text-align: center;
 }
 
+.img-res-git {
+    width: 45px;
+}
+
+.area-text-midea {
+    width: 100px;
+}
+
+.rm-decoration {
+    text-decoration: none;
+}
+
 @media (max-width: 768px) {
-    .rodape {
-        width: 95%;
-        padding-inline: 20px;
+    .creditos {
+        flex-direction: column;
+    }
+
+    .copyright {
+        margin-left: none;
     }
 }
