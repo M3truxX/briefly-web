@@ -1,3 +1,4 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
 @import '../../utils/_variables.scss';
 
 .not-found {
@@ -6,10 +7,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-}
-
-.not-found h1 {
-    font-size: 120px;
 }
 
 .buttom-link {

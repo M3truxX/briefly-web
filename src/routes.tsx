@@ -2,7 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Erro from './pages/Erro/Error';
-import Protected from './pages/ProtectedPage/ProtectedPage';
+import Protected from './pages/Protected/Protected';
 import Cover from './components/Cover/Cover';
 import Rodape from './components/Rodape/Rodape';
 import Register from './pages/Register/Register';

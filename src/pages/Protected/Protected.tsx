@@ -2,7 +2,7 @@
 import '../../utils/cssConf.scss';
 import { ApiService } from '../../api/ApiService';
 import PrivatedLink from '../../components/PrivatedLink/PrivatedLink';
-import CardFunc from '../../components/CardFunc/CardFunc';
+import CardFunc from '../../components/Cards/Cards';
 import Divider from '../../components/Divider/Divider';
 import { DatabaseRepository } from '../../data/models/class/DatabaseRepository';
 import { DefaultRepository } from '../../data/repository/DefaultRepository';

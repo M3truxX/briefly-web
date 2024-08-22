@@ -1,5 +1,5 @@
 // Importa estilos globais e bibliotecas necessárias
-import './privatedLink.css';
+import './privatedLink.scss';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
 import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";

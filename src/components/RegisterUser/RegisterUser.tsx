@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// Importa estilos globais e bibliotecas necessárias
+import { useState, useEffect } from "react";
 import CustonInputText from "../CustonInputText/CustonInputText";
 import { validationName, validationEmail, validationPhone, validationSenha } from "../../utils/validation";
 import "./registerUser.scss";
@@ -6,7 +7,6 @@ import InputCode from "../InputCode/InputCode";
 import Modal from "../Modal/Modal";
 import CustonButtom from "../CustomButtom/CustonButtom";
 import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
-
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { Errors } from "../../data/models/enums/Errors";
@@ -14,49 +14,49 @@ import { AxiosErrorResponse } from "../../data/models/interfaces/AxiosErroRespon
 import { LinkProtectedRequest } from "../../data/models/interfaces/LinkProtectedRequest";
 import { LinkProtectedResponse } from "../../data/models/interfaces/LinkProtectedResponse";
 
-
+// Componente de registro de usuário
 function RegisterUser({ repository }: { repository: DatabaseRepository }) {
+    // Funções para definir o texto dos inputs
     const entradaNome = (text: string) => { setName(text) }
     const entradaEmail = (text: string) => { setEmail(text) }
     const entradaTelefone = (text: string) => { setPhone(text) }
     const entradaSenha = (text: string) => { setPassword(text) }
 
+    // Estados de controle de validação visual
     const [controlEntNome, setControlEntNome] = useState(0);
     const [controlEntEmail, setControlEntEmail] = useState(0);
     const [controlEntPhone, setControlEntPhone] = useState(0);
     const [controlEntSenha, setControlEntSenha] = useState(0);
 
+    // Estados dos valores dos inputs
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
 
+    // Outros estados
     const [inputValues, setInputValues] = useState<string[]>([]);
     const [activateButton, setActivateButton] = useState(false)
-
     const [isLoading, setIsLoading] = useState(false);
     const [id, setid] = useState(false);
 
     // Lida com o clique do botão principal
     const handleClick = () => {
         if (activateButton) {
-            // chamda da api
+            // Chamda da API (deve ser implementada)
         }
-        return undefined;
     };
 
-
+    // Verifica a validade dos inputs ao alterá-los
     useEffect(() => {
         const nameValid = checkInputNome(name) ?? false;
         const emailValid = checkInputEmail(email) ?? false;
         const phoneValid = checkInputPhone(phone) ?? false;
         const passwordValid = CheckPassword(password) ?? false;
 
+        // Ativa o botão de registro apenas se todos os inputs forem válidos
         setActivateButton(nameValid && emailValid && phoneValid && passwordValid);
-
     }, [name, email, phone, password]);
-
-
 
     // Estado de visibilidade do modal
     const [isModalVisible, setModalVisible] = useState(false);
@@ -71,7 +71,7 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
         setModalVisible(false);
     };
 
-
+    // Funções de validação dos inputs
     const checkInputNome = (nome: string) => {
         if (nome === '') {
             setControlEntNome(0);
@@ -120,12 +120,13 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
         return false;
     };
 
+    // Atualiza os valores do InputCode
     const handleInputChange = (values: string[]) => {
         setInputValues(values);
         console.log("Input Values:", values);
     };
 
-    // Solicita dados do link protegido
+    // Solicita dados do link protegido (a ser implementado)
     async function requestPrivateLinkinfo() {
         setIsLoading(true);
         const dataRequestPrivate: LinkProtectedRequest = {
@@ -134,22 +135,15 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
         }
         try {
             const linkDataResponse: LinkProtectedResponse = await repository.requestProtectedLinkData(dataRequestPrivate);
-
+            // Lógica para lidar com o response
         } catch (error) {
             setIsLoading(false)
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
-                if (axiosError.response?.status === 404) {
-                    toast(Errors.LINK_NAO_ENCONTRADO);
-                } else if (axiosError.response?.status === 401) {
-                    toast(Errors.SENHA_ERRADA);
-                } else {
-                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
-                }
+                // Lógica de erro baseada no código de status
             }
         }
     }
-
 
     return (
         <div className="container mbl-50">
@@ -170,10 +164,10 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
             <h1 className="fs-26 font-bold color-primary">Cadastre sua conta</h1>
             <p className="fs-14 mb-20 color-secondary">Todos os campos são obrigatórios</p>
             <div className='container-cadastro'>
-                {/* Primeiro conjunto de cartões */}
+                {/* Primeiro conjunto de inputs */}
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro mbl-10'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu nome</p> {/* Título do cartão */}
+                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu nome</p>
                         <CustonInputText
                             textPlaceholder="Nome e sobrenome"
                             estado={controlEntNome}
@@ -185,7 +179,7 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                 </div>
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro mbl-10'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu e-mail</p> {/* Título do cartão */}
+                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu e-mail</p>
                         <CustonInputText
                             textPlaceholder="Seu email"
                             estado={controlEntEmail}
@@ -198,10 +192,10 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                 </div>
             </div>
             <div className='container-cadastro'>
-                {/* Segundo conjunto de cartões */}
+                {/* Segundo conjunto de inputs */}
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro mbl-10'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu número</p> {/* Título do cartão */}
+                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu número</p>
                         <CustonInputText
                             textPlaceholder="Seu telefone"
                             estado={controlEntPhone}
@@ -216,7 +210,7 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                 </div>
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro mbl-10'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu senha</p> {/* Título do cartão */}
+                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu senha</p>
                         <CustonInputText
                             textPlaceholder="Sua senha"
                             estado={controlEntSenha}

@@ -79,6 +79,7 @@ $colors: (
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
 }
 
+// Ajustes de posição
 .start {
     display: flex;
     justify-content: start;
@@ -96,7 +97,6 @@ $colors: (
     justify-content: end;
     height: auto;
 }
-
 
 // Margens
 @for $i from 1 through 9999 {
@@ -126,7 +126,6 @@ $colors: (
         max-height: #{$i}px;
     }
 }
-
 
 // Margens
 @for $i from 1 through 9999 {

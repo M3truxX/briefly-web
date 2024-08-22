@@ -1,5 +1,5 @@
 // Importa o estilo globail e imagens necessárias
-import './cardFunc.css';
+import './cards.scss';
 import link from '../../img/link.png';
 import qrcode from '../../img/qrcode.png';
 import balance from '../../img/balance.png';
