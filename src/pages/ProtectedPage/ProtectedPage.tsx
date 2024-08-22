@@ -1,9 +1,7 @@
 // Importa estilos globais e bibliotecas necessárias
 import '../../utils/cssConf.scss';
 import { ApiService } from '../../api/ApiService';
-import Cover from '../../components/Cover/Cover';
 import PrivatedLink from '../../components/PrivatedLink/PrivatedLink';
-import Rodape from '../../components/Rodape/Rodape';
 import CardFunc from '../../components/CardFunc/CardFunc';
 import Divider from '../../components/Divider/Divider';
 import { DatabaseRepository } from '../../data/models/class/DatabaseRepository';
@@ -16,9 +14,8 @@ function protectedPage() {
   const database: DatabaseRepository = new DefaultRepository(apiService); // Cria uma instância do repositório padrão
 
   return (
-    <div>
-      <Cover />
-      <div className='body-link'>
+    <div className='body-size'>
+      <div className='center'>
         <PrivatedLink repository={database} />
       </div>
       <div className="mt-50 mb-50">
@@ -27,7 +24,6 @@ function protectedPage() {
       <div className="center mb-50">
         <CardFunc />
       </div>
-      <Rodape />
     </div>
   );
 }

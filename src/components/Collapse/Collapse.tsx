@@ -13,8 +13,8 @@ const Collapse: React.FC<CollapseProps> = ({ title, children }) => {
     };
 
     return (
-        <div className="collapse-container">
-            <button onClick={toggleCollapse} className={`collapse-button secundary-text ${isOpen ? 'open' : ''}`}>
+        <div>
+            <button onClick={toggleCollapse} className={`collapse-button color-secondary ${isOpen ? 'open' : ''}`}>
                 {title} {/* Título do colapso */}
             </button>
             <div className={`collapse-content ${isOpen ? 'open' : ''}`}>

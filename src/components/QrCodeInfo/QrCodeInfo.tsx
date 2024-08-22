@@ -12,17 +12,17 @@ function QrCodeInfo({ receiveResponse, tipoConsulta }: { receiveResponse: LinkDa
                 <div className={`pbl-20 qrcode-container ${receiveResponse ? 'visible' : ''}`}>
                     {tipoConsulta ? (
                         <div>
-                            <h1 className="mb-10 primary-text">Link Original</h1>
+                            <h1 className="mb-10 color-primary">Link Original</h1>
                             <a className="link-mostrar" href={receiveResponse.originalLink} target="blank">{receiveResponse.originalLink.slice(0, 40) + '...'}</a>
                         </div>
                     ) : (
                         <div>
-                            <h1 className="mb-10 primary-text">Link Curto</h1>
+                            <h1 className="mb-10 color-primary">Link Curto</h1>
                             <a className="link-mostrar" href={receiveResponse.shortLink} target="blank">{receiveResponse.shortLink}</a>
                         </div>
                     )}
                     <img className="mt-10" src={receiveResponse.qrCodeLink} alt="QR Code" />
-                    <p className="mt-10">Expira em: <span className="primary-text">{formatDate(receiveResponse.expiresAt)}</span></p>
+                    <p className="mt-10 color-secondary">Expira em: <span className="color-dark">{formatDate(receiveResponse.expiresAt)}</span></p>
                 </div>
             ) : null}
         </div>

@@ -1,6 +1,62 @@
 // Importa o arquivo de variáveis SCSS, onde são definidos valores reutilizáveis como cores e tamanhos
 @import 'variables';
 
+// Mapa de cores
+$colors: (
+    primary: $primary-color,
+    primary-hover: $primary-color-hover,
+    back-transparent: $back-tranparent-color,
+    box-shadow: $box-shadow,
+    secondary: $secondary-color,
+    light: $light-color,
+    dark: $dark-color,
+    button: $button-color,
+    button-hover: $button-hover-color,
+    transparent: $transparent-color,
+    back-full-page: $back-full-page,
+    link: $link-clor,
+    link-hover: $link-clor-hover
+);
+
+// Formatação padrão das páginas
+.body-size {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+// Ajuste da formatação padrão das páginas no mobile
+@media (max-width: 768px) {
+    .body-size {
+        margin-inline: 30px;
+    }
+}
+
+// Mixin para gerar classes de cor
+@mixin color-classes {
+    @each $name, $color in $colors {
+        .color-#{$name} {
+            color: $color;
+        }
+    }
+}
+
+// Gerar classes de cor
+@include color-classes;
+
+// Mixin para gerar classes de escala de transformação
+@mixin generate-scale-classes($start, $end, $step) {
+    @for $i from $start through $end {
+        @for $j from 0 through 9 {
+            .scale-#{$i}-#{$j} {
+                transform: scale($i + $j / 10);
+            }
+        }
+    }
+}
+
+// Gerar classes de escala de 0.0 a 3.9 com passo de 0.1
+@include generate-scale-classes(0, 3, 1);
+
 // Fontes
 .font-primary-type {
     font-family: Nunito, sans-serif;
@@ -21,18 +77,6 @@
 
 .sombras {
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
-}
-
-.primary-text {
-    color: $primary-color;
-}
-
-.secundary-text {
-    color: $secondary-color;
-}
-
-.light-text {
-    color: $light-color;
 }
 
 .start {

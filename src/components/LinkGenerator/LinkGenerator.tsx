@@ -175,8 +175,8 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
       />
       <div className="container-link mt-50">
         <div>
-          <h1 className="titulo-link primary-text">Coloque seu link para encurtá-lo!</h1>
-          <p className="primary-text">Ou informe um link gerado para saber seus detalhes.</p>
+          <h1 className="titulo-link color-primary">Coloque seu link para encurtá-lo!</h1>
+          <p className="color-secondary fs-13">Ou informe um link gerado para saber seus detalhes.</p>
           <div className="input-container">
             <form onSubmit={(e) => e.preventDefault()}>
               <CustonInputText
@@ -186,15 +186,17 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
                 resetText={resetEntlink}
               />
             </form>
-            <CustonButtom
-              text={nomeBotaoAction}
-              activate={activateButton}
-              loading={isLoading}
-              onClick={handleClick} />
+            <div className='ml-10'>
+              <CustonButtom
+                text={nomeBotaoAction}
+                activate={activateButton}
+                loading={isLoading}
+                onClick={handleClick} />
+            </div>
           </div>
           {nomeBotaoAction === "Encurtar" ? (
             <Collapse title='Mais opções'>
-              <p className="mbl-10 fs-14 primary-text font-bold">Digite uma senha</p>
+              <p className="mb-10 mt-25 fs-14 color-dark font-bold">Digite uma senha</p>
               <div className='center'>
                 <CustonInputText
                   textPlaceholder="Digite uma senha"
@@ -207,7 +209,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
                   textdescription='Deve conter no mínimo 3 caracteres.'
                 />
               </div>
-              <p className="mbl-10 fs-14 primary-text font-bold">Digite um nome customizado</p>
+              <p className="mbl-10 fs-14 color-dark font-bold">Digite um nome customizado</p>
               <div className='center'>
                 <CustonInputText
                   textPlaceholder="Digite um apelido"
@@ -221,7 +223,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
               </div>
             </Collapse>
           ) : null}
-          { tipoConsulta ? (
+          {tipoConsulta ? (
             <div className='input-container'>
               <GraphInfo receiveResponse={receiveResponse} />
             </div>

@@ -92,7 +92,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                 pauseOnHover
                 theme="colored"
             />
-            <h1 className='fs-20 primary-text'>Insira a senha para acessar o link</h1>
+            <h1 className='fs-20 color-primary'>Insira a senha para acessar o link</h1>
             <div className="input-pass">
                 <form onSubmit={(e) => e.preventDefault()}>
                     <CustonInputText
@@ -106,11 +106,13 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                         textdescription='Deve conter no mínimo 3 caracteres.'
                     />
                 </form>
-                <CustonButtom
-                    text='Acessar'
-                    activate={activateButton}
-                    loading={isLoading}
-                    onClick={requestPrivateLinkinfo} />
+                <div className='ml-10'>
+                    <CustonButtom
+                        text='Acessar'
+                        activate={activateButton}
+                        loading={isLoading}
+                        onClick={requestPrivateLinkinfo} />
+                </div>
             </div>
         </div>
     )

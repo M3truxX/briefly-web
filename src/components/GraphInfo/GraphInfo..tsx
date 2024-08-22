@@ -85,7 +85,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
       <Modal isVisible={isModalVisible} onClose={closeModal}>
         {receiveResponse ? (
           <div className={` ${receiveResponse ? 'visible' : ''}`}>
-            <p className="mb-40 primary-text font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
+            <p className="mb-40 color-primary font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
             <ul className="mb-30">
               {receiveResponse.totalVisits.map((visit, index) => (
                 <li className="list-remove mb-15 mi-20" key={index}>
@@ -98,7 +98,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
       </Modal>
       {receiveResponse ? (
         <div className="visit-container pbl-20 pi-50">
-          <p className="primary-text font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
+          <p className="color-dark font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
           <div className="mt-10 graph-size">
             <Pie data={data} />
           </div>

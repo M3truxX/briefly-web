@@ -1,0 +1,28 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
+@import '../../utils/variables';
+
+.container {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F4F4F4;
+}
+
+.container-cadastro {
+    display: flex;
+}
+
+.card-base-cadastro {
+    display: flex;
+    align-items: center;
+    margin-inline: 10px;
+    align-items: flex-start;
+    transition: 0.2s ease-out;
+}
+
+@media (max-width: 768px) {
+    .container-cadastro {
+        flex-direction: column;
+    }
+}
