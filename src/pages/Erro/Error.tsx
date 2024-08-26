@@ -10,7 +10,7 @@ import CardFunc from '../../components/Cards/Cards';
 function Erro() {
     return (
         <div className='body-size'>
-            <div className='center mbl-100'>
+            <div className='center mbl-70'>
                 <GenericStatus title='404' subTitle='Página não encontrada!' />
             </div>
             <div className="mb-50">

@@ -70,7 +70,7 @@ function ActivatePage() {
                 pauseOnHover
                 theme="colored"
             />
-            <div className='center mbl-100'>
+            <div className='center mbl-70'>
                 {/* Conteúdo do componente */}
                 {isExpired ? (
                     <GenericStatus
