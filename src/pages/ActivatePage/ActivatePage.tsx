@@ -70,13 +70,13 @@ function ActivatePage() {
                 pauseOnHover
                 theme="colored"
             />
-            <div className='center mbl-70'>
+            <div className='center mbl-80'>
                 {/* Conteúdo do componente */}
                 {isExpired ? (
                     <GenericStatus
                         title='Link de ativação invalido!'
                         sizeTitle={24}
-                        subTitle='Cliak para solicitar um novo ou vá para página principal'
+                        subTitle='Click para solicitar um novo ou vá para página principal'
                         sizeSubTitle={14}
                         activatebutton={true}
                         nomeBotaoAction='Enviar'

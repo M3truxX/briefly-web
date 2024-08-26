@@ -15,7 +15,7 @@ function protectedPage() {
 
   return (
     <div className='body-size'>
-      <div className='center mbl-70'>
+      <div className='center mbl-80'>
         <PrivatedLink repository={database} />
       </div>
       <div className="mb-50">
