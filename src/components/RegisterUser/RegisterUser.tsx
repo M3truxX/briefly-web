@@ -3,23 +3,30 @@ import { useState, useEffect } from "react";
 import CustonInputText from "../CustonInputText/CustonInputText";
 import { validationName, validationEmail, validationPhone, validationSenha } from "../../utils/validation";
 import "./registerUser.scss";
-import InputCode from "../InputCode/InputCode";
-import Modal from "../Modal/Modal";
 import CustonButtom from "../CustomButtom/CustonButtom";
 import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import axios, { AxiosError } from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Errors } from "../../data/models/enums/Errors";
 import { AxiosErrorResponse } from "../../data/models/interfaces/AxiosErroResponse";
-import { LinkProtectedRequest } from "../../data/models/interfaces/LinkProtectedRequest";
-import { LinkProtectedResponse } from "../../data/models/interfaces/LinkProtectedResponse";
+import { CreateAccontResponse } from "../../data/models/interfaces/CreateAccontResponse";
+import { CreateAccontRequest } from "../../data/models/interfaces/CreateAccontRequest";
+import { useNavigate } from "react-router-dom";
+import { Success } from "../../data/models/enums/Success";
 
 // Componente de registro de usuário
 function RegisterUser({ repository }: { repository: DatabaseRepository }) {
+    const navigate = useNavigate(); // Hook para navegação
+
+    const [resetEntNome, setResetEntNome] = useState(false);
+    const [resetEntEmail, setResetEntEmail] = useState(false);
+    const [resetEntCell, setResetEntCell] = useState(false);
+    const [resetEntSenha, setResetEntSenha] = useState(false);
+
     // Funções para definir o texto dos inputs
     const entradaNome = (text: string) => { setName(text) }
     const entradaEmail = (text: string) => { setEmail(text) }
-    const entradaTelefone = (text: string) => { setPhone(text) }
+    const entradaTelefone = (text: string) => { setPhone(text) };
     const entradaSenha = (text: string) => { setPassword(text) }
 
     // Estados de controle de validação visual
@@ -35,15 +42,13 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
     const [password, setPassword] = useState('');
 
     // Outros estados
-    const [inputValues, setInputValues] = useState<string[]>([]);
     const [activateButton, setActivateButton] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
-    const [id, setid] = useState(false);
 
     // Lida com o clique do botão principal
     const handleClick = () => {
         if (activateButton) {
-            // Chamda da API (deve ser implementada)
+            creatAcconte()
         }
     };
 
@@ -57,19 +62,6 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
         // Ativa o botão de registro apenas se todos os inputs forem válidos
         setActivateButton(nameValid && emailValid && phoneValid && passwordValid);
     }, [name, email, phone, password]);
-
-    // Estado de visibilidade do modal
-    const [isModalVisible, setModalVisible] = useState(false);
-
-    // Abre o modal
-    const openModal = () => {
-        setModalVisible(true);
-    };
-
-    // Fecha o modal
-    const closeModal = () => {
-        setModalVisible(false);
-    };
 
     // Funções de validação dos inputs
     const checkInputNome = (nome: string) => {
@@ -120,48 +112,71 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
         return false;
     };
 
-    // Atualiza os valores do InputCode
-    const handleInputChange = (values: string[]) => {
-        setInputValues(values);
-        console.log("Input Values:", values);
+    const handleClickHome = () => {
+        navigate('/');
     };
 
+
     // Solicita dados do link protegido (a ser implementado)
-    async function requestPrivateLinkinfo() {
+    async function creatAcconte() {
         setIsLoading(true);
-        const dataRequestPrivate: LinkProtectedRequest = {
-            shortLink: String(id),
-            password: 'senhaText'
+        const CreateAcconte: CreateAccontRequest = {
+            username: name,
+            email: email,
+            phone: phone,
+            password: password,
         }
+
         try {
-            const linkDataResponse: LinkProtectedResponse = await repository.requestProtectedLinkData(dataRequestPrivate);
-            // Lógica para lidar com o response
+            const linkDataResponse: CreateAccontResponse = await repository.CreateAccontData(CreateAcconte);
+            if (linkDataResponse) {
+                setResetEntNome(prev => !prev);
+                setResetEntEmail(prev => !prev);
+                setResetEntCell(prev => !prev);
+                setResetEntSenha(prev => !prev);
+                setControlEntNome(0);
+                setControlEntEmail(0);
+                setControlEntPhone(0);
+                setControlEntSenha(0);
+
+                toast(Success.USER_CREATE_SUCCESS);
+                await repository.ActivateAccont(email);
+
+                setTimeout(() => {
+                    handleClickHome()
+                }, 2500);
+            }
         } catch (error) {
-            setIsLoading(false)
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
-                // Lógica de erro baseada no código de status
+                if (axiosError.response?.status === 409) {
+                    toast(Errors.USER_JA_CADASTRADO);
+                } else if (axiosError.response?.status === 429) {
+                    toast(Errors.MUITAS_REQUISCOES);
+                } else {
+                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                }
             }
+        } finally {
+            setIsLoading(false); // Finaliza o estado de loading
         }
     }
 
     return (
-        <div className="container mbl-50">
-            <Modal isVisible={isModalVisible} onClose={closeModal}>
-                <div className="mbl-35">
-                    <h1 className="fs-26 font-bold color-primary">Ativar conta</h1>
-                    <p className="fs-14 mb-20 color-secondary">Coloque o código recebido via e-mail</p>
-                    <InputCode quantidade={6} onInputChange={handleInputChange} />
-                    <div className="mt-20">
-                        <CustonButtom
-                            text="Ativar"
-                            activate={false}
-                            loading={isLoading}
-                            onClick={handleClick} />
-                    </div>
-                </div>
-            </Modal>
-            <h1 className="fs-26 font-bold color-primary">Cadastre sua conta</h1>
+        <div className="container">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            <h1 className="fs-24 font-bold color-primary">Crie uma conta</h1>
             <p className="fs-14 mb-20 color-secondary">Todos os campos são obrigatórios</p>
             <div className='container-cadastro'>
                 {/* Primeiro conjunto de inputs */}
@@ -172,6 +187,7 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                             textPlaceholder="Nome e sobrenome"
                             estado={controlEntNome}
                             travelInfo={entradaNome}
+                            resetText={resetEntNome}
                             showTextdescription={controlEntNome === 1}
                             textdescription='Deve conter no mínimo 5 caracteres'
                         />
@@ -185,6 +201,7 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                             estado={controlEntEmail}
                             mask="email"
                             travelInfo={entradaEmail}
+                            resetText={resetEntEmail}
                             showTextdescription={controlEntEmail === 1}
                             textdescription='O email deve conter "@", domínio e ".com". Exemplo: seuemail@gmail.com'
                         />
@@ -202,8 +219,9 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                             mask="phone"
                             lengthMax={14}
                             travelInfo={entradaTelefone}
+                            resetText={resetEntCell}
                             showTextdescription={controlEntPhone === 1}
-                            textdescription='Preencha o número corretamente'
+                            textdescription='Preencha o número corretamente. Exemplo: (81) 98888-8888'
                             keyBoard='numeric'
                         />
                     </div>
@@ -216,18 +234,27 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                             estado={controlEntSenha}
                             type="password"
                             travelInfo={entradaSenha}
+                            resetText={resetEntSenha}
                             showTextdescription={controlEntSenha === 1}
                             textdescription='A senha deve conter: 7 ou mais caracteres, entre eles letras maiúsculas, minúsculas, números e caracteres especiais'
                         />
                     </div>
                 </div>
             </div>
-            <div className="mt-20">
-                <CustonButtom
-                    text="Registrar"
-                    activate={activateButton}
-                    loading={isLoading}
-                    onClick={openModal} />
+            <div className="btn-container-register mt-20 ">
+                <div>
+                    <CustonButtom
+                        text="cancelar"
+                        activate={true}
+                        onClick={handleClickHome} />
+                </div>
+                <div className="ml-10">
+                    <CustonButtom
+                        text="Registrar"
+                        activate={activateButton}
+                        loading={isLoading}
+                        onClick={handleClick} />
+                </div>
             </div>
         </div>
     );

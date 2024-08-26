@@ -21,6 +21,11 @@
     transition: 0.2s ease-out;
 }
 
+.btn-container-register {
+    display: flex;
+    flex-direction: row;
+}
+
 @media (max-width: 768px) {
     .container-cadastro {
         flex-direction: column;

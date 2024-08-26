@@ -15,10 +15,10 @@ function Register() {
 
     return (
         <div className='body-size'>
-            <div className='center'>
+            <div className='center mbl-100'>
                 <RegisterUser repository={database} />
             </div>
-            <div className="mt-50 mb-50">
+            <div className="mb-50">
                 <Divider />
             </div>
             <div className="center mb-50">

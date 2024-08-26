@@ -18,25 +18,26 @@ $colors: (
     link-hover: $link-clor-hover
 );
 
-// Formatação padrão das páginas
-.body-size {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-// Ajuste da formatação padrão das páginas no mobile
-@media (max-width: 768px) {
-    .body-size {
-        margin-inline: 30px;
-    }
-}
-
 // Mixin para gerar classes de cor
 @mixin color-classes {
     @each $name, $color in $colors {
         .color-#{$name} {
             color: $color;
         }
+    }
+}
+
+// Formatação padrão das páginas
+.body-size {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+// Ajuste da formatação padrão das páginas no mobile
+@media (max-width: 768px) {
+    .body-size {
+        margin-inline: 30px;
     }
 }
 

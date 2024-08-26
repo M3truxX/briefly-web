@@ -9,6 +9,8 @@ import { LinkDataRequest } from "../models/interfaces/LinkDataRequest";
 import { LinkDataResponse } from "../models/interfaces/LinkDataResponse";
 import { LinkProtectedRequest } from "../models/interfaces/LinkProtectedRequest";
 import { LinkProtectedResponse } from "../models/interfaces/LinkProtectedResponse";
+import { CreateAccontRequest } from "../models/interfaces/CreateAccontRequest";
+import { CreateAccontResponse } from "../models/interfaces/CreateAccontResponse";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -27,6 +29,16 @@ export class DefaultRepository extends DatabaseRepository {
     async requestProtectedLinkData(linkPrivateDataRequest: LinkProtectedRequest): Promise<LinkProtectedResponse> {
         const linkDataResponse: LinkProtectedResponse = await this.service.redirectPrivateLink(linkPrivateDataRequest);
         return linkDataResponse;
+    }
+
+    async CreateAccontData(CreateAccontRequest: CreateAccontRequest): Promise<CreateAccontResponse> {
+        const createDataResponse: CreateAccontResponse = await this.service.createAccontUser(CreateAccontRequest);
+        return createDataResponse;
+    }
+
+    async ActivateAccont(email: string): Promise<void> {
+        const dataResponse: void = await this.service.validateAccontUser(email);
+        return dataResponse;
     }
 
     async getLinkDataInfo(shortLink: string): Promise<LinkDataResponse> {

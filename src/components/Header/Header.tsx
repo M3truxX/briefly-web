@@ -1,5 +1,5 @@
 // Importa estilos globais e bibliotecas necessárias
-import './cover.scss';
+import './Header.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
 

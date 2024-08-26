@@ -2,14 +2,23 @@
 import { Link } from 'react-router-dom';
 import './erro.scss';
 import '../../utils/cssConf.scss';
+import GenericStatus from '../../components/GenericStatus/GenericStatus';
+import Divider from '../../components/Divider/Divider';
+import CardFunc from '../../components/Cards/Cards';
 
 // Define o componente funcional da página Erro
 function Erro() {
     return (
-        <div className='not-found'>
-            <h1 className="fs-55 font-bold color-dark">404</h1>
-            <p className="fs-14 mb-20 color-secondary">Página não encontrada!</p>
-            <Link className='buttom-link p-10' to="/">Voltar para a tela principal</Link> {/* Link para retornar à página principal */}
+        <div className='body-size'>
+            <div className='center mbl-100'>
+                <GenericStatus title='404' subTitle='Página não encontrada!' />
+            </div>
+            <div className="mb-50">
+                <Divider />
+            </div>
+            <div className="center mb-50">
+                <CardFunc />
+            </div>
         </div>
     );
 }

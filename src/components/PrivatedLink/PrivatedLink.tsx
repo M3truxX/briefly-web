@@ -63,7 +63,6 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                 window.location.href = linkDataResponse.originalLink;
             }
         } catch (error) {
-            setIsLoading(false)
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 404) {
@@ -74,12 +73,14 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                     toast(Errors.SERVIDOR_NAO_RESPONDENDO);
                 }
             }
+        } finally {
+            setIsLoading(false); // Finaliza o estado de loading
         }
     }
 
     // Renderiza o componente de link protegido
     return (
-        <div className='input-pass-container mt-100 mb-100'>
+        <div className='input-pass-container'>
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -92,7 +93,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
                 pauseOnHover
                 theme="colored"
             />
-            <h1 className='fs-20 color-primary'>Insira a senha para acessar o link</h1>
+            <h1 className='fs-24 color-primary'>Insira a senha para acessar o link</h1>
             <div className="input-pass">
                 <form onSubmit={(e) => e.preventDefault()}>
                     <CustonInputText

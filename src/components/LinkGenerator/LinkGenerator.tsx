@@ -117,8 +117,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
 
     try {
       const linkDataResponse: LinkDataResponse = await repository.generateLinkData(linkDataRequest);
-      if (linkDataResponse?.originalLink) {
-        setIsLoading(false);
+      if (linkDataResponse) {
         setTipoConsulta(false);
         setReceiveResponse(linkDataResponse);
         setResetEntlink(prev => !prev);
@@ -131,7 +130,6 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
         }, 100);
       }
     } catch (error) {
-      setIsLoading(false)
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<AxiosErrorResponse>;
         if (axiosError.response?.status === 409) {
@@ -140,6 +138,8 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
           toast(Errors.SERVIDOR_NAO_RESPONDENDO);
         }
       }
+    } finally {
+      setIsLoading(false); // Finaliza o estado de loading
     }
   }
 
@@ -148,14 +148,14 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
     setIsLoading(true)
     try {
       const linkDataResponse: LinkDataResponse = await repository.getLinkDataInfo(linkText);
-      if (linkDataResponse?.originalLink) {
+      if (linkDataResponse) {
         setTipoConsulta(true);
-        setIsLoading(false)
         setReceiveResponse(linkDataResponse)
       }
     } catch (error) {
-      setIsLoading(false)
       toast(Errors.LINK_NAO_ENCONTRADO);
+    } finally {
+      setIsLoading(false); // Finaliza o estado de loading
     }
   }
 
@@ -175,8 +175,8 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
       />
       <div className="container-link mt-50">
         <div>
-          <h1 className="titulo-link color-primary">Coloque seu link para encurtá-lo!</h1>
-          <p className="color-secondary fs-13">Ou informe um link gerado para saber seus detalhes.</p>
+          <h1 className="color-primary fs-24">Coloque seu link para encurtá-lo!</h1>
+          <p className="color-secondary fs-14">Ou informe um link gerado para saber seus detalhes.</p>
           <div className="input-container">
             <form onSubmit={(e) => e.preventDefault()}>
               <CustonInputText

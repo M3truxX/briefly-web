@@ -1,7 +1,14 @@
 // Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
 @import '../../utils/_variables.scss';
 
-.not-found-link {
+.status-btn-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.not-found {
     display: flex;
     justify-content: center;
     align-items: center;
