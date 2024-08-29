@@ -8,7 +8,7 @@
     justify-content: center;
     position: relative;
     transform: skewY(3deg);
-    width: 145px;
+    width: 160px;
 }
 
 .img-res-img {
@@ -24,8 +24,9 @@
     font-size: 16px;
     background-color: $transparent-color;
     border: none;
+    max-width: 80px;
+    max-height: 40px;
     cursor: pointer;
-    margin-right: 20px;
     position: relative;
     z-index: 1;
 }

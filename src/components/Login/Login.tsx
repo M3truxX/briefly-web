@@ -1,37 +1,142 @@
-// LoginComponent.tsx
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoggedDataRequest } from '../../data/models/interfaces/LoggedDataRequest'
+import CustonInputText from '../CustonInputText/CustonInputText';
+import CustonButtom from '../CustomButtom/CustonButtom';
+import axios, { AxiosError } from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import { Errors } from '../../data/models/enums/Errors';
+import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
+import { Success } from '../../data/models/enums/Success';
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginComponent: React.FC = () => {
-    const { login } = useAuth(); // Hook para usar o contexto de autenticação
+    const { login } = useAuth();
+    const navigate = useNavigate(); // Hook para navegação
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [resetEntEmail, setResetEntEmail] = useState(false);
+    const [ctrlEntEmail, setCtrlEntEmail] = useState(0);
 
-    // Função para lidar com o envio do formulário de login
+    const [resetEntSenha, setResetEntSenha] = useState(false);
+    const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
+
+    const entEmail = (text: string) => { checkInputSenha(text); setEmail(text) }
+    const entSenha = (text: string) => { checkInputSenha(text); setPassword(text) }
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [activateButton, setActivateButton] = useState(false);
+
+    // Verifica senha ao digitar
+    useEffect(() => {
+        if (checkInputSenha(password)) {
+            setActivateButton(true)
+        } else {
+            setActivateButton(false)
+        }
+    }, [password]);
+
+    function checkInputSenha(text: string): boolean {
+        if (text === '') {
+            setCtrlEntSenha(0);
+            return false;
+        }
+        if (text.length < 3) {
+            setCtrlEntSenha(1);
+            return false;
+        }
+        setCtrlEntSenha(2);
+        return true;
+    }
+
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
         const loginData: LoggedDataRequest = { email, password };
-        await login(loginData); // Chama o método de login do contexto
+        setIsLoading(true);
+        try {
+            const response = await login(loginData);
+            if (response) {
+                toast(Success.LOGGED_ACCOUNT);
+                setResetEntEmail(prev => !prev);
+                setResetEntSenha(prev => !prev);
+                setTimeout(() => {
+                    setCtrlEntSenha(0);
+                    setCtrlEntEmail(0);
+                    navigate('/');
+                }, 100);
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<AxiosErrorResponse>;
+                if (axiosError.response?.status === 404) {
+                    toast(Errors.LINK_NAO_ENCONTRADO);
+                } else if (axiosError.response?.status === 401) {
+                    toast(Errors.SENHA_EMAIL_ERRADO);
+                } else {
+                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                }
+            }
+        } finally {
+            setIsLoading(false); // Finaliza o estado de loading
+        }
+    };
+
+    // Cria um manipulador de clique para o botão personalizado
+    const handleButtomClick = () => {
+        handleLogin(new Event('click') as any); // Emula o evento para o login
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+        <div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
             />
-            <input
-                type="password"
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit">Login</button>
-        </form>
+            <div className='center'>
+                <form onSubmit={handleLogin}>
+                    <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite seu email</p>
+                    <CustonInputText
+                        textPlaceholder="Email"
+                        estado={ctrlEntEmail}
+                        color='black'
+                        travelInfo={entEmail}
+                        type="email"
+                        resetText={resetEntEmail}
+                        showTextdescription={ctrlEntEmail === 1}
+                        textdescription='Deve conter @ no email infromado'
+                    />
+                    <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite uma senha</p>
+                    <CustonInputText
+                        textPlaceholder="Senha"
+                        estado={ctrlEntSenha}
+                        color='black'
+                        travelInfo={entSenha}
+                        type="password"
+                        resetText={resetEntSenha}
+                        showTextdescription={ctrlEntSenha === 1}
+                        textdescription='Deve conter no mínimo 3 caracteres.'
+                    />
+                </form>
+            </div>
+            <div className='center'>
+                <CustonButtom
+                    text='Login'
+                    activate={activateButton}
+                    loading={isLoading}
+                    onClick={handleButtomClick} // Passa o manipulador de clique
+                />
+            </div>
+        </div>
     );
 };
 

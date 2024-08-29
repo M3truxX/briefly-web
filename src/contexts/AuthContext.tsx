@@ -9,8 +9,9 @@ import { ApiService } from '../api/ApiService';
 // Define o tipo para o contexto de autenticação
 interface AuthContextType {
     user: LoggedUserResponse | null; // Usuário autenticado
-    login: (loginData: LoggedDataRequest) => Promise<void>; // Método de login
+    login: (loginData: LoggedDataRequest) => Promise<LoggedUserResponse | undefined>;
     logout: () => void; // Método de logout
+    isAuthenticated: boolean;
 }
 
 // Cria o contexto com um valor inicial vazio
@@ -20,7 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AUTH_STORAGE_KEY = 'authUserData';
 
 // Componente do provedor de autenticação
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<LoggedUserResponse | null>(() => {
         // Recupera o usuário do localStorage quando o provedor é inicializado
         const storedUser = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -38,14 +39,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [user]);
 
-    // Função para realizar o login
-    const login = async (loginData: LoggedDataRequest) => {
+    // Função de login
+    const login = async (loginData: LoggedDataRequest): Promise<LoggedUserResponse | undefined> => {
         try {
-            const loggedUserResponse = await authRepository.loginUser(loginData);
-            setUser(loggedUserResponse); // Atualiza o estado do usuário
+            const response = await authRepository.loginUser(loginData);
+            setUser(response); // Configura o estado do usuário
+            return response; // Retorna a resposta
         } catch (error) {
             console.error('Erro ao fazer login:', error);
-            // Lidar com o erro de login, como exibir uma mensagem de erro
+            throw error; // Propaga o erro
         }
     };
 
@@ -55,9 +57,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem(AUTH_STORAGE_KEY); // Remove o usuário do localStorage
     };
 
+    const isAuthenticated = !!user;
+
     // Retorna o provedor com os métodos e o estado
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );
