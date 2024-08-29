@@ -4,5 +4,10 @@
 .area-divider {
     height: 2px;
     background-color: $secondary-color;
-    margin-inline: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-inline: auto;
+    width: 80%;
+    max-width: 1100px;
 }

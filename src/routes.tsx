@@ -7,6 +7,7 @@ import Cover from './components/Header/Header';
 import Rodape from './components/Rodape/Rodape';
 import Register from './pages/Register/Register';
 import ActivatePage from './pages/ActivatePage/ActivatePage';
+import LoginPage from './pages/LoginPage/LoginPage';
 
 // Componente que define as rotas da aplicação
 function RoutApp() {
@@ -20,6 +21,7 @@ function RoutApp() {
                 <Route path="/protected/:id" element={<Protected />} />
                 <Route path="/expired/:email" element={<ActivatePage />} />
                 <Route path="/activated/" element={<ActivatePage />} />
+                <Route path="/login" element={<LoginPage/>} />
             </Routes>
             <Rodape />
         </BrowserRouter>

@@ -4,7 +4,9 @@ import './divider.scss';
 function Divider() {
     // Linha de separação
     return (
-        <div className='area-divider sombras' /> 
+        <div>
+            <div className='area-divider sombras' />
+        </div>
     )
 }
 

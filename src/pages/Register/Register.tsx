@@ -7,6 +7,7 @@ import { DatabaseRepository } from '../../data/models/class/DatabaseRepository';
 import { DefaultRepository } from '../../data/repository/DefaultRepository';
 import { Config } from '../../Config';
 import RegisterUser from '../../components/RegisterUser/RegisterUser';
+import Login from '../../components/Login/Login';
 
 // Define o componente funcional da página protectedPage
 function Register() {

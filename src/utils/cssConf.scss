@@ -130,6 +130,10 @@ $colors: (
 
 // Margens
 @for $i from 1 through 9999 {
+    .gap-#{$i} {
+        gap: #{$i}px;
+    }
+
     .m-#{$i} {
         margin: #{$i}px;
     }

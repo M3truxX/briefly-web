@@ -6,6 +6,8 @@ import { LinkProtectedRequest } from '../data/models/interfaces/LinkProtectedReq
 import { LinkProtectedResponse } from '../data/models/interfaces/LinkProtectedResponse';
 import { CreateAccontRequest } from '../data/models/interfaces/CreateAccontRequest';
 import { CreateAccontResponse } from '../data/models/interfaces/CreateAccontResponse';
+import { LoggedUserResponse } from '../data/models/interfaces/LoggedUserResponse';
+import { LoggedDataRequest } from '../data/models/interfaces/LoggedDataRequest';
 
 // Classe que encapsula a comunicação com a API
 export class ApiService {
@@ -48,6 +50,16 @@ export class ApiService {
         const extractShortLink: string = this.extractCode(link);
         const response = await this.axios.get<LinkDataResponse>(`/info?short=${extractShortLink}`);
         return response.data;
+    }
+
+    // Método para autenticação do usuário
+    async loginUser(signInRequest: LoggedDataRequest): Promise<LoggedUserResponse> {
+        const response = await this.axios.post<LoggedUserResponse>('/authentication/login', signInRequest);
+        return response.data;
+    }
+
+    setAuthToken(token: string) {
+        this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 
     // Método privado para extrair o código do link fornecido

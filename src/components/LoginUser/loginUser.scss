@@ -1,0 +1,83 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
+@import '../../utils/variables';
+
+.collapse-container-login {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transform: skewY(3deg);
+    width: 145px;
+}
+
+.img-res-img {
+    background-color: $button-hover-color;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.collapse-button-login {
+    color: white;
+    font-size: 16px;
+    background-color: $transparent-color;
+    border: none;
+    cursor: pointer;
+    margin-right: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.collapse-button-login::after {
+    margin-left: 5px;
+    content: '▼';
+    position: absolute;
+    transition: transform 0.4s ease-out;
+}
+
+.collapse-button-login.open::after {
+    transform: rotate(180deg);
+}
+
+.collapse-content-login {
+    margin-top: 5px;
+    text-align: center;
+    background-color: white;
+    border-radius: 30px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.collapse-content-login.open {
+    max-height: 1000px;
+    transition: max-height 0.3s ease-in;
+}
+
+.container-card-login {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-base-login {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    transition: 0.2s ease-out;
+    cursor: pointer;
+}
+
+.img-res-login{
+    width: 20px;
+    height: 20px;
+    margin-right: 1px;
+}

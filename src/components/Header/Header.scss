@@ -2,7 +2,10 @@
 @import '../../utils/variables';
 
 .background-cover {
+    display: flex;
+    flex-direction: row;
     margin-inline: auto;
+    max-width: 1100px;
     width: 80%;
     background-image: url("../../img/cover.jpg");
     background-size: cover;
@@ -10,6 +13,10 @@
     transform-origin: top left;
     border-bottom-right-radius: 50px;
     border-bottom-left-radius: 100px;
+}
+
+.lado-direito{
+    margin-left: auto;
 }
 
 .cover-info {

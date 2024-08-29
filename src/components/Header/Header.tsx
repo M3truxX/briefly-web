@@ -2,6 +2,7 @@
 import './Header.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
+import LoginUser from '../LoginUser/LoginUser';
 
 function Cover() {
     const navigate = useNavigate(); // Hook para navegação
@@ -19,6 +20,9 @@ function Cover() {
                     <p className='fs-20'>Encurtando links</p> {/* Descrição */}
                 </div>
                 <p className='fs-12'>Solução rápida e prática para encurtamento de links.</p> {/* Subdescrição */}
+            </div>
+            <div className='lado-direito mt-80 mr-30'>
+                <LoginUser />
             </div>
         </div>
     )
