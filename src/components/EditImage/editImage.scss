@@ -1,0 +1,47 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
+@import '../../utils/variables';
+
+
+.img-edit-perfil {
+    display: flex;
+    flex-direction: row;
+    background-color: $button-hover-color;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    object-fit: cover;
+    position: relative; // Necessário para posicionar a sobreposição corretamente
+}
+
+.sobre-enviar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    position: absolute; // Para posicionar sobre a imagem
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2); // Cor de fundo com transparência
+}
+
+.aceitar-envio {
+    background-color: rgba(0, 255, 0, 0.2); // Verde com transparência
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    cursor: pointer; // Indicador de clique
+}
+
+.recusar-envio {
+    background-color: rgba(255, 0, 0, 0.2); // Vermelho com transparência
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    cursor: pointer; // Indicador de clique
+}

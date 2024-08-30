@@ -2,7 +2,7 @@
 import '../../utils/cssConf.scss';
 import CardFunc from '../../components/Cards/Cards';
 import Divider from '../../components/Divider/Divider';
-import EditPerfil from '../../components/EditPerfil/EditPerfil';
+import EditPerfil from '../../components/EditImage/EditImage';
 
 // Define o componente funcional da página protectedPage
 function perfilPage() {

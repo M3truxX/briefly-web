@@ -1,6 +1,5 @@
 // AuthContext.tsx
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { LoggedUserResponse } from '../data/models/interfaces/LoggedUserResponse';
 import { AuthenticationRepository } from '../data/repository/AuthenticationRepository';
 import { LoggedDataRequest } from '../data/models/interfaces/LoggedDataRequest';
@@ -10,6 +9,7 @@ import { Config } from '../Config';
 // Define o tipo para o contexto de autenticação
 interface AuthContextType {
     user: LoggedUserResponse | null; // Usuário autenticado
+    setUser: React.Dispatch<React.SetStateAction<LoggedUserResponse | null>>; // Função para atualizar o estado do usuário
     login: (loginData: LoggedDataRequest) => Promise<LoggedUserResponse | undefined>;
     logout: () => void; // Método de logout
     isAuthenticated: boolean;
@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Retorna o provedor com os métodos e o estado
     return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+        <AuthContext.Provider value={{ user, setUser, login, logout, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );
