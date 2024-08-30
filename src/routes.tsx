@@ -8,6 +8,7 @@ import Rodape from './components/Rodape/Rodape';
 import Register from './pages/Register/Register';
 import ActivatePage from './pages/ActivatePage/ActivatePage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import perfilPage from './pages/PerfilPage/PerfilPage';
 import { LoggedRoute, PublicRoute } from './protectedRoute';
 
 // Componente que define as rotas da aplicação
@@ -24,7 +25,7 @@ function RoutApp() {
                 <Route path="/activated/" element={<PublicRoute component={ActivatePage} />} />
                 <Route path="/login" element={<PublicRoute component={LoginPage} />} />
                 <Route path="/historico" element={<LoggedRoute component={ActivatePage} />} />
-                <Route path="/perfil" element={<LoggedRoute component={ActivatePage} />} />
+                <Route path="/perfil" element={<LoggedRoute component={perfilPage} />} />
             </Routes>
             <Rodape />
         </BrowserRouter>

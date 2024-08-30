@@ -48,19 +48,20 @@
     background-color: white;
     border-radius: 30px;
     overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.3s ease-out;
+    opacity: 0;  // Inicialmente escondido
+    transition: opacity 0.2s ease-out;  // Animação de opacidade e escala
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     z-index: 2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    pointer-events: none;  // Evita clique quando escondido
 }
 
 .collapse-content-login.open {
-    max-height: 1000px;
-    transition: max-height 0.3s ease-in;
+    opacity: 1;  // Torna o conteúdo visível
+    pointer-events: auto;  // Permite interações quando visível
 }
 
 .container-card-login {
@@ -77,7 +78,7 @@
     cursor: pointer;
 }
 
-.img-res-login{
+.img-res-login {
     width: 20px;
     height: 20px;
     margin-right: 1px;

@@ -196,7 +196,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
           </div>
           {nomeBotaoAction === "Encurtar" ? (
             <Collapse title='Mais opções'>
-              <p className="mb-10 mt-25 fs-14 color-dark font-bold">Digite uma senha</p>
+              <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite uma senha</p>
               <div className='center'>
                 <CustonInputText
                   textPlaceholder="Digite uma senha"
@@ -209,7 +209,7 @@ function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
                   textdescription='Deve conter no mínimo 3 caracteres.'
                 />
               </div>
-              <p className="mbl-10 fs-14 color-dark font-bold">Digite um nome customizado</p>
+              <p className="mbl-10 fs-14 color-primary font-bold">Digite um nome customizado</p>
               <div className='center'>
                 <CustonInputText
                   textPlaceholder="Digite um apelido"

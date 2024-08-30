@@ -11,8 +11,6 @@ import { LinkProtectedRequest } from "../models/interfaces/LinkProtectedRequest"
 import { LinkProtectedResponse } from "../models/interfaces/LinkProtectedResponse";
 import { CreateAccontRequest } from "../models/interfaces/CreateAccontRequest";
 import { CreateAccontResponse } from "../models/interfaces/CreateAccontResponse";
-import { LoggedUserResponse } from "../models/interfaces/LoggedUserResponse";
-import { LoggedDataRequest } from "../models/interfaces/LoggedDataRequest";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -46,10 +44,5 @@ export class DefaultRepository extends DatabaseRepository {
     async getLinkDataInfo(shortLink: string): Promise<LinkDataResponse> {
         const linkDataResponse: LinkDataResponse = await this.service.getPublicLinkEntry(shortLink);
         return linkDataResponse;
-    }
-
-    async loginUser(signInRequest: LoggedDataRequest): Promise<LoggedUserResponse> {
-        const userResponse: LoggedUserResponse = await this.service.loginUser(signInRequest);
-        return userResponse;
     }
 }

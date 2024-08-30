@@ -5,6 +5,7 @@ import { LoggedUserResponse } from '../data/models/interfaces/LoggedUserResponse
 import { AuthenticationRepository } from '../data/repository/AuthenticationRepository';
 import { LoggedDataRequest } from '../data/models/interfaces/LoggedDataRequest';
 import { ApiService } from '../api/ApiService';
+import { Config } from '../Config';
 
 // Define o tipo para o contexto de autenticação
 interface AuthContextType {
@@ -28,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return storedUser ? JSON.parse(storedUser) : null;
     });
 
-    const authRepository = new AuthenticationRepository(new ApiService('http://localhost:9098')); // Instância do repositório de autenticação
+    const authRepository = new AuthenticationRepository(new ApiService(Config.BASE_URL)); // Instância do repositório de autenticação
 
     useEffect(() => {
         // Se o usuário estiver autenticado, salva no localStorage

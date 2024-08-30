@@ -24,9 +24,11 @@
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.3s ease-out;
+    pointer-events: none;
 }
 
 .collapse-content.open {
     max-height: 1000px;
     transition: max-height 0.3s ease-in;
+    pointer-events: auto;
 }

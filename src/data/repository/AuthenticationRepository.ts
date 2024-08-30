@@ -1,5 +1,3 @@
-// AuthenticationRepository.ts
-
 // Importa o serviço de API para comunicação com o backend
 import { ApiService } from "../../api/ApiService";
 
