@@ -11,6 +11,8 @@ import { LinkProtectedRequest } from "../models/interfaces/LinkProtectedRequest"
 import { LinkProtectedResponse } from "../models/interfaces/LinkProtectedResponse";
 import { CreateAccontRequest } from "../models/interfaces/CreateAccontRequest";
 import { CreateAccontResponse } from "../models/interfaces/CreateAccontResponse";
+import { LoggedDataRequest } from "../models/interfaces/LoggedDataRequest";
+import { LoggedUserResponse } from "../models/interfaces/LoggedUserResponse";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -44,5 +46,14 @@ export class DefaultRepository extends DatabaseRepository {
     async getLinkDataInfo(shortLink: string): Promise<LinkDataResponse> {
         const linkDataResponse: LinkDataResponse = await this.service.getPublicLinkEntry(shortLink);
         return linkDataResponse;
+    }
+
+    // Método para autenticação do usuário usando o serviço da API
+    async loginUser(loginRequest: LoggedDataRequest): Promise<LoggedUserResponse> {
+        // Chama o método de login da API e retorna a resposta
+        const loggedUserResponse: LoggedUserResponse = await this.service.loginUser(loginRequest);
+        // Define o token de autenticação no cabeçalho para futuras requisições
+        this.service.setAuthToken(loggedUserResponse.token);
+        return loggedUserResponse;
     }
 }

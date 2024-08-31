@@ -15,8 +15,5 @@ export abstract class DatabaseRepository {
     abstract CreateAccontData(linkDataRequest: CreateAccontRequest): Promise<CreateAccontResponse>;
     abstract getLinkDataInfo(shortLink: string): Promise<LinkDataResponse>;
     abstract ActivateAccont(email: string): Promise<void>;
-}
-
-export abstract class AuthRepositoryBase {
     abstract loginUser(loginRequest: LoggedDataRequest): Promise<LoggedUserResponse>;
 }

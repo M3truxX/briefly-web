@@ -8,6 +8,8 @@ import { Success } from '../../data/models/enums/Success';
 import React, { useEffect, useRef, useState } from 'react';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import CustonButtom from '../CustomButtom/CustonButtom';
+import { useNavigate } from 'react-router-dom';
+import { Config } from '../../Config';
 
 const AUTH_STORAGE_KEY = 'auth_storage_key'; // Atualize conforme o nome real do seu key no localStorage.
 
@@ -16,6 +18,7 @@ export const EditImage: React.FC = () => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | undefined>(false);
     const { user, setUser } = useAuth(); // Use o contexto de autenticação
+    const navigate = useNavigate(); // Hook para navegação
 
     // Ref para o input de arquivo
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -50,7 +53,7 @@ export const EditImage: React.FC = () => {
         try {
             // Realiza a requisição e captura a resposta
             const response = await axios.post<{ filename: string; fileLink: string }>(
-                'http://localhost:9098/media',
+                Config.BASE_URL + "/media",
                 formData,
                 {
                     headers: {
@@ -109,6 +112,10 @@ export const EditImage: React.FC = () => {
         setPreviewUrl(null);
     };
 
+    const handleClickHome = () => {
+        navigate('/');
+    };
+
     return (
         <div className='img-container'>
             <ToastContainer
@@ -155,7 +162,12 @@ export const EditImage: React.FC = () => {
                             onClick={handleUpload} />
                     </div>
                 </div>
-            ) : null}
+            ) : (
+                <CustonButtom
+                    text='Home'
+                    loading={loading}
+                    onClick={handleClickHome} />
+            )}
         </div>
     );
 };
