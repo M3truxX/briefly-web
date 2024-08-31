@@ -12,6 +12,8 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 
+
+
     &.button:hover {
         background-color: $primary-color-hover;
         color: $light-color;
@@ -22,6 +24,11 @@
         cursor: not-allowed;
     }
 }
+
+
+    .secondary {
+        background-color: $secondary-color;
+    }
 
 .loading {
     background-color: #6c757d;

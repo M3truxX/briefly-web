@@ -4,8 +4,8 @@ import './custonButtom.scss';
 import { CustomButtomProps } from '../../data/models/interfaces/CustomButtomProps';
 
 // Componente de botão personalizado
-const CustonButtom: React.FC<CustomButtomProps> = ({ text, activate = true, loading = false, onClick }) => {
-    
+const CustonButtom: React.FC<CustomButtomProps> = ({ text, activate = true, loading = false, onClick, secondary = false }) => {
+
     // Manipula o clique no botão, se ativado e não carregando
     const handleClick = () => {
         if (activate && !loading) {
@@ -15,7 +15,7 @@ const CustonButtom: React.FC<CustomButtomProps> = ({ text, activate = true, load
 
     return (
         <button
-            className={`button sombras ${activate ? '' : 'desable'} ${loading ? 'loading' : ''}`}
+            className={`button sombras ${activate ? '' : 'desable'} ${loading ? 'loading' : ''} ${secondary && 'secondary'}`}
             onClick={handleClick} // Chama `handleClick` no clique
             type="submit"
             disabled={!activate || loading} // Desabilita se não ativado ou carregando

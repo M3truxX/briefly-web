@@ -5,11 +5,12 @@ import login from '../../img/login.png';
 import person from '../../img/person.png';
 import report from '../../img/report.png';
 import person_add from '../../img/person_add.png';
-import manage from '../../img/manage.png';
 import logout_img from '../../img/logout.png';
 import history from '../../img/history.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import Modal from '../Modal/Modal';
+import { EditImage } from '../EditImage/EditImage';
 
 function LoginUser() {
     const [isOpen, setIsOpen] = useState(false); // Estado para controle de abertura
@@ -18,6 +19,17 @@ function LoginUser() {
     const navigate = useNavigate(); // Hook para navegação
     const { user, logout } = useAuth(); // Use o contexto de autenticação
     const dropdownRef = useRef<HTMLDivElement>(null); // Referência ao container do dropdown
+
+    // Funções de navegação
+    const handleClickPerfil = () => navigate('/perfil');
+    const handleClickhistorico = () => navigate('/historico');
+    const handleClickEntrar = () => navigate('/login');
+    const handleClickCriar = () => navigate('/register');
+    const handleClickReportar = () => navigate('/report');
+    const handleClickLogout = () => { logout(); navigate('/') };
+
+    // Estado de visibilidade do modal
+    const [isModalVisible, setModalVisible] = useState(false);
 
     // Efeito para verificar se o usuário está logado
     useEffect(() => {
@@ -51,15 +63,14 @@ function LoginUser() {
         setIsOpen(!isOpen);
     };
 
-    // Funções de navegação
-    const handleClickPerfil = () => navigate('/perfil');
-    const handleClickhistorico = () => navigate('/historico');
-    const handleClickEntrar = () => navigate('/login');
-    const handleClickCriar = () => navigate('/register');
-    const handleClickReportar = () => navigate('/report');
-    const handleClickLogout = () => {
-        logout(); // Chama a função de logout do contexto
-        navigate('/');
+    // Abre o modal
+    const openModal = () => {
+        setModalVisible(true);
+    };
+
+    // Fecha o modal
+    const closeModal = () => {
+        setModalVisible(false);
     };
 
     function truncateUserName(name: string, maxLength: number): string {
@@ -70,69 +81,69 @@ function LoginUser() {
     }
 
     return (
-        <div className='collapse-container-login' ref={dropdownRef}>
-            <div>
-                <button onClick={toggleCollapse} className={`collapse-button-login ${isOpen ? 'open' : ''}`}>
-                    {logado ? truncateUserName(userName, 9) : 'Convidado'}
-                </button>
-                <div className={`collapse-content-login  ${isOpen ? 'open' : ''}`}>
-                    <div>
-                        <div className='container-card-login pbl-15'>
-                            {logado ? (
-                                <div>
-                                    <div className='card-base-login' onClick={handleClickPerfil} role="button" tabIndex={0}>
-                                        <img className='img-res-login' src={manage} alt="Ícone de link" />
-                                        <div>
-                                            <p className='fs-11 color-secondary'>Perfil</p>
-                                        </div>
-                                    </div>
-                                    <div className='card-base-login' onClick={handleClickhistorico} role="button" tabIndex={0}>
-                                        <img className='img-res-login' src={history} alt="Ícone de link" />
-                                        <div>
-                                            <p className='fs-11 color-secondary'>Histórico</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div>
-                                    <div className='card-base-login' onClick={handleClickEntrar} role="button" tabIndex={0}>
-                                        <img className='img-res-login' src={login} alt="Ícone de link" />
-                                        <div>
-                                            <p className='fs-11 color-secondary'>Entrar</p>
-                                        </div>
-                                    </div>
-                                    <div className='card-base-login' onClick={handleClickCriar} role="button" tabIndex={3}>
-                                        <img className='img-res-login' src={person_add} alt="Ícone de link" />
-                                        <div>
-                                            <p className='fs-11 color-secondary'>Criar conta</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            <div>
-                                <div className='card-base-login' onClick={handleClickReportar} role="button" tabIndex={0}>
-                                    <img className='img-res-login' src={report} alt="Ícone de link" />
-                                    <div>
-                                        <p className='fs-11 color-secondary'>reportar</p>
-                                    </div>
-                                </div>
+        <div>
+            <Modal isVisible={isModalVisible} onClose={closeModal}>
+                <EditImage />
+            </Modal>
+            <div className='collapse-container-login' ref={dropdownRef}>
+                <div>
+                    <button onClick={toggleCollapse} className={`collapse-button-login ${isOpen ? 'open' : ''}`}>
+                        {logado ? truncateUserName(userName, 9) : 'Convidado'}
+                    </button>
+                    <div className={`collapse-content-login  ${isOpen ? 'open' : ''}`}>
+                        <div>
+                            <div className='container-card-login pbl-15'>
                                 {logado ? (
-                                    <div className='card-base-login' onClick={handleClickLogout} role="button" tabIndex={1}>
-                                        <img className='img-res-login' src={logout_img} alt="Ícone de QR code" />
-                                        <div>
-                                            <p className='fs-11 color-secondary'>Sair</p>
+                                    <div>
+                                        <div className='card-base-login' onClick={handleClickhistorico} role="button" tabIndex={0}>
+                                            <img className='img-res-login' src={history} alt="Ícone de link" />
+                                            <div>
+                                                <p className='fs-11 color-secondary'>Histórico</p>
+                                            </div>
                                         </div>
                                     </div>
-                                ) : null}
+                                ) : (
+                                    <div>
+                                        <div className='card-base-login' onClick={handleClickEntrar} role="button" tabIndex={0}>
+                                            <img className='img-res-login' src={login} alt="Ícone de link" />
+                                            <div>
+                                                <p className='fs-11 color-secondary'>Entrar</p>
+                                            </div>
+                                        </div>
+                                        <div className='card-base-login' onClick={handleClickCriar} role="button" tabIndex={3}>
+                                            <img className='img-res-login' src={person_add} alt="Ícone de link" />
+                                            <div>
+                                                <p className='fs-11 color-secondary'>Criar conta</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <div>
+                                    <div className='card-base-login' onClick={handleClickReportar} role="button" tabIndex={0}>
+                                        <img className='img-res-login' src={report} alt="Ícone de link" />
+                                        <div>
+                                            <p className='fs-11 color-secondary'>reportar</p>
+                                        </div>
+                                    </div>
+                                    {logado ? (
+                                        <div className='card-base-login' onClick={handleClickLogout} role="button" tabIndex={1}>
+                                            <img className='img-res-login' src={logout_img} alt="Ícone de QR code" />
+                                            <div>
+                                                <p className='fs-11 color-secondary'>Sair</p>
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className='img-res-img ml-25'>
-                <img className='img-res-img' src={logado && user ? user.account.profileImageUrl === '' ? person : user.account.profileImageUrl : person} alt="Ícone de análise" />
+                <div className='img-res-img ml-25' onClick={handleClickPerfil}>
+                    <img className='img-res-img' src={logado && user ? user.account.profileImageUrl === '' ? person : user.account.profileImageUrl : person} alt="Ícone de análise" />
+                </div>
             </div>
         </div>
+
     );
 }
 

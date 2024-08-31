@@ -1,4 +1,5 @@
 export interface CustomButtomProps {
+    secondary?: boolean // tipo de tema do botão secundario
     text: string; // Texto a ser exibido no botão
     activate?: boolean; // Indica se o botão está ativado ou desativado. Opcional.
     loading?: boolean; // Indica se o botão está em estado de carregamento (loading). Opcional.

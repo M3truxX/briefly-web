@@ -21,6 +21,10 @@ interface GraphInfoProps {
 
 // Componente para exibir gráfico de visitas
 const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
+    // Estado de visibilidade do modal
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    
   // Estado inicial dos dados do gráfico
   const [data, setData] = useState({
     labels: ['Desktop', 'Mobile'],
@@ -67,8 +71,7 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receiveResponse]);
 
-  // Estado de visibilidade do modal
-  const [isModalVisible, setModalVisible] = useState(false);
+
 
   // Abre o modal
   const openModal = () => {

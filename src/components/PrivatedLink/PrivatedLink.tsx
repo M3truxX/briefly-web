@@ -82,7 +82,7 @@ function PrivatedLink({ repository }: { repository: DatabaseRepository }) {
     return (
         <div className='input-pass-container'>
             <ToastContainer
-                position="top-right"
+                position="bottom-right"
                 autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}

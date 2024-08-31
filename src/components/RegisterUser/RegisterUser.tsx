@@ -165,7 +165,7 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
     return (
         <div className="container">
             <ToastContainer
-                position="top-right"
+                position="bottom-right"
                 autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}

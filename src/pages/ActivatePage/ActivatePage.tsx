@@ -59,7 +59,7 @@ function ActivatePage() {
     return (
         <div className='body-size'>
             <ToastContainer
-                position="top-right"
+                position="bottom-right"
                 autoClose={5000}
                 hideProgressBar={false}
                 newestOnTop={false}

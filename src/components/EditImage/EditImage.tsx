@@ -1,18 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
 import './editImage.scss';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import person from '../../img/person.png';
 import { useAuth } from '../../contexts/AuthContext';
+import { Errors } from '../../data/models/enums/Errors';
+import { toast, ToastContainer } from 'react-toastify';
+import { Success } from '../../data/models/enums/Success';
+import React, { useEffect, useRef, useState } from 'react';
+import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
+import CustonButtom from '../CustomButtom/CustonButtom';
 
 const AUTH_STORAGE_KEY = 'auth_storage_key'; // Atualize conforme o nome real do seu key no localStorage.
 
-const EditImage: React.FC = () => {
+export const EditImage: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const [uploading, setUploading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean | undefined>(false);
     const { user, setUser } = useAuth(); // Use o contexto de autenticação
 
     // Ref para o input de arquivo
@@ -37,15 +39,11 @@ const EditImage: React.FC = () => {
 
     const handleUpload = async () => {
         if (!selectedFile) {
-            setErrorMessage('Selecione um arquivo para enviar');
+            toast(Errors.SELECT_ARQUIVO);
             return;
         }
 
-        setUploading(true);
-        setErrorMessage(null);
-        setSuccessMessage(null);
-        setUploadProgress(null);
-
+        setLoading(true)
         const formData = new FormData();
         formData.append('media', selectedFile); // 'media' deve corresponder à chave usada no backend
 
@@ -58,20 +56,10 @@ const EditImage: React.FC = () => {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${user ? user.token : ''}`, // Inclui o token no cabeçalho de autorização
-                    },
-                    onUploadProgress: (progressEvent) => {
-                        if (progressEvent.total) {
-                            const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                            setUploadProgress(progress);
-                        } else {
-                            setUploadProgress(0); // Ou qualquer outro valor padrão desejado
-                        }
-                    },
+                    }
                 }
             );
-
             const newProfileImageUrl = response.data.fileLink; // Captura o novo link da imagem
-
             // Atualiza o objeto `user` no localStorage
             if (user) {
                 // Atualiza a URL da imagem no objeto `Account`
@@ -88,14 +76,23 @@ const EditImage: React.FC = () => {
 
                 // Atualiza o estado global do usuário
                 setUser(updatedUser);
-                handleCancelSelection()
-                setSuccessMessage('Imagem enviada com sucesso!');
+                toast(Success.IMAGEM_ENVIADA);
             }
-        } catch (error: any) {
-            setErrorMessage('Erro ao enviar imagem. Tente novamente.');
-            console.error(error);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+
+                const axiosError = error as AxiosError<AxiosErrorResponse>;
+                if (axiosError.response?.status === 400) {
+                    toast(Errors.ERRO_TIPO_IMG);
+                } else if (axiosError.response?.status === 401) {
+                    toast(Errors.ERRO_ENVIO_ARQUIVO);
+                } else {
+                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                }
+            }
         } finally {
-            setUploading(false);
+            setLoading(false);
+            handleCancelSelection()
         }
     };
 
@@ -110,33 +107,22 @@ const EditImage: React.FC = () => {
     const handleCancelSelection = () => {
         setSelectedFile(null);
         setPreviewUrl(null);
-        setErrorMessage(null);
-        setSuccessMessage(null);
-        setUploadProgress(null);
-    };
-
-    // Função para parar a propagação do clique na sobreposição
-    const stopClickPropagation = (event: React.MouseEvent) => {
-        event.stopPropagation();
     };
 
     return (
-        <div>
-            <div className="img-edit-perfil" onClick={handleDivClick}>
-                <img
-                    className="img-edit-perfil"
-                    src={previewUrl ? previewUrl : person}
-                    alt="Imagem de perfil"
-                />
-                {/* Exibe a sobreposição apenas se houver um arquivo selecionado */}
-                {selectedFile && (
-                    <div className="sobre-enviar" onClick={stopClickPropagation}>
-                        <div className="aceitar-envio" onClick={handleUpload} />
-                        <div className="recusar-envio" onClick={handleCancelSelection} />
-                    </div>
-                )}
-            </div>
-            {/* Input de arquivo escondido */}
+        <div className='img-container'>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <input
                 type="file"
                 ref={fileInputRef}
@@ -144,14 +130,32 @@ const EditImage: React.FC = () => {
                 onChange={handleFileChange}
                 accept="image/*"
             />
-            {uploadProgress !== null && <p>Progresso: {uploadProgress}%</p>}
-            <button onClick={handleUpload} disabled={uploading}>
-                {uploading ? 'Enviando...' : 'Enviar Imagem'}
-            </button>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+            <h1 className={`fs-24 font-bold color-primary`}>Alterar a imagem</h1>
+            <p className={`fs-14 mb-10 color-secondary`}>Click aqui</p>
+            <div className='img-edit-perfil mb-20' onClick={handleDivClick}>
+
+                <img
+                    className={`img-edit-perfil ${selectedFile && 'disable'}`}
+                    src={previewUrl ? previewUrl : person}
+                    alt="Imagem de perfil"
+                />
+            </div>
+            {selectedFile ? (
+                <div className='img-btn-container'>
+                    <div>
+                        <CustonButtom
+                            text='Cacelar'
+                            secondary={true}
+                            onClick={handleCancelSelection} />
+                    </div>
+                    <div className='ml-10'>
+                        <CustonButtom
+                            text='Enviar'
+                            loading={loading}
+                            onClick={handleUpload} />
+                    </div>
+                </div>
+            ) : null}
         </div>
     );
 };
-
-export default EditImage;
