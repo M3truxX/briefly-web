@@ -13,7 +13,7 @@ import { Success } from '../../data/models/enums/Success';
 import { useAppContext } from '../../contexts/AppContext';
 
 function ActivatePage() {
-    const { repository } = useAppContext(); // Use o contexto de autenticação
+    const { repository } = useAppContext(); // Use o contexto geral
     const { email } = useParams<{ email: string }>(); // Recupera o parâmetro email da URL, se existir
     const location = useLocation(); // Recupera informações sobre a rota atual
     const navigate = useNavigate(); // Hook para navegação

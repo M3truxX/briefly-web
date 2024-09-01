@@ -15,7 +15,7 @@ function MenuDrop() {
     const [logado, setLogado] = useState(false); // Estado de autenticação inicial como falso
     const [userName, setUserName] = useState(''); // Estado para armazenar o nome do usuário
     const navigate = useNavigate(); // Hook para navegação
-    const { user, logout } = useAppContext(); // Use o contexto de autenticação
+    const { user, logout } = useAppContext(); // Use o contexto geral
     const dropdownRef = useRef<HTMLDivElement>(null); // Referência ao container do dropdown
 
     // Funções de navegação

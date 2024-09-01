@@ -1,4 +1,4 @@
-export interface statusPrps {
+export interface StatusPrps {
     title: string,
     sizeTitle?: number,
     sizeSubTitle?: number,

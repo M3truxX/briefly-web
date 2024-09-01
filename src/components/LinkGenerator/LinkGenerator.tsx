@@ -21,7 +21,7 @@ import { useAppContext } from '../../contexts/AppContext';
 // Componente principal de geração de links
 function LinkGenerator() {
   // Estados para controle de entradas e comportamento
-  const { repository } = useAppContext(); // Use o contexto de autenticação
+  const { repository } = useAppContext(); // Use o contexto geral
   const [resetEntlink, setResetEntlink] = useState(false);
   const [resetEntSenha, setResetEntSenha] = useState(false);
   const [resetEntApelido, setResetEntApelido] = useState(false);
@@ -175,7 +175,7 @@ function LinkGenerator() {
         pauseOnHover
         theme="colored"
       />
-      <div className="container-link mt-50">
+      <div className="container-link">
         <div>
           <h1 className="color-primary fs-24">Coloque seu link para encurtá-lo!</h1>
           <p className="color-secondary fs-14">Ou informe um link gerado para saber seus detalhes.</p>

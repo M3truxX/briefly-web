@@ -16,7 +16,7 @@ import CustonInputText from '../CustonInputText/CustonInputText';
 import { useAppContext } from '../../contexts/AppContext';
 
 function PrivatedLink() {
-    const { repository } = useAppContext(); // Use o contexto de autenticação
+    const { repository } = useAppContext(); // Use o contexto geral
     const [resetEntSenha, setResetEntSenha] = useState(false); // Estado para reset de senha
     const [ctrlEntSenha, setCtrlEntSenha] = useState(0); // Controle do estado de senha
     const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) } // Função de entrada de senha

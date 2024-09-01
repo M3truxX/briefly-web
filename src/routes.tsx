@@ -10,19 +10,9 @@ import ActivatePage from './pages/ActivatePage/ActivatePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import perfilPage from './pages/PerfilPage/PerfilPage';
 import { LoggedRoute, PublicRoute } from './protectedRoute';
-import { useAppContext } from './contexts/AppContext';
-import { useEffect } from 'react';
 
 // Componente que define as rotas da aplicação
 function RoutApp() {
-    const { user, session } = useAppContext();
-
-    // useEffect(() => {
-    //     if (user) {
-    //         session
-    //     }
-    // }, [user])
-
     return (
         <BrowserRouter>
             <div>

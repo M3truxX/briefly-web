@@ -25,18 +25,14 @@ const LoginComponent: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activateButton, setActivateButton] = useState(false);
 
+    // Verifica a validade dos inputs ao alterá-los
+    useEffect(() => {
+        const emailValid = checkInputEmail(email) ?? false;
+        const passwordValid = checkInputSenha(password) ?? false;
 
-
-        // Verifica a validade dos inputs ao alterá-los
-        useEffect(() => {
-    
-            const emailValid = checkInputEmail(email) ?? false;
-            const passwordValid = checkInputSenha(password) ?? false;
-    
-            // Ativa o botão de registro apenas se todos os inputs forem válidos
-            setActivateButton(emailValid  && passwordValid);
-        }, [email, password]);
-
+        // Ativa o botão de registro apenas se todos os inputs forem válidos
+        setActivateButton(emailValid && passwordValid);
+    }, [email, password]);
 
     // Verifica senha ao digitar
     useEffect(() => {
@@ -71,7 +67,6 @@ const LoginComponent: React.FC = () => {
         setCtrlEntEmail(1);
         return false;
     };
-
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -124,6 +119,8 @@ const LoginComponent: React.FC = () => {
                 pauseOnHover
                 theme="colored"
             />
+            <h1 className="fs-24 font-bold color-primary">Entrar na conta</h1>
+            <p className="fs-14 mb-20 color-secondary">Todos os campos são obrigatórios</p>
             <div className='center'>
                 <form onSubmit={handleLogin}>
                     <p className="mb-10 fs-14 color-primary font-bold">Digite seu email</p>
@@ -135,9 +132,9 @@ const LoginComponent: React.FC = () => {
                         type="email"
                         resetText={resetEntEmail}
                         showTextdescription={ctrlEntEmail === 1}
-                        textdescription='Deve conter @ no email infromado'
+                        textdescription='O email deve conter "@", domínio e ".com"'
                     />
-                    <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite uma senha</p>
+                    <p className="mb-10 fs-14 color-primary font-bold">Digite uma senha</p>
                     <CustonInputText
                         textPlaceholder="Senha"
                         estado={ctrlEntSenha}
@@ -150,7 +147,7 @@ const LoginComponent: React.FC = () => {
                     />
                 </form>
             </div>
-            <div className='center'>
+            <div className='center mt-20'>
                 <CustonButtom
                     text='Login'
                     activate={activateButton}

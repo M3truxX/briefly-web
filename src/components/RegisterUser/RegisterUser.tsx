@@ -18,7 +18,7 @@ import { useAppContext } from "../../contexts/AppContext";
 // Componente de registro de usuário
 function RegisterUser() {
     const navigate = useNavigate(); // Hook para navegação
-    const { repository } = useAppContext(); // Use o contexto de autenticação
+    const { repository } = useAppContext(); // Use o contexto geral
 
     const [resetEntNome, setResetEntNome] = useState(false);
     const [resetEntEmail, setResetEntEmail] = useState(false);
@@ -180,7 +180,7 @@ function RegisterUser() {
             <div className='container-cadastro'>
                 {/* Primeiro conjunto de inputs */}
                 <div className='card-base-cadastro'>
-                    <div className='area-text-cadastro mbl-10'>
+                    <div className='area-text-cadastro'>
                         <p className='color-dark mb-10 fs-14 font-bold'>Digite seu nome</p>
                         <CustonInputText
                             textPlaceholder="Nome e sobrenome"
@@ -193,7 +193,7 @@ function RegisterUser() {
                     </div>
                 </div>
                 <div className='card-base-cadastro'>
-                    <div className='area-text-cadastro mbl-10'>
+                    <div className='area-text-cadastro'>
                         <p className='color-dark mb-10 fs-14 font-bold'>Digite seu e-mail</p>
                         <CustonInputText
                             textPlaceholder="Seu email"

@@ -2,9 +2,9 @@ import './genericStatus.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
 import CustonButtom from '../CustomButtom/CustonButtom';
-import { statusPrps } from '../../data/models/interfaces/statusPrps';
+import { StatusPrps } from '../../data/models/interfaces/StatusPrps';
 
-const GenericStatus: React.FC<statusPrps> = ({
+const GenericStatus: React.FC<StatusPrps> = ({
     title, subTitle, activatebutton = false,
     nomeBotaoAction = 'none', onClick,
     sizeTitle = 55,

@@ -3,9 +3,19 @@ import './Header.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
 import MenuDrop from '../menuDrop/MenuDrop';
+import { useAppContext } from '../../contexts/AppContext';
+import { useEffect } from 'react';
 
 function Header() {
     const navigate = useNavigate(); // Hook para navegação
+    const { user, session } = useAppContext(); // Use o contexto geral
+
+    // useEffect(() => {
+    //     if(user){
+    //         session()
+    //     }
+    // }, [])
+    
     const handleClick = () => {
         navigate('/');
     };

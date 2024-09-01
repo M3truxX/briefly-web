@@ -73,6 +73,7 @@ export class ApiService {
 
     // Método para atualizar usuário
     async sessionUser(token: string): Promise<LoggedUserResponse> {
+        console.log(token)
         // Realiza a requisição e captura a resposta
         const response = await axios.post<LoggedUserResponse>(
             Config.BASE_URL + "/authentication/session",

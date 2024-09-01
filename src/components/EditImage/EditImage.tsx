@@ -15,7 +15,7 @@ function EditImage() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | undefined>(false);
-    const { user, setUser, repository } = useAppContext(); // Use o contexto de autenticação
+    const { user, setUser, repository } = useAppContext(); // Use o contexto geral
     const navigate = useNavigate(); // Hook para navegação
 
     // Ref para o input de arquivo
