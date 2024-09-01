@@ -8,6 +8,8 @@ import { CreateAccontRequest } from '../data/models/interfaces/CreateAccontReque
 import { CreateAccontResponse } from '../data/models/interfaces/CreateAccontResponse';
 import { LoggedUserResponse } from '../data/models/interfaces/LoggedUserResponse';
 import { LoggedDataRequest } from '../data/models/interfaces/LoggedDataRequest';
+import { UploadImageResponse } from '../data/models/interfaces/UploadImageResponse';
+import { Config } from '../Config';
 
 // Classe que encapsula a comunicação com a API
 export class ApiService {
@@ -53,19 +55,60 @@ export class ApiService {
     }
 
     // Método para autenticação do usuário
+    async uploadUserImage(formData: FormData, token: string): Promise<UploadImageResponse> {
+
+        // Realiza a requisição e captura a resposta
+        const response = await axios.post<UploadImageResponse>(
+            Config.BASE_URL + "/media",
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data
+    }
+
+    // Método para atualizar usuário
+    async sessionUser(token: string): Promise<LoggedUserResponse> {
+        // Realiza a requisição e captura a resposta
+        const response = await axios.post<LoggedUserResponse>(
+            Config.BASE_URL + "/authentication/session",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data
+    }
+
+    // Método desligar o usuário
+    async signOutUser(token: string): Promise<void> {
+        // Realiza a requisição e captura a resposta
+        const response = await axios.delete<void>(
+            Config.BASE_URL + "/authentication/session",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data
+    }
+
+    // Método para autenticação do usuário
     async loginUser(signInRequest: LoggedDataRequest): Promise<LoggedUserResponse> {
         const response = await this.axios.post<LoggedUserResponse>('/authentication/login', signInRequest);
         return response.data;
     }
 
-    setAuthToken(token: string) {
-        this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-
     // Método privado para extrair o código do link fornecido
-    private extractCode(linkOrCode: string): string {
-        const urlPattern = /https?:\/\/[^\s/]+\/([^\s/]+)/;
-        const match = linkOrCode.match(urlPattern);
-        return match ? match[1] : linkOrCode;
+    private extractCode(url: string): string {
+        url = url.replace(/\/$/, '');
+        const segments = url.split('/');
+        return segments.pop() || '';
     }
 }

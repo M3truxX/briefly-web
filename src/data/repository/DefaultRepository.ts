@@ -13,6 +13,7 @@ import { CreateAccontRequest } from "../models/interfaces/CreateAccontRequest";
 import { CreateAccontResponse } from "../models/interfaces/CreateAccontResponse";
 import { LoggedDataRequest } from "../models/interfaces/LoggedDataRequest";
 import { LoggedUserResponse } from "../models/interfaces/LoggedUserResponse";
+import { UploadImageResponse } from "../models/interfaces/UploadImageResponse";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -48,12 +49,24 @@ export class DefaultRepository extends DatabaseRepository {
         return linkDataResponse;
     }
 
-    // Método para autenticação do usuário usando o serviço da API
     async loginUser(loginRequest: LoggedDataRequest): Promise<LoggedUserResponse> {
-        // Chama o método de login da API e retorna a resposta
         const loggedUserResponse: LoggedUserResponse = await this.service.loginUser(loginRequest);
-        // Define o token de autenticação no cabeçalho para futuras requisições
-        this.service.setAuthToken(loggedUserResponse.token);
         return loggedUserResponse;
+    }
+
+    async sessionUser(token: string): Promise<LoggedUserResponse> {
+        const sessionUserResponse: LoggedUserResponse = await this.service.sessionUser(token);
+        return sessionUserResponse;
+    }
+
+    async signOutUser(token: string): Promise<void> {
+        const signOutResponse: void = await this.service.signOutUser(token);
+        return signOutResponse;
+    }
+
+
+    async uploadUserImage(formData: FormData, token: string): Promise<UploadImageResponse> {
+        const uploadImageResponse: UploadImageResponse = await this.service.uploadUserImage(formData, token);
+        return uploadImageResponse;
     }
 }

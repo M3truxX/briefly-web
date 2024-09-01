@@ -16,10 +16,12 @@ import { Config } from '../../Config';
 import CustonInputText from '../CustonInputText/CustonInputText';
 import axios, { AxiosError } from 'axios';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
+import { useAppContext } from '../../contexts/AppContext';
 
 // Componente principal de geração de links
-function LinkGenerator({ repository }: { repository: DatabaseRepository }) {
+function LinkGenerator() {
   // Estados para controle de entradas e comportamento
+  const { repository } = useAppContext(); // Use o contexto de autenticação
   const [resetEntlink, setResetEntlink] = useState(false);
   const [resetEntSenha, setResetEntSenha] = useState(false);
   const [resetEntApelido, setResetEntApelido] = useState(false);

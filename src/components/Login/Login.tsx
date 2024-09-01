@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAppContext } from '../../contexts/AppContext';
 import { LoggedDataRequest } from '../../data/models/interfaces/LoggedDataRequest'
 import CustonInputText from '../CustonInputText/CustonInputText';
 import CustonButtom from '../CustomButtom/CustonButtom';
@@ -9,25 +9,34 @@ import { Errors } from '../../data/models/enums/Errors';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import { Success } from '../../data/models/enums/Success';
 import { useNavigate } from 'react-router-dom';
-
+import { validationEmail } from '../../utils/validation';
 
 const LoginComponent: React.FC = () => {
-    const { login } = useAuth();
+    const { login } = useAppContext();
     const navigate = useNavigate(); // Hook para navegação
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [resetEntEmail, setResetEntEmail] = useState(false);
     const [ctrlEntEmail, setCtrlEntEmail] = useState(0);
-
     const [resetEntSenha, setResetEntSenha] = useState(false);
     const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
-
     const entEmail = (text: string) => { checkInputSenha(text); setEmail(text) }
     const entSenha = (text: string) => { checkInputSenha(text); setPassword(text) }
-
     const [isLoading, setIsLoading] = useState(false);
     const [activateButton, setActivateButton] = useState(false);
+
+
+
+        // Verifica a validade dos inputs ao alterá-los
+        useEffect(() => {
+    
+            const emailValid = checkInputEmail(email) ?? false;
+            const passwordValid = checkInputSenha(password) ?? false;
+    
+            // Ativa o botão de registro apenas se todos os inputs forem válidos
+            setActivateButton(emailValid  && passwordValid);
+        }, [email, password]);
+
 
     // Verifica senha ao digitar
     useEffect(() => {
@@ -50,6 +59,19 @@ const LoginComponent: React.FC = () => {
         setCtrlEntSenha(2);
         return true;
     }
+
+    const checkInputEmail = (email: string) => {
+        if (email === '') {
+            setCtrlEntEmail(0);
+            return false;
+        } else if (validationEmail(email)) {
+            setCtrlEntEmail(2);
+            return true;
+        }
+        setCtrlEntEmail(1);
+        return false;
+    };
+
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -104,7 +126,7 @@ const LoginComponent: React.FC = () => {
             />
             <div className='center'>
                 <form onSubmit={handleLogin}>
-                    <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite seu email</p>
+                    <p className="mb-10 fs-14 color-primary font-bold">Digite seu email</p>
                     <CustonInputText
                         textPlaceholder="Email"
                         estado={ctrlEntEmail}

@@ -7,18 +7,13 @@ import GenericStatus from '../../components/GenericStatus/GenericStatus';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { useState } from 'react';
-import { DatabaseRepository } from '../../data/models/class/DatabaseRepository';
-import { ApiService } from '../../api/ApiService';
-import { Config } from '../../Config';
-import { DefaultRepository } from '../../data/repository/DefaultRepository';
 import axios from 'axios';
 import { Errors } from '../../data/models/enums/Errors';
 import { Success } from '../../data/models/enums/Success';
+import { useAppContext } from '../../contexts/AppContext';
 
 function ActivatePage() {
-    const apiService: ApiService = new ApiService(Config.BASE_URL); // Cria uma instância do serviço de API
-    const database: DatabaseRepository = new DefaultRepository(apiService); // Cria uma instância do repositório padrão
-
+    const { repository } = useAppContext(); // Use o contexto de autenticação
     const { email } = useParams<{ email: string }>(); // Recupera o parâmetro email da URL, se existir
     const location = useLocation(); // Recupera informações sobre a rota atual
     const navigate = useNavigate(); // Hook para navegação
@@ -35,7 +30,7 @@ function ActivatePage() {
         setIsLoading(true); // Inicia o estado de loading
         try {
             if (email) {
-                await database.ActivateAccont(email);
+                await repository.ActivateAccont(email);
                 toast(Success.CODE_RESEND);
                 setTimeout(() => {
                     handleClickHome()

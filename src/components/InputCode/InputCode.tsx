@@ -38,7 +38,6 @@ const InputCode: React.FC<InputCodeProps> = ({ quantidade, onInputChange }) => {
     }, [inputValues]);
 
     return (
-        
         <div className="container-code">
             {inputValues.map((_, index) => (
                 <div key={index} className="section-style-code">

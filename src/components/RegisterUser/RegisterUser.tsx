@@ -13,10 +13,12 @@ import { CreateAccontResponse } from "../../data/models/interfaces/CreateAccontR
 import { CreateAccontRequest } from "../../data/models/interfaces/CreateAccontRequest";
 import { useNavigate } from "react-router-dom";
 import { Success } from "../../data/models/enums/Success";
+import { useAppContext } from "../../contexts/AppContext";
 
 // Componente de registro de usuário
-function RegisterUser({ repository }: { repository: DatabaseRepository }) {
+function RegisterUser() {
     const navigate = useNavigate(); // Hook para navegação
+    const { repository } = useAppContext(); // Use o contexto de autenticação
 
     const [resetEntNome, setResetEntNome] = useState(false);
     const [resetEntEmail, setResetEntEmail] = useState(false);
@@ -116,7 +118,6 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
         navigate('/');
     };
 
-
     // Solicita dados do link protegido (a ser implementado)
     async function creatAcconte() {
         setIsLoading(true);
@@ -138,10 +139,8 @@ function RegisterUser({ repository }: { repository: DatabaseRepository }) {
                 setControlEntEmail(0);
                 setControlEntPhone(0);
                 setControlEntSenha(0);
-
                 toast(Success.USER_CREATE_SUCCESS);
                 await repository.ActivateAccont(email);
-
                 setTimeout(() => {
                     handleClickHome()
                 }, 2500);

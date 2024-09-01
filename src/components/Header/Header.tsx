@@ -2,12 +2,10 @@
 import './Header.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
-import LoginUser from '../LoginUser/LoginUser';
+import MenuDrop from '../menuDrop/MenuDrop';
 
-function Cover() {
+function Header() {
     const navigate = useNavigate(); // Hook para navegação
-
-    // Manipula o clique no título para navegar para a página inicial
     const handleClick = () => {
         navigate('/');
     };
@@ -22,10 +20,10 @@ function Cover() {
                 <p className='fs-12'>Solução rápida e prática para encurtamento de links.</p> {/* Subdescrição */}
             </div>
             <div className='lado-direito mt-80 mr-30'>
-                <LoginUser />
+                <MenuDrop />
             </div>
         </div>
     )
 }
 
-export default Cover;
+export default Header;

@@ -1,7 +1,7 @@
 import './editImage.scss';
 import axios, { AxiosError } from 'axios';
 import person from '../../img/person.png';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAppContext } from '../../contexts/AppContext';
 import { Errors } from '../../data/models/enums/Errors';
 import { toast, ToastContainer } from 'react-toastify';
 import { Success } from '../../data/models/enums/Success';
@@ -9,15 +9,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import CustonButtom from '../CustomButtom/CustonButtom';
 import { useNavigate } from 'react-router-dom';
-import { Config } from '../../Config';
+import { UploadImageResponse } from '../../data/models/interfaces/UploadImageResponse';
 
-const AUTH_STORAGE_KEY = 'auth_storage_key'; // Atualize conforme o nome real do seu key no localStorage.
-
-export const EditImage: React.FC = () => {
+function EditImage() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | undefined>(false);
-    const { user, setUser } = useAuth(); // Use o contexto de autenticação
+    const { user, setUser, repository } = useAppContext(); // Use o contexto de autenticação
     const navigate = useNavigate(); // Hook para navegação
 
     // Ref para o input de arquivo
@@ -52,17 +50,8 @@ export const EditImage: React.FC = () => {
 
         try {
             // Realiza a requisição e captura a resposta
-            const response = await axios.post<{ filename: string; fileLink: string }>(
-                Config.BASE_URL + "/media",
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ${user ? user.token : ''}`, // Inclui o token no cabeçalho de autorização
-                    }
-                }
-            );
-            const newProfileImageUrl = response.data.fileLink; // Captura o novo link da imagem
+            const linkDataResponse: UploadImageResponse = await repository.uploadUserImage(formData, user?.token!!);
+            const newProfileImageUrl = linkDataResponse.fileLink; // Captura o novo link da imagem
             // Atualiza o objeto `user` no localStorage
             if (user) {
                 // Atualiza a URL da imagem no objeto `Account`
@@ -75,7 +64,7 @@ export const EditImage: React.FC = () => {
                 };
 
                 // Salva o `user` atualizado no localStorage
-                localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
+                localStorage.setItem('auth_storage_key', JSON.stringify(updatedUser));
 
                 // Atualiza o estado global do usuário
                 setUser(updatedUser);
@@ -83,7 +72,6 @@ export const EditImage: React.FC = () => {
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 400) {
                     toast(Errors.ERRO_TIPO_IMG);
@@ -140,7 +128,6 @@ export const EditImage: React.FC = () => {
             <h1 className={`fs-24 font-bold color-primary`}>Alterar a imagem</h1>
             <p className={`fs-14 mb-10 color-secondary`}>Click aqui</p>
             <div className='img-edit-perfil mb-20' onClick={handleDivClick}>
-
                 <img
                     className={`img-edit-perfil ${selectedFile && 'disable'}`}
                     src={previewUrl ? previewUrl : person}
@@ -171,3 +158,5 @@ export const EditImage: React.FC = () => {
         </div>
     );
 };
+
+export default EditImage;

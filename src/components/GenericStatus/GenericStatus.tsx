@@ -2,19 +2,9 @@ import './genericStatus.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
 import CustonButtom from '../CustomButtom/CustonButtom';
+import { statusPrps } from '../../data/models/interfaces/statusPrps';
 
-interface status {
-    title: string,
-    sizeTitle?: number,
-    sizeSubTitle?: number,
-    subTitle: string,
-    activatebutton?: boolean
-    nomeBotaoAction?: string
-    isLoading?: boolean
-    onClick?: () => void; // Função de callback que é chamada quando o botão é clicado
-}
-
-const GenericStatus: React.FC<status> = ({
+const GenericStatus: React.FC<statusPrps> = ({
     title, subTitle, activatebutton = false,
     nomeBotaoAction = 'none', onClick,
     sizeTitle = 55,

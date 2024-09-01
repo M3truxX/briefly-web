@@ -6,11 +6,10 @@ import Login from '../../components/Login/Login';
 
 // Define o componente funcional da página protectedPage
 function LoginPage() {
-
     return (
         <div className='body-size'>
             <div className='center mbl-80'>
-                <Login/>
+                <Login />
             </div>
             <div className="mb-50">
                 <Divider />

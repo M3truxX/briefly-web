@@ -1,4 +1,4 @@
-import './loginUser.scss';
+import './menuDrop.scss';
 import '../../utils/cssConf.scss';
 import { useState, useEffect, useRef } from 'react';
 import login from '../../img/login.png';
@@ -8,16 +8,14 @@ import person_add from '../../img/person_add.png';
 import logout_img from '../../img/logout.png';
 import history from '../../img/history.png';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import Modal from '../Modal/Modal';
-import { EditImage } from '../EditImage/EditImage';
+import { useAppContext } from '../../contexts/AppContext';
 
-function LoginUser() {
+function MenuDrop() {
     const [isOpen, setIsOpen] = useState(false); // Estado para controle de abertura
     const [logado, setLogado] = useState(false); // Estado de autenticação inicial como falso
     const [userName, setUserName] = useState(''); // Estado para armazenar o nome do usuário
     const navigate = useNavigate(); // Hook para navegação
-    const { user, logout } = useAuth(); // Use o contexto de autenticação
+    const { user, logout } = useAppContext(); // Use o contexto de autenticação
     const dropdownRef = useRef<HTMLDivElement>(null); // Referência ao container do dropdown
 
     // Funções de navegação
@@ -27,9 +25,6 @@ function LoginUser() {
     const handleClickCriar = () => navigate('/register');
     const handleClickReportar = () => navigate('/report');
     const handleClickLogout = () => { logout(); navigate('/') };
-
-    // Estado de visibilidade do modal
-    const [isModalVisible, setModalVisible] = useState(false);
 
     // Efeito para verificar se o usuário está logado
     useEffect(() => {
@@ -63,16 +58,6 @@ function LoginUser() {
         setIsOpen(!isOpen);
     };
 
-    // Abre o modal
-    const openModal = () => {
-        setModalVisible(true);
-    };
-
-    // Fecha o modal
-    const closeModal = () => {
-        setModalVisible(false);
-    };
-
     function truncateUserName(name: string, maxLength: number): string {
         if (name.length <= maxLength) return name;
         const lastSpaceIndex = name.slice(0, maxLength).lastIndexOf(' ');
@@ -82,9 +67,6 @@ function LoginUser() {
 
     return (
         <div>
-            <Modal isVisible={isModalVisible} onClose={closeModal}>
-                <EditImage />
-            </Modal>
             <div className='collapse-container-login' ref={dropdownRef}>
                 <div>
                     <button onClick={toggleCollapse} className={`collapse-button-login ${isOpen ? 'open' : ''}`}>
@@ -143,8 +125,7 @@ function LoginUser() {
                 </div>
             </div>
         </div>
-
     );
 }
 
-export default LoginUser;
+export default MenuDrop;

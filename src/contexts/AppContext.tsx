@@ -1,34 +1,32 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { LoggedUserResponse } from '../data/models/interfaces/LoggedUserResponse';
-import { DefaultRepository } from '../data/repository/DefaultRepository';
 import { LoggedDataRequest } from '../data/models/interfaces/LoggedDataRequest';
-import { ApiService } from '../api/ApiService';
-import { Config } from '../Config';
+import { DatabaseRepository } from '../data/models/class/DatabaseRepository';
 
 // Define o tipo para o contexto de autenticação
-interface AuthContextType {
-    user: LoggedUserResponse | null; // Usuário autenticado
-    setUser: React.Dispatch<React.SetStateAction<LoggedUserResponse | null>>; // Função para atualizar o estado do usuário
+interface AppContextType {
+    user: LoggedUserResponse | null;
+    setUser: React.Dispatch<React.SetStateAction<LoggedUserResponse | null>>;
     login: (loginData: LoggedDataRequest) => Promise<LoggedUserResponse | undefined>;
-    logout: () => void; // Método de logout
+    session: (token: string) => Promise<void>;
+    logout: () => Promise<void>;
+    repository: DatabaseRepository;
     isAuthenticated: boolean;
 }
 
 // Cria o contexto com um valor inicial vazio
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 // Chave para armazenar os dados de autenticação no localStorage
 const AUTH_STORAGE_KEY = 'authUserData';
 
 // Componente do provedor de autenticação
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode, repository: DatabaseRepository }> = ({ children, repository }) => {
     const [user, setUser] = useState<LoggedUserResponse | null>(() => {
         // Recupera o usuário do localStorage quando o provedor é inicializado
         const storedUser = localStorage.getItem(AUTH_STORAGE_KEY);
         return storedUser ? JSON.parse(storedUser) : null;
     });
-
-    const authRepository = new DefaultRepository(new ApiService(Config.BASE_URL)); // Instância do repositório de autenticação
 
     useEffect(() => {
         // Se o usuário estiver autenticado, salva no localStorage
@@ -42,36 +40,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Função de login
     const login = async (loginData: LoggedDataRequest): Promise<LoggedUserResponse | undefined> => {
         try {
-            const response = await authRepository.loginUser(loginData);
+            const response = await repository.loginUser(loginData);
             setUser(response); // Configura o estado do usuário
             return response; // Retorna a resposta
         } catch (error) {
-            console.error('Erro ao fazer login:', error);
             throw error; // Propaga o erro
         }
     };
 
     // Função para realizar o logout
-    const logout = () => {
-        setUser(null); // Limpa o estado do usuário
-        localStorage.removeItem(AUTH_STORAGE_KEY); // Remove o usuário do localStorage
+    const logout = async (): Promise<void> => {
+        try {
+            await repository.signOutUser(user!!.token);
+            setUser(null); // Limpa o estado do usuário
+            localStorage.removeItem(AUTH_STORAGE_KEY); // Remove o usuário do localStorage
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const session = async (): Promise<void> => {
+        try {
+            const response = await repository.sessionUser(user!!.token);
+            if (!response) {
+                throw new Error('Sessão inválida ou expirou.');
+            }
+            setUser(response);
+            localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(response));
+        } catch (error) {
+            throw error;
+        }
     };
 
     const isAuthenticated = !!user;
 
     // Retorna o provedor com os métodos e o estado
     return (
-        <AuthContext.Provider value={{ user, setUser, login, logout, isAuthenticated }}>
+        <AppContext.Provider value={{ user, setUser, login, logout, session, isAuthenticated, repository }}>
             {children}
-        </AuthContext.Provider>
+        </AppContext.Provider>
     );
 };
 
 // Hook para acessar o contexto de autenticação
-export const useAuth = (): AuthContextType => {
-    const context = useContext(AuthContext);
+export const useAppContext = (): AppContextType => {
+    const context = useContext(AppContext);
     if (context === undefined) {
-        throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+        throw new Error('useAppContext deve ser usado dentro de um AuthProvider');
     }
     return context;
 };

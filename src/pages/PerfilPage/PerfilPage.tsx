@@ -2,15 +2,14 @@
 import '../../utils/cssConf.scss';
 import CardFunc from '../../components/Cards/Cards';
 import Divider from '../../components/Divider/Divider';
-import { EditImage } from '../../components/EditImage/EditImage';
+import EditImage from '../../components/EditImage/EditImage';
 
 // Define o componente funcional da página protectedPage
 function perfilPage() {
-
     return (
         <div className='body-size'>
             <div className='center mbl-80'>
-            <EditImage/>
+                <EditImage />
             </div>
             <div className="mb-50">
                 <Divider />
