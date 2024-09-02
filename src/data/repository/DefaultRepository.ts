@@ -14,6 +14,7 @@ import { CreateAccontResponse } from "../models/interfaces/CreateAccontResponse"
 import { LoggedDataRequest } from "../models/interfaces/LoggedDataRequest";
 import { LoggedUserResponse } from "../models/interfaces/LoggedUserResponse";
 import { UploadImageResponse } from "../models/interfaces/UploadImageResponse";
+import { Account } from "../models/interfaces/Account";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -23,6 +24,8 @@ export class DefaultRepository extends DatabaseRepository {
         super();
         this.service = apiService;
     }
+
+/////// Chamadas de link publico /////////////////////////////////////
 
     async generateLinkData(linkDataRequest: LinkDataRequest): Promise<LinkDataResponse> {
         const linkDataResponse: LinkDataResponse = await this.service.generatePublicLinkEntry(linkDataRequest);
@@ -34,6 +37,13 @@ export class DefaultRepository extends DatabaseRepository {
         return linkDataResponse;
     }
 
+    async getLinkDataInfo(shortLink: string): Promise<LinkDataResponse> {
+        const linkDataResponse: LinkDataResponse = await this.service.getPublicLinkEntry(shortLink);
+        return linkDataResponse;
+    }
+
+    /////// Chamadas relacionadas com dados do user /////////////////////////////////////
+
     async CreateAccontData(CreateAccontRequest: CreateAccontRequest): Promise<CreateAccontResponse> {
         const createDataResponse: CreateAccontResponse = await this.service.createAccontUser(CreateAccontRequest);
         return createDataResponse;
@@ -44,18 +54,13 @@ export class DefaultRepository extends DatabaseRepository {
         return dataResponse;
     }
 
-    async getLinkDataInfo(shortLink: string): Promise<LinkDataResponse> {
-        const linkDataResponse: LinkDataResponse = await this.service.getPublicLinkEntry(shortLink);
-        return linkDataResponse;
-    }
-
     async loginUser(loginRequest: LoggedDataRequest): Promise<LoggedUserResponse> {
         const loggedUserResponse: LoggedUserResponse = await this.service.loginUser(loginRequest);
         return loggedUserResponse;
     }
 
-    async sessionUser(token: string): Promise<LoggedUserResponse> {
-        const sessionUserResponse: LoggedUserResponse = await this.service.sessionUser(token);
+    async sessionUser(token: string): Promise<Account> {
+        const sessionUserResponse: Account = await this.service.sessionUser(token);
         return sessionUserResponse;
     }
 
@@ -64,9 +69,25 @@ export class DefaultRepository extends DatabaseRepository {
         return signOutResponse;
     }
 
-
     async uploadUserImage(formData: FormData, token: string): Promise<UploadImageResponse> {
         const uploadImageResponse: UploadImageResponse = await this.service.uploadUserImage(formData, token);
         return uploadImageResponse;
+    }
+
+    /////// Chamadas com user logado /////////////////////////////////////
+
+    async generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest): Promise<LinkDataResponse> {
+        const linkDataResponse: LinkDataResponse = await this.service.generateUserLinkEntry(token, userLinkRequest);
+        return linkDataResponse;
+    }
+
+    async getUserLinkEntry(token:string, link: string): Promise<LinkDataResponse> {
+        try {
+            const linkDataResponse: LinkDataResponse = await this.service.getUserLinkEntry(token, link);
+            return linkDataResponse;
+        } catch (error) {
+            console.log(error, 'error');
+            throw error
+        }
     }
 }

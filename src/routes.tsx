@@ -10,9 +10,20 @@ import ActivatePage from './pages/ActivatePage/ActivatePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import perfilPage from './pages/PerfilPage/PerfilPage';
 import { LoggedRoute, PublicRoute } from './protectedRoute';
+import HistoryPage from './pages/Historico/HistoryPage';
+import { useAppContext } from './contexts/AppContext';
+import { useEffect } from 'react';
 
 // Componente que define as rotas da aplicação
 function RoutApp() {
+    const { user, session } = useAppContext(); // Use o contexto geral
+
+    useEffect(() => {
+        if(user){
+            session()
+        }
+    }, [])
+
     return (
         <BrowserRouter>
             <div>
@@ -25,7 +36,7 @@ function RoutApp() {
                     <Route path="/expired/:email" element={<PublicRoute component={ActivatePage} />} />
                     <Route path="/activated/" element={<PublicRoute component={ActivatePage} />} />
                     <Route path="/login" element={<PublicRoute component={LoginPage} />} />
-                    <Route path="/historico" element={<LoggedRoute component={ActivatePage} />} />
+                    <Route path="/historico" element={<LoggedRoute component={HistoryPage} />} />
                     <Route path="/perfil" element={<LoggedRoute component={perfilPage} />} />
                 </Routes>
                 <Rodape />

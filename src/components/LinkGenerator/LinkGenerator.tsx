@@ -21,7 +21,7 @@ import { useAppContext } from '../../contexts/AppContext';
 // Componente principal de geração de links
 function LinkGenerator() {
   // Estados para controle de entradas e comportamento
-  const { repository } = useAppContext(); // Use o contexto geral
+  const { user, repository } = useAppContext(); // Use o contexto geral
   const [resetEntlink, setResetEntlink] = useState(false);
   const [resetEntSenha, setResetEntSenha] = useState(false);
   const [resetEntApelido, setResetEntApelido] = useState(false);
@@ -118,7 +118,14 @@ function LinkGenerator() {
     }
 
     try {
-      const linkDataResponse: LinkDataResponse = await repository.generateLinkData(linkDataRequest);
+      let linkDataResponse: LinkDataResponse;
+
+      if (user) {
+        linkDataResponse = await repository.generateUserLinkEntry(user.token, linkDataRequest);
+      } else {
+        linkDataResponse = await repository.generateLinkData(linkDataRequest);
+      }
+
       if (linkDataResponse) {
         setTipoConsulta(false);
         setReceiveResponse(linkDataResponse);
@@ -149,7 +156,14 @@ function LinkGenerator() {
   async function GetShortLinkInfos() {
     setIsLoading(true)
     try {
-      const linkDataResponse: LinkDataResponse = await repository.getLinkDataInfo(linkText);
+      let linkDataResponse: LinkDataResponse
+
+      if (user){
+        linkDataResponse = await repository.getUserLinkEntry(user.token, linkText);
+      }else{
+        linkDataResponse = await repository.getLinkDataInfo(linkText);
+      }
+
       if (linkDataResponse) {
         setTipoConsulta(true);
         setReceiveResponse(linkDataResponse)
