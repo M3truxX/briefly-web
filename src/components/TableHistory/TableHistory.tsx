@@ -20,10 +20,19 @@ const TableHistory: React.FC = () => {
         
     }
 
+    function truncateUserName(name: string, maxLength: number): string {
+        if (name.length <= maxLength) return name;
+        const lastSpaceIndex = name.slice(0, maxLength).lastIndexOf(' ');
+        const truncatedName = lastSpaceIndex !== -1 ? name.slice(0, lastSpaceIndex) : name.slice(0, maxLength);
+        return truncatedName + '...';
+    }
+
+
     return (
         <table className="link-table">
             <thead>
                 <tr>
+                    <th>Link Curto</th>
                     <th>Link Original</th>
                     <th>Status</th>
                     <th>Expira em</th>
@@ -33,7 +42,8 @@ const TableHistory: React.FC = () => {
             <tbody>
                 {user?.account.linkEntryList.map((link) => (
                     <tr key={link.shortLink}>
-                        <td>{link.originalLink}</td>
+                        <td>{link.shortLink}</td>
+                        <td>{truncateUserName(link.originalLink, 37)}</td>
                         <td>{link.active ? 'Ativo' : 'Inativo'}</td>
                         <td>{formatDate(link.expiresAt)}</td>
                         <td>

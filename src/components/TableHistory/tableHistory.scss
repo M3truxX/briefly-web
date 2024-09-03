@@ -1,5 +1,8 @@
+// Importa o arquivo de variáveis globais para garantir consistência e reutilização de estilos em todo o projeto.
+@import '../../utils/variables';
+
 .link-table {
-    width: 100%;
+    width: 900px;
     border-collapse: collapse;
     margin: 20px 0;
 
@@ -35,7 +38,7 @@
         }
 
         &.btn-deletar {
-            background-color: #9e9e9e;
+            background-color: $primary-color;
             color: white;
         }
 
