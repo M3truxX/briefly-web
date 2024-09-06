@@ -9,6 +9,7 @@ import { LoggedUserResponse } from "../interfaces/LoggedUserResponse";
 import { LoggedDataRequest } from "../interfaces/LoggedDataRequest";
 import { UploadImageResponse } from "../interfaces/UploadImageResponse";
 import { Account } from "../interfaces/Account";
+import { GetHistoryDataResponse } from "../interfaces/GetHistoryDataResponse ";
 
 // Classe abstrata que define a interface para interações com a base de dados
 export abstract class DatabaseRepository {
@@ -19,7 +20,9 @@ export abstract class DatabaseRepository {
 
     // Create link user
     abstract generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest): Promise<LinkDataResponse>;
-    abstract getUserLinkEntry(token:string, link: string): Promise<LinkDataResponse>;
+    abstract getUserLinkEntry(token: string, link: string): Promise<LinkDataResponse>;
+    abstract updateUserLinkEntry(token: string, link: string, linkStatus: boolean): Promise<void>;
+    abstract deleteUserLinkEntry(token: string, link: string): Promise<void>;
 
     // User class
     abstract CreateAccontData(linkDataRequest: CreateAccontRequest): Promise<CreateAccontResponse>;
@@ -28,4 +31,5 @@ export abstract class DatabaseRepository {
     abstract sessionUser(token: string): Promise<Account>;
     abstract signOutUser(token: string): Promise<void>;
     abstract uploadUserImage(formData: FormData, token: string): Promise<UploadImageResponse>;
+    abstract updateHistory(token: string, page: number, size: number): Promise<GetHistoryDataResponse>;
 }

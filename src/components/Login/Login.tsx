@@ -91,6 +91,8 @@ const LoginComponent: React.FC = () => {
                     toast(Errors.LINK_NAO_ENCONTRADO);
                 } else if (axiosError.response?.status === 401) {
                     toast(Errors.SENHA_EMAIL_ERRADO);
+                } else if (axiosError.response?.status === 403) {
+                    toast(Errors.ATIVE_CONTA);
                 } else {
                     toast(Errors.SERVIDOR_NAO_RESPONDENDO);
                 }

@@ -3,6 +3,7 @@ export enum Success {
     ACCOUNT_ACTIVATE = "Conta ativada com sucesso!",
     CODE_RESEND = "E-mail de ativação de conta reenviado",
     LOGGED_ACCOUNT = "Conta logada com sucesso!",
-
-    IMAGEM_ENVIADA = "Imagem enviada com sucesso!"
+    IMAGEM_ENVIADA = "Imagem enviada com sucesso!",
+    STATUS_LINK_ALTERADO = 'Status do link alterado',
+    LINK_DELETADO = 'Link deletado com sucesso!'
 }

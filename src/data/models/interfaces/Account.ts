@@ -4,6 +4,5 @@ export interface Account {
     profileImageUrl: string;
     email: string;
     phone: string;
-    linkEntryList: any[];
     createdAt: string;
 }

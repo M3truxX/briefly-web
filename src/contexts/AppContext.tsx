@@ -16,11 +16,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode, repository: Data
     const [user, setUser] = useState<LoggedUserResponse | null>(() => {
         // Recupera o usuário do localStorage quando o provedor é inicializado
         const storedUser = localStorage.getItem(AUTH_STORAGE_KEY);
-
         return storedUser ? JSON.parse(storedUser) : null;
     });
-
-
 
     useEffect(() => {
         // Se o usuário estiver autenticado, salva no localStorage

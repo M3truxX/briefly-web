@@ -3,7 +3,6 @@ import './LinkGenerator.scss';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
-import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
 import { LinkDataRequest } from "../../data/models/interfaces/LinkDataRequest";
 import GraphInfo from "../GraphInfo/GraphInfo.";
@@ -158,9 +157,9 @@ function LinkGenerator() {
     try {
       let linkDataResponse: LinkDataResponse
 
-      if (user){
+      if (user) {
         linkDataResponse = await repository.getUserLinkEntry(user.token, linkText);
-      }else{
+      } else {
         linkDataResponse = await repository.getLinkDataInfo(linkText);
       }
 

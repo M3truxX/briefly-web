@@ -11,6 +11,7 @@ import { LoggedDataRequest } from '../data/models/interfaces/LoggedDataRequest';
 import { UploadImageResponse } from '../data/models/interfaces/UploadImageResponse';
 import { Account } from '../data/models/interfaces/Account';
 import { Config } from '../Config';
+import { GetHistoryDataResponse } from '../data/models/interfaces/GetHistoryDataResponse ';
 
 // Classe que encapsula a comunicação com a API
 export class ApiService {
@@ -128,19 +129,63 @@ export class ApiService {
         return response.data
     }
 
-// Método para recuperar informações de link criado por um usuário
-async getUserLinkEntry(token: string, link: string): Promise<LinkDataResponse> {
-    const extractShortLink: string = this.extractCode(link);
-    const response = await axios.get<LinkDataResponse>(
-        `${Config.BASE_URL}/link?short=${extractShortLink}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+    // Método para recuperar informações de link criado por um usuário
+    async getUserLinkEntry(token: string, link: string): Promise<LinkDataResponse> {
+        const extractShortLink: string = this.extractCode(link);
+        const response = await axios.get<LinkDataResponse>(
+            `${Config.BASE_URL}/link?short=${extractShortLink}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
             }
-        }
-    );
-    return response.data;
-}
+        );
+        return response.data;
+    }
+
+    // Método para mudar status dos links criados por um usuário
+    async updateUserLinkEntry(token: string, link: string, linkStatus: boolean): Promise<void> {
+        console.log(token, link, linkStatus, "infos");
+
+        const extractShortLink: string = this.extractCode(link);
+        const response = await axios.put<void>(
+            `${Config.BASE_URL}/user/link?short=${extractShortLink}&active=${linkStatus}`,
+            null,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data;
+    }
+
+    // Método para mudar status dos links criados por um usuário
+    async deleteUserLinkEntry(token: string, link: string): Promise<void> {
+        const extractShortLink: string = this.extractCode(link);
+        const response = await axios.delete<void>(
+            `${Config.BASE_URL}/user/link?short=${extractShortLink}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data;
+    }
+
+    // Método para recuperar historico do usuário
+    async updateHistory(token: string, page: number, size: number): Promise<GetHistoryDataResponse> {
+        const response = await axios.get<GetHistoryDataResponse>(
+            `${Config.BASE_URL}/link?page=${page}&size=${size}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data;
+    }
 
     /////// utilitário /////////////////////////////////////
 

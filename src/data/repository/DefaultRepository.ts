@@ -15,6 +15,7 @@ import { LoggedDataRequest } from "../models/interfaces/LoggedDataRequest";
 import { LoggedUserResponse } from "../models/interfaces/LoggedUserResponse";
 import { UploadImageResponse } from "../models/interfaces/UploadImageResponse";
 import { Account } from "../models/interfaces/Account";
+import { GetHistoryDataResponse } from "../models/interfaces/GetHistoryDataResponse ";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -25,7 +26,7 @@ export class DefaultRepository extends DatabaseRepository {
         this.service = apiService;
     }
 
-/////// Chamadas de link publico /////////////////////////////////////
+    /////// Chamadas de link publico /////////////////////////////////////
 
     async generateLinkData(linkDataRequest: LinkDataRequest): Promise<LinkDataResponse> {
         const linkDataResponse: LinkDataResponse = await this.service.generatePublicLinkEntry(linkDataRequest);
@@ -74,6 +75,17 @@ export class DefaultRepository extends DatabaseRepository {
         return uploadImageResponse;
     }
 
+    async updateUserLinkEntry(token: string, link: string, linkStatus: boolean): Promise<void> {
+        const updateLinkResponse: void = await this.service.updateUserLinkEntry(token, link, linkStatus);
+        return updateLinkResponse;
+    }
+
+    async deleteUserLinkEntry(token: string, link: string): Promise<void> {
+        const deleteLinkResponse: void = await this.service.deleteUserLinkEntry(token, link);
+        return deleteLinkResponse;
+    }
+
+
     /////// Chamadas com user logado /////////////////////////////////////
 
     async generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest): Promise<LinkDataResponse> {
@@ -81,13 +93,13 @@ export class DefaultRepository extends DatabaseRepository {
         return linkDataResponse;
     }
 
-    async getUserLinkEntry(token:string, link: string): Promise<LinkDataResponse> {
-        try {
-            const linkDataResponse: LinkDataResponse = await this.service.getUserLinkEntry(token, link);
-            return linkDataResponse;
-        } catch (error) {
-            console.log(error, 'error');
-            throw error
-        }
+    async getUserLinkEntry(token: string, link: string): Promise<LinkDataResponse> {
+        const linkDataResponse: LinkDataResponse = await this.service.getUserLinkEntry(token, link);
+        return linkDataResponse;
+    }
+
+    async updateHistory(token: string, page: number, size: number): Promise<GetHistoryDataResponse> {
+        const updateHistoryDataResponse: GetHistoryDataResponse = await this.service.updateHistory(token, page, size);
+        return updateHistoryDataResponse;
     }
 }
