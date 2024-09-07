@@ -16,27 +16,36 @@ import CustonInputText from '../CustonInputText/CustonInputText';
 import axios, { AxiosError } from 'axios';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import { useAppContext } from '../../contexts/AppContext';
+import moment from 'moment';
+import formatToIso from '../../utils/formatToIso';
 
 // Componente principal de geração de links
 function LinkGenerator() {
+  const currentDate = moment().format('DD/MM/YYYY');
+
   // Estados para controle de entradas e comportamento
   const { user, repository } = useAppContext(); // Use o contexto geral
   const [resetEntlink, setResetEntlink] = useState(false);
   const [resetEntSenha, setResetEntSenha] = useState(false);
   const [resetEntApelido, setResetEntApelido] = useState(false);
+  const [resetEntData, setResetEntData] = useState(false);
 
   const [ctrllEntlink, setCtrlEntlink] = useState(0);
   const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
   const [ctrlEntApelido, setCtrlEntApelido] = useState(0);
+  const [ctrlEntData, setCtrlEntData] = useState(0);
+
+  const [linkText, setLinkText] = useState('');
+  const [senhaText, setSenhaText] = useState('');
+  const [apelidoText, setApelidoText] = useState('');
+  const [dataText, setDataText] = useState('');
 
   // Funções para manipulação de inputs
   const entLink = (text: string) => { checkInputLink(text); setLinkText(text) }
   const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) }
   const entApelido = (text: string) => { checkInputApelido(text); setApelidoText(text) }
+  const entData = (text: string) => { checkInputDate(text); setDataText(text) }
 
-  const [linkText, setLinkText] = useState('');
-  const [senhaText, setSenhaText] = useState('');
-  const [apelidoText, setApelidoText] = useState('');
 
   // Estados para controle do botão e requisições
   const [isLoading, setIsLoading] = useState(false);
@@ -98,6 +107,23 @@ function LinkGenerator() {
     return true;
   }
 
+  // Verifica a validade da data inserida
+  function checkInputDate(data: string): boolean {
+    const dataMoment = moment(data, 'YYYY-MM-DD');
+
+    if (data === '') {
+      setCtrlEntData(0);
+      return true;
+    }
+
+    if (dataMoment.isAfter(currentDate)) {
+      setCtrlEntData(2);
+      return true;
+    }
+    setCtrlEntData(1);
+    return false;
+  }
+
   // Lida com o clique do botão principal
   const handleClick = () => {
     if (activateButton) {
@@ -113,11 +139,13 @@ function LinkGenerator() {
       link: linkText,
       personalizedCode: apelidoText !== '' ? apelidoText : null,
       password: senhaText !== '' ? senhaText : null,
-      expiresIn: null
+      expiresIn: dataText ? formatToIso(dataText) : null
     }
 
     try {
       let linkDataResponse: LinkDataResponse;
+
+
 
       if (user) {
         linkDataResponse = await repository.generateUserLinkEntry(user.token, linkDataRequest);
@@ -131,10 +159,12 @@ function LinkGenerator() {
         setResetEntlink(prev => !prev);
         setResetEntSenha(prev => !prev);
         setResetEntApelido(prev => !prev);
+        setResetEntData(prev => !prev);
         setTimeout(() => {
           setCtrlEntlink(0);
           setCtrlEntSenha(0);
           setCtrlEntApelido(0);
+          setCtrlEntData(0);
         }, 100);
       }
     } catch (error) {
@@ -234,6 +264,18 @@ function LinkGenerator() {
                   resetText={resetEntApelido}
                   showTextdescription={ctrlEntApelido === 1 ? true : false}
                   textdescription='Deve conter no mínimo 6 e máximo 15 caracteres.'
+                />
+              </div>
+              <p className="mbl-10 fs-14 color-primary font-bold">Data de validade</p>
+              <div className='center'>
+                <CustonInputText
+                  estado={ctrlEntData}
+                  color='gray'
+                  travelInfo={entData}
+                  resetText={resetEntData}
+                  type='date'
+                  showTextdescription={ctrlEntData === 1 ? true : false}
+                  textdescription='A data informada deve ser após a data atual.'
                 />
               </div>
             </Collapse>

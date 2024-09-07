@@ -133,24 +133,6 @@
         margin-top: 10px;
         gap: 10px;
 
-        button {
-            padding: 5px 10px;
-            border: 1px solid $secondary-color;
-            background-color: $light-color;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-
-            &:disabled {
-                cursor: not-allowed;
-                opacity: 0.5;
-            }
-
-            &:hover:not(:disabled) {
-                background-color: $primary-color;
-                color: #fff;
-            }
-        }
-
         span {
             font-size: 14px;
             font-weight: bold;

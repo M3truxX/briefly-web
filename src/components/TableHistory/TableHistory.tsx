@@ -9,15 +9,19 @@ import { LinkEntry } from '../../data/models/interfaces/LinkEntry';
 import { Success } from '../../data/models/enums/Success';
 import { GetHistoryDataResponse } from '../../data/models/interfaces/GetHistoryDataResponse ';
 import Loading from '../Loading/Loading';
+import Modal from "../Modal/Modal";
+import CustonButtom from '../CustomButtom/CustonButtom';
 
 const TableHistory: React.FC = () => {
     // Estado para controlar quais links estão abertos
     const { user, repository } = useAppContext(); // Use o contexto geral
     const [links, setLinks] = useState<LinkEntry[]>(); // Estado para armazenar os links
+    const [linkSelected, setLinkSelected] = useState<string>()
     const [openStates, setOpenStates] = useState<Record<string, boolean>>({});
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // Estado de controle do carregamento
     const [currentPage, setCurrentPage] = useState(1); // Estado para controlar a página atual
     const [totalPages, setTotalPages] = useState(0); // Estado para o total de páginas
+    const [isModalVisible, setModalVisible] = useState(false); // Estado de visibilidade do modal
 
     useEffect(() => {
         handleToggleGet(1);
@@ -77,7 +81,7 @@ const TableHistory: React.FC = () => {
         return cleanedName.slice(0, maxLength) + '...';
     }
 
-    // Funções para mudar a página
+    // Função de proxima página
     const handleNextPage = () => {
         setIsLoading(false)
         if (currentPage < totalPages) {
@@ -87,6 +91,7 @@ const TableHistory: React.FC = () => {
         }
     };
 
+    // Função de página anterior
     const handlePreviousPage = () => {
         setIsLoading(true)
         if (currentPage > 1) {
@@ -94,6 +99,17 @@ const TableHistory: React.FC = () => {
             setCurrentPage(previousPage)
             handleToggleGet(previousPage);
         };
+    };
+
+    // Abre o modal
+    const openModal = (link: string) => {
+        setLinkSelected(link);
+        setModalVisible(true);
+    };
+
+    // Fecha o modal
+    const closeModal = () => {
+        setModalVisible(false);
     };
 
     return (
@@ -110,6 +126,30 @@ const TableHistory: React.FC = () => {
                 pauseOnHover
                 theme="colored"
             />
+            <Modal isVisible={isModalVisible} onClose={closeModal}>
+                <div>
+                    <h1 className={`fs-20 font-bold color-primary mbl-20`}>Tem certeza que deseja deletar?</h1>
+                    <p className={`fs-12 mb-20 color-secondary`}>{linkSelected}</p>
+                    <div className='status-btn-container'>
+                        <div>
+                            <CustonButtom
+                                text='Cancelar'
+                                onClick={closeModal}
+                                loading={isLoading}
+                                btnHeight={35}
+                                btnWidth={90} />
+                        </div>
+                        <div className='ml-10'>
+                            <CustonButtom
+                                text="Deletar"
+                                activate={true}
+                                onClick={() => { closeModal(); handleDeleteLink(linkSelected ?? '') }}
+                                btnHeight={35}
+                                btnWidth={90} />
+                        </div>
+                    </div>
+                </div>
+            </Modal>
             <h1 className={`fs-24 font-bold color-primary mb-20`}>Histórico de links</h1>
             <div className="accordion-links sombras">
                 {isLoading ? (<Loading />) : (
@@ -128,15 +168,15 @@ const TableHistory: React.FC = () => {
                             </div>
                             <div className={`accordion-content pbl-30${openStates[link.shortLink] ? '' : 'open'}`}>
                                 <div className='center'>
-                                    <div>
-                                        <div className='info-container-acordion'>
+                                    <div className='info-container-acordion'>
+                                        <div>
                                             <p className="color-dark font-bold">Link original:
                                                 <a className="info-acordion ml-5" href={link.originalLink} target="blank">{truncateUserName(link.originalLink, 25)}</a>
                                             </p>
                                         </div>
                                         <div className='mt-2'>
                                             <p className="color-dark font-bold">Validade:
-                                                <span className='color-primary info-acordion span-date ml-5'>{formatDate(link.expiresAt)}</span>
+                                                <span className='color-primary font-normal ml-5'>{formatDate(link.expiresAt)}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -145,7 +185,7 @@ const TableHistory: React.FC = () => {
                                             onClick={() => handleToggleActive(link.shortLink, link.active)}>
                                             {link.active ? 'Desativar' : 'Ativar'}
                                         </button>
-                                        <button className="delete-button ml-20" onClick={() => handleDeleteLink(link.shortLink)}>
+                                        <button className="delete-button ml-20" onClick={() => openModal(link.shortLink)}>
                                             🗑️
                                         </button>
                                     </div>
@@ -154,20 +194,20 @@ const TableHistory: React.FC = () => {
                         </div>
                     ))
                 )}
-                <div className="paginator-container mb-5">
-                    <button
-                        className="paginator-button"
-                        onClick={handlePreviousPage}
-                        disabled={currentPage === 1}>
-                        Anterior
-                    </button>
+                <div className="paginator-container mb-10">
+                    <CustonButtom
+                        text="Anterior"
+                        activate={!(currentPage === 1)}
+                        onClick={() => { handlePreviousPage() }}
+                        btnHeight={35}
+                        btnWidth={90} />
                     <span className="page-info">{`Página ${links?.length == 0 ? '0' : currentPage} de ${totalPages}`}</span>
-                    <button
-                        className="paginator-button"
-                        onClick={handleNextPage}
-                        disabled={currentPage >= totalPages}>
-                        Próxima
-                    </button>
+                    <CustonButtom
+                        text="Próxima"
+                        activate={!(currentPage >= totalPages)}
+                        onClick={() => { handleNextPage() }}
+                        btnHeight={35}
+                        btnWidth={90} />
                 </div>
             </div>
         </div>

@@ -11,15 +11,17 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import perfilPage from './pages/PerfilPage/PerfilPage';
 import { LoggedRoute, PublicRoute } from './protectedRoute';
 import HistoryPage from './pages/Historico/HistoryPage';
+import InactivatePage from './pages/InactivatePage/InactivatePage';
 import { useAppContext } from './contexts/AppContext';
 import { useEffect } from 'react';
+import ReportPage from './pages/ReportPage/ReportPage';
 
 // Componente que define as rotas da aplicação
 function RoutApp() {
     const { user, session } = useAppContext(); // Use o contexto geral
 
     useEffect(() => {
-        if(user){
+        if (user) {
             session()
         }
     }, [])
@@ -31,6 +33,8 @@ function RoutApp() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='*' element={<Erro />} />
+                    <Route path='/inactive' element={<InactivatePage />} />
+                    <Route path='/report' element={<ReportPage />} />
                     <Route path="/register" element={<PublicRoute component={Register} />} />
                     <Route path="/protected/:id" element={<PublicRoute component={Protected} />} />
                     <Route path="/expired/:email" element={<PublicRoute component={ActivatePage} />} />

@@ -2,14 +2,12 @@
 import '../../utils/cssConf.scss';
 import Divider from '../../components/Divider/Divider';
 import CardFunc from '../../components/Cards/Cards';
-import LinkGenerator from '../../components/LinkGenerator/LinkGenerator';
 
 // Define o componente funcional da página Home
-function Home() {
+function ReportPage() {
     return (
         <div className='body-size'>
             <div className='center mbl-80'>
-                <LinkGenerator />
             </div>
             <div className="mb-50">
                 <Divider />
@@ -21,4 +19,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default ReportPage;

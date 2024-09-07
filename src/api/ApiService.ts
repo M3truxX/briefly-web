@@ -145,8 +145,6 @@ export class ApiService {
 
     // Método para mudar status dos links criados por um usuário
     async updateUserLinkEntry(token: string, link: string, linkStatus: boolean): Promise<void> {
-        console.log(token, link, linkStatus, "infos");
-
         const extractShortLink: string = this.extractCode(link);
         const response = await axios.put<void>(
             `${Config.BASE_URL}/user/link?short=${extractShortLink}&active=${linkStatus}`,

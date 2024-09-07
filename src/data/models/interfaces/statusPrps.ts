@@ -2,7 +2,7 @@ export interface StatusPrps {
     title: string,
     sizeTitle?: number,
     sizeSubTitle?: number,
-    subTitle: string,
+    subTitle?: string,
     activatebutton?: boolean
     nomeBotaoAction?: string
     isLoading?: boolean

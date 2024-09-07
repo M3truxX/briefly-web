@@ -93,6 +93,7 @@ const CustonInputText: React.FC<CustomInputText> = ({
                     value={text}
                     onChange={(e) => handleChange(e.target.value)}
                     maxLength={lengthMax}
+                    max="9999-12-31"
                     {...rest} // Propagação de outras propriedades
                 />
             </div>

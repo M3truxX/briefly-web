@@ -39,7 +39,7 @@ function CardFunc() {
           <img className='img-res' src={time} alt="Ícone de tempo" /> {/* Ícone de tempo */}
           <div className='area-text mbl-10'>
             <p className='color-primary mb-10 fs-14 font-bold'>Tempo de validade</p> {/* Título do cartão */}
-            <p className='fs-11 color-secondary'>Nosso serviço mantém ativos os links por 2 anos!</p> {/* Descrição do cartão */}
+            <p className='fs-11 color-secondary'>Nosso serviço mantém ativos os links por 3 anos!</p> {/* Descrição do cartão */}
           </div>
         </div>
       </div>

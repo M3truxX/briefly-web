@@ -19,7 +19,7 @@ export abstract class DatabaseRepository {
     abstract getLinkDataInfo(shortLink: string): Promise<LinkDataResponse>;
 
     // Create link user
-    abstract generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest): Promise<LinkDataResponse>;
+    abstract generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest,): Promise<LinkDataResponse>;
     abstract getUserLinkEntry(token: string, link: string): Promise<LinkDataResponse>;
     abstract updateUserLinkEntry(token: string, link: string, linkStatus: boolean): Promise<void>;
     abstract deleteUserLinkEntry(token: string, link: string): Promise<void>;
