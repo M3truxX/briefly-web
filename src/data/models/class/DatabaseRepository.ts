@@ -10,6 +10,7 @@ import { LoggedDataRequest } from "../interfaces/LoggedDataRequest";
 import { UploadImageResponse } from "../interfaces/UploadImageResponse";
 import { Account } from "../interfaces/Account";
 import { GetHistoryDataResponse } from "../interfaces/GetHistoryDataResponse ";
+import { ReportingRequest } from "../interfaces/ReportingRequest";
 
 // Classe abstrata que define a interface para interações com a base de dados
 export abstract class DatabaseRepository {
@@ -17,6 +18,7 @@ export abstract class DatabaseRepository {
     abstract generateLinkData(linkDataRequest: LinkDataRequest): Promise<LinkDataResponse>;
     abstract requestProtectedLinkData(linkDataRequest: LinkProtectedRequest): Promise<LinkProtectedResponse>;
     abstract getLinkDataInfo(shortLink: string): Promise<LinkDataResponse>;
+    abstract sendReport(token: string, reportData: ReportingRequest): Promise<void>;
 
     // Create link user
     abstract generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest,): Promise<LinkDataResponse>;

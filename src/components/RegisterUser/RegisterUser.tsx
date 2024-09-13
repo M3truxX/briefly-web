@@ -124,7 +124,7 @@ function RegisterUser() {
         const CreateAcconte: CreateAccontRequest = {
             username: name,
             email: email,
-            phone: phone,
+            phone: "55" + phone.replace(/[^0-9]/g, ''),
             password: password,
         }
 

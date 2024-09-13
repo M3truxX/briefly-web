@@ -12,6 +12,7 @@ import { UploadImageResponse } from '../data/models/interfaces/UploadImageRespon
 import { Account } from '../data/models/interfaces/Account';
 import { Config } from '../Config';
 import { GetHistoryDataResponse } from '../data/models/interfaces/GetHistoryDataResponse ';
+import { ReportingRequest } from '../data/models/interfaces/ReportingRequest';
 
 // Classe que encapsula a comunicação com a API
 export class ApiService {
@@ -49,6 +50,21 @@ export class ApiService {
     // Método para gerar link sem corpo da requisição
     async validateAccontUser(email: string): Promise<void> {
         const response = await this.axios.post<void>(`/authentication/generate?identifier=${email}`);
+        return response.data;
+    }
+
+    // Novo método para enviar um relatório
+    async sendReport(token: string, reportData: ReportingRequest): Promise<void> {
+        const response = await axios.post<void>(
+            `${Config.BASE_URL}/reporting`,
+            reportData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
         return response.data;
     }
 

@@ -5,5 +5,6 @@ export enum Success {
     LOGGED_ACCOUNT = "Conta logada com sucesso!",
     IMAGEM_ENVIADA = "Imagem enviada com sucesso!",
     STATUS_LINK_ALTERADO = 'Status do link alterado',
-    LINK_DELETADO = 'Link deletado com sucesso!'
+    LINK_DELETADO = 'Link deletado com sucesso!',
+    REPORT_ENVIADO = "Relatório enviado com sucesso!"
 }

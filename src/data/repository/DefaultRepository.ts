@@ -16,6 +16,7 @@ import { LoggedUserResponse } from "../models/interfaces/LoggedUserResponse";
 import { UploadImageResponse } from "../models/interfaces/UploadImageResponse";
 import { Account } from "../models/interfaces/Account";
 import { GetHistoryDataResponse } from "../models/interfaces/GetHistoryDataResponse ";
+import { ReportingRequest } from "../models/interfaces/ReportingRequest";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -41,6 +42,11 @@ export class DefaultRepository extends DatabaseRepository {
     async getLinkDataInfo(shortLink: string): Promise<LinkDataResponse> {
         const linkDataResponse: LinkDataResponse = await this.service.getPublicLinkEntry(shortLink);
         return linkDataResponse;
+    }
+
+    async sendReport(token: string, reportData: ReportingRequest): Promise<void> {
+        const response: void = await this.service.sendReport(token, reportData);
+        return response;
     }
 
     /////// Chamadas relacionadas com dados do user /////////////////////////////////////

@@ -159,7 +159,9 @@ const TableHistory: React.FC = () => {
                                 <button onClick={() => toggleCollapse(link.shortLink)} // Alterna apenas o acordeom clicado
                                     className={`acordion-button pbl-10 ${openStates[link.shortLink] ? 'open' : ''}`}>
                                     <span className="title-btn info-container-acordion font-bold">Link curto:
-                                        <a className="link-mostrar-acordion ml-5" href={link.shortLink} target="blank">{truncateUserName(link.shortLink, 40)}</a>
+                                        <a className="link-mostrar-acordion ml-5" href={link.shortLink} target="_blank" onClick={(event) => event.stopPropagation()}>
+                                            {truncateUserName(link.shortLink, 40)}
+                                        </a>
                                     </span>
                                     <span className={`status ${link.active ? 'active' : 'inactive'}`}>
                                         {link.active ? '🟢' : '🔴'}

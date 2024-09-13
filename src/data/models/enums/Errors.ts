@@ -14,5 +14,8 @@ export enum Errors {
     ERRO_TIPO_IMG = "Só é permitdo enviar arquivos do tipo: jpeg, png, jpg, gif!",
     ERRO_RECEBER_HISTORICO = 'Erro ao recuperar histórico',
     STATUS_LINK_ALTERADO = 'erro ao alterar status do link',
-    LINK_DELETADO = 'Erro ao deletar link'
+    LINK_DELETADO = 'Erro ao deletar link',
+    ACESSO_NAO_AUTORIZADO = "Acesso não autorizado.",
+    ERRO_ENVIAR_RELATORIO = "Erro ao enviar o relatório. Tente novamente mais tarde.",
+    CAMPO_RELATO_DESCRICAO = "Campo de descrição do relatório obrigatório"
 }

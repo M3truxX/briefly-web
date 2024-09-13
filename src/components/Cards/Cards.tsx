@@ -32,7 +32,7 @@ function CardFunc() {
           <img className='img-res' src={balance} alt="Ícone de análise" /> {/* Ícone de análise */}
           <div className='area-text mbl-10'>
             <p className='color-primary mb-10 fs-14 font-bold'>Análise de dados</p> {/* Título do cartão */}
-            <p className='fs-11 color-secondary'>Melhor controle/gerenciamento dos links da sua empresa</p> {/* Descrição do cartão */}
+            <p className='fs-11 color-secondary'>Melhor controle/gerenciamento dos links</p> {/* Descrição do cartão */}
           </div>
         </div>
         <div className='card-base'>

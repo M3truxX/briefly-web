@@ -2,12 +2,14 @@
 import '../../utils/cssConf.scss';
 import Divider from '../../components/Divider/Divider';
 import CardFunc from '../../components/Cards/Cards';
+import ErrorReport from '../../components/ErrorReport/ErrorReport';
 
 // Define o componente funcional da página Home
 function ReportPage() {
     return (
         <div className='body-size'>
             <div className='center mbl-80'>
+                <ErrorReport />
             </div>
             <div className="mb-50">
                 <Divider />
