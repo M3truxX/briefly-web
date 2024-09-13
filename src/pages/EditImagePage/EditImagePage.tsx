@@ -6,11 +6,11 @@ import EditImage from '../../components/EditImage/EditImage';
 import EditUserInfo from '../../components/EditPerfil/EditPerfil';
 
 // Define o componente funcional da página protectedPage
-function perfilPage() {
+function EditImagePage() {
     return (
         <div className='body-size'>
             <div className='center mbl-80'>
-                <EditUserInfo />
+                <EditImage />
             </div>
             <div className="mb-50">
                 <Divider />
@@ -22,4 +22,4 @@ function perfilPage() {
     );
 }
 
-export default perfilPage;
+export default EditImagePage;

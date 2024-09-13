@@ -15,6 +15,7 @@ import InactivatePage from './pages/InactivatePage/InactivatePage';
 import { useAppContext } from './contexts/AppContext';
 import { useEffect } from 'react';
 import ReportPage from './pages/ReportPage/ReportPage';
+import EditImagePage from './pages/EditImagePage/EditImagePage';
 
 // Componente que define as rotas da aplicação
 function RoutApp() {
@@ -41,6 +42,7 @@ function RoutApp() {
                     <Route path="/activated/" element={<PublicRoute component={ActivatePage} />} />
                     <Route path="/login" element={<PublicRoute component={LoginPage} />} />
                     <Route path="/historico" element={<LoggedRoute component={HistoryPage} />} />
+                    <Route path="/editImage" element={<LoggedRoute component={EditImagePage} />} />
                     <Route path="/perfil" element={<LoggedRoute component={perfilPage} />} />
                 </Routes>
                 <Rodape />

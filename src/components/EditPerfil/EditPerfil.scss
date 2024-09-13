@@ -1,0 +1,39 @@
+@import '../../utils/variables';
+
+.edit-user-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.edit-user-info-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.edit-user-info-input {
+    margin-bottom: 20px;
+}
+
+.edit-user-info-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .edit-user-info-container {
+        padding: 15px;
+    }
+
+    .edit-user-info-form {
+        max-width: 100%;
+    }
+}

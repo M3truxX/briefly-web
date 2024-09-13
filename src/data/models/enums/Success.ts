@@ -6,5 +6,6 @@ export enum Success {
     IMAGEM_ENVIADA = "Imagem enviada com sucesso!",
     STATUS_LINK_ALTERADO = 'Status do link alterado',
     LINK_DELETADO = 'Link deletado com sucesso!',
-    REPORT_ENVIADO = "Relatório enviado com sucesso!"
+    REPORT_ENVIADO = "Relatório enviado com sucesso!",
+    USER_UPDATE_SUCCESS = "Usuário atualizado com sucesso!"
 }

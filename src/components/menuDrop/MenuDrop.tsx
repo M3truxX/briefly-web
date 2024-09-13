@@ -20,6 +20,7 @@ function MenuDrop() {
 
     // Funções de navegação
     const handleClickPerfil = () => navigate('/perfil');
+    const handleClickEditImage = () => navigate('/editImage');
     const handleClickhistorico = () => navigate('/historico');
     const handleClickEntrar = () => navigate('/login');
     const handleClickCriar = () => navigate('/register');
@@ -77,8 +78,14 @@ function MenuDrop() {
                             <div className='container-card-login pbl-15'>
                                 {logado ? (
                                     <div>
+                                        <div className='card-base-login' onClick={handleClickPerfil} role="button" tabIndex={0}>
+                                            <img className='img-res-login' src={person} alt="Ícone de perfil" />
+                                            <div>
+                                                <p className='fs-11 color-secondary'>Perfil</p>
+                                            </div>
+                                        </div>
                                         <div className='card-base-login' onClick={handleClickhistorico} role="button" tabIndex={0}>
-                                            <img className='img-res-login' src={history} alt="Ícone de link" />
+                                            <img className='img-res-login' src={history} alt="Ícone de histórico" />
                                             <div>
                                                 <p className='fs-11 color-secondary'>Histórico</p>
                                             </div>
@@ -87,13 +94,13 @@ function MenuDrop() {
                                 ) : (
                                     <div>
                                         <div className='card-base-login' onClick={handleClickEntrar} role="button" tabIndex={0}>
-                                            <img className='img-res-login' src={login} alt="Ícone de link" />
+                                            <img className='img-res-login' src={login} alt="Ícone de entrar" />
                                             <div>
                                                 <p className='fs-11 color-secondary'>Entrar</p>
                                             </div>
                                         </div>
                                         <div className='card-base-login' onClick={handleClickCriar} role="button" tabIndex={3}>
-                                            <img className='img-res-login' src={person_add} alt="Ícone de link" />
+                                            <img className='img-res-login' src={person_add} alt="Ícone de criar conta" />
                                             <div>
                                                 <p className='fs-11 color-secondary'>Criar conta</p>
                                             </div>
@@ -102,14 +109,14 @@ function MenuDrop() {
                                 )}
                                 <div>
                                     <div className='card-base-login' onClick={handleClickReportar} role="button" tabIndex={0}>
-                                        <img className='img-res-login' src={report} alt="Ícone de link" />
+                                        <img className='img-res-login' src={report} alt="Ícone de reportar" />
                                         <div>
                                             <p className='fs-11 color-secondary'>reportar</p>
                                         </div>
                                     </div>
                                     {logado ? (
                                         <div className='card-base-login' onClick={handleClickLogout} role="button" tabIndex={1}>
-                                            <img className='img-res-login' src={logout_img} alt="Ícone de QR code" />
+                                            <img className='img-res-login' src={logout_img} alt="Ícone de sair" />
                                             <div>
                                                 <p className='fs-11 color-secondary'>Sair</p>
                                             </div>
@@ -120,7 +127,7 @@ function MenuDrop() {
                         </div>
                     </div>
                 </div>
-                <div className='img-res-img ml-25' onClick={handleClickPerfil}>
+                <div className='img-res-img ml-25' onClick={handleClickEditImage}>
                     <img className='img-res-img' src={logado && user ? user.account.profileImageUrl === '' ? person : user.account.profileImageUrl : person} alt="Ícone de análise" />
                 </div>
             </div>
