@@ -4,7 +4,7 @@ import './modal.scss';
 import { ModalProps } from '../../data/models/interfaces/ModalProps';
 
 // Componente Modal funcional, recebe propriedades para controlar visibilidade
-const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children, disableClose = false }) => {
   // Efeito para bloquear o scroll do body quando o modal estiver visível
   useEffect(() => {
     if (isVisible) {
@@ -21,14 +21,22 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
   if (!isVisible) return null; // Retorna null se o modal estiver invisível
 
+  const handleClose = () => {
+    if (!disableClose) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-          &times;
-        </button>
+        {!disableClose && (
+          <button className="modal-close" onClick={handleClose}>
+            &times;
+          </button>
+        )}
         <div className="modal-body">
-          {children} {/* Renderiza o conteúdo do modal */}
+          {children}
         </div>
       </div>
     </div>

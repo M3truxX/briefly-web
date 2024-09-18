@@ -11,6 +11,8 @@ import { UploadImageResponse } from "../interfaces/UploadImageResponse";
 import { Account } from "../interfaces/Account";
 import { GetHistoryDataResponse } from "../interfaces/GetHistoryDataResponse ";
 import { ReportingRequest } from "../interfaces/ReportingRequest";
+import { UpdateUserProfileRequest } from "../interfaces/UpdateUserProfileRequest";
+import { UserProfileConfirmRequest } from "../interfaces/UserProfileConfirmRequest";
 
 // Classe abstrata que define a interface para interações com a base de dados
 export abstract class DatabaseRepository {
@@ -34,4 +36,6 @@ export abstract class DatabaseRepository {
     abstract signOutUser(token: string): Promise<void>;
     abstract uploadUserImage(formData: FormData, token: string): Promise<UploadImageResponse>;
     abstract updateHistory(token: string, page: number, size: number): Promise<GetHistoryDataResponse>;
+    abstract updateUserProfile(token: string, updateData: UpdateUserProfileRequest): Promise<Account>;
+    abstract confirmUserProfileUpdate(token: string, confirmationData: UserProfileConfirmRequest): Promise<void>;
 }

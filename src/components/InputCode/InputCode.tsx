@@ -14,22 +14,22 @@ const InputCode: React.FC<InputCodeProps> = ({ quantidade, onInputChange }) => {
         onInputChange(inputValues);
     }, [inputValues, onInputChange]);
 
-    const sanitizeText = useCallback((text: string) => text.replace(/[^a-zA-Z0-9]/g, ''), []);
-
     const updateInputValues = useCallback((index: number, newValue: string) => {
-        const newInputValues = [...inputValues];
-        newInputValues[index] = newValue;
-        setInputValues(newInputValues);
-    }, [inputValues]);
+        setInputValues(prevValues => {
+            const newInputValues = [...prevValues];
+            newInputValues[index] = newValue;
+            return newInputValues;
+        });
+    }, []);
 
     const handleTextChange = useCallback((text: string, index: number) => {
-        const sanitizedText = sanitizeText(text);
+        const sanitizedText = text.replace(/[^a-zA-Z0-9]/g, '');
         updateInputValues(index, sanitizedText);
 
         if (sanitizedText && index < quantidade - 1) {
             textInputRefs.current[index + 1]?.focus();
         }
-    }, [sanitizeText, updateInputValues, quantidade]);
+    }, [updateInputValues, quantidade]);
 
     const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
         if (e.key === "Backspace" && !inputValues[index] && index > 0) {

@@ -13,6 +13,8 @@ import { Account } from '../data/models/interfaces/Account';
 import { Config } from '../Config';
 import { GetHistoryDataResponse } from '../data/models/interfaces/GetHistoryDataResponse ';
 import { ReportingRequest } from '../data/models/interfaces/ReportingRequest';
+import { UpdateUserProfileRequest } from '../data/models/interfaces/UpdateUserProfileRequest';
+import { UserProfileConfirmRequest } from '../data/models/interfaces/UserProfileConfirmRequest';
 
 // Classe que encapsula a comunicação com a API
 export class ApiService {
@@ -195,6 +197,36 @@ export class ApiService {
             {
                 headers: {
                     Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho de autorização
+                }
+            }
+        );
+        return response.data;
+    }
+
+    // Método para atualizar usuário
+    async updateUserProfile(token: string, updateData: UpdateUserProfileRequest): Promise<Account> {
+        const response = await axios.put<Account>(
+            `${Config.BASE_URL}/user/profile`,
+            updateData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    }
+
+    // Método para confirmar a alteração dos dados do usuário
+    async confirmUserProfileUpdate(token: string, confirmationData: UserProfileConfirmRequest): Promise<void> {
+        const response = await axios.post<void>(
+            `${Config.BASE_URL}/user/phone`,
+            confirmationData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             }
         );

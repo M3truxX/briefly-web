@@ -13,4 +13,5 @@ export interface CustomInputText {
     alignText?: "center" | "left" | "right"; // Alinhamento do texto dentro do campo de entrada, como "center" (centrado), "left" (esquerda), ou "right" (direita). Opcional.
     showTextdescription?: boolean; // Indica se o texto descritivo deve ser exibido. Opcional.
     keyBoard?: React.HTMLInputTypeAttribute; // Tipo de teclado a ser exibido para o campo de entrada, como "text", "number", "email". Opcional.
+    onDateSelect?: (selectedDate: string) => void; // Função de callback opcional que é chamada quando uma data é selecionada. Recebe a data selecionada como uma string.
 }

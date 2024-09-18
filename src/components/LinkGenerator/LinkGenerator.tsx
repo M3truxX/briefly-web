@@ -109,19 +109,21 @@ function LinkGenerator() {
 
   // Verifica a validade da data inserida
   function checkInputDate(data: string): boolean {
-    const dataMoment = moment(data, 'YYYY-MM-DD');
-
-    if (data === '') {
+    if (data === '' || !data) {
       setCtrlEntData(0);
       return true;
     }
 
-    if (dataMoment.isAfter(currentDate)) {
-      setCtrlEntData(2);
-      return true;
+    const dataMoment = moment(data, 'YYYY-MM-DD', true);
+    const currentDate = moment().startOf('day');
+
+    if (!dataMoment.isValid() || dataMoment.isSameOrBefore(currentDate)) {
+      setCtrlEntData(1);
+      return false;
     }
-    setCtrlEntData(1);
-    return false;
+
+    setCtrlEntData(2);
+    return true;
   }
 
   // Lida com o clique do botão principal
@@ -144,9 +146,6 @@ function LinkGenerator() {
 
     try {
       let linkDataResponse: LinkDataResponse;
-
-
-
       if (user) {
         linkDataResponse = await repository.generateUserLinkEntry(user.token, linkDataRequest);
       } else {
@@ -204,7 +203,8 @@ function LinkGenerator() {
     }
   }
 
-  return (
+
+  const configTosatify = () => (
     <div>
       <ToastContainer
         position="bottom-right"
@@ -218,6 +218,12 @@ function LinkGenerator() {
         pauseOnHover
         theme="colored"
       />
+    </div>
+  );
+
+  return (
+    <div>
+      {configTosatify()}
       <div className="container-link">
         <div>
           <h1 className="color-primary fs-24">Coloque seu link para encurtá-lo!</h1>
@@ -274,8 +280,9 @@ function LinkGenerator() {
                   travelInfo={entData}
                   resetText={resetEntData}
                   type='date'
-                  showTextdescription={ctrlEntData === 1 ? true : false}
-                  textdescription='A data informada deve ser após a data atual.'
+                  showTextdescription={ctrlEntData === 1}
+                  textdescription='Escolha uma data válida após a data atual.'
+                  onDateSelect={checkInputDate}
                 />
               </div>
             </Collapse>

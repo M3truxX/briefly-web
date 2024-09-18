@@ -18,6 +18,7 @@ const CustonInputText: React.FC<CustomInputText> = ({
     mask, // Máscara aplicada ao texto
     color = 'black', // Cor do texto
     alignText = 'left', // Alinhamento do texto
+    onDateSelect, // Nova prop para lidar com a seleção de data
     ...rest // Outras props
 }) => {
 
@@ -82,6 +83,18 @@ const CustonInputText: React.FC<CustomInputText> = ({
         }
     }
 
+    // Função para lidar com a mudança de data
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedDate = event.target.value;
+        setText(selectedDate);
+        travelInfo(selectedDate);
+
+        // Chama a função de validação, se fornecida
+        if (onDateSelect) {
+            onDateSelect(selectedDate);
+        }
+    };
+
     return (
         <div>
             <div className={`section-style sombras border-${tipoEstado()}`}>
@@ -91,7 +104,7 @@ const CustonInputText: React.FC<CustomInputText> = ({
                     style={{ color, textAlign: alignText as any }}
                     type={type}
                     value={text}
-                    onChange={(e) => handleChange(e.target.value)}
+                    onChange={type === 'date' ? handleDateChange : (e) => handleChange(e.target.value)}
                     maxLength={lengthMax}
                     max="9999-12-31"
                     {...rest} // Propagação de outras propriedades

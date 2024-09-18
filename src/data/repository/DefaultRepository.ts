@@ -17,6 +17,8 @@ import { UploadImageResponse } from "../models/interfaces/UploadImageResponse";
 import { Account } from "../models/interfaces/Account";
 import { GetHistoryDataResponse } from "../models/interfaces/GetHistoryDataResponse ";
 import { ReportingRequest } from "../models/interfaces/ReportingRequest";
+import { UpdateUserProfileRequest } from "../models/interfaces/UpdateUserProfileRequest";
+import { UserProfileConfirmRequest } from "../models/interfaces/UserProfileConfirmRequest";
 
 // Implementações de requisições de links usando ApiService.
 export class DefaultRepository extends DatabaseRepository {
@@ -107,5 +109,15 @@ export class DefaultRepository extends DatabaseRepository {
     async updateHistory(token: string, page: number, size: number): Promise<GetHistoryDataResponse> {
         const updateHistoryDataResponse: GetHistoryDataResponse = await this.service.updateHistory(token, page, size);
         return updateHistoryDataResponse;
+    }
+
+    async updateUserProfile(token: string, updateData: UpdateUserProfileRequest): Promise<Account> {
+        const updatedAccount: Account = await this.service.updateUserProfile(token, updateData);
+        return updatedAccount;
+    }
+
+    async confirmUserProfileUpdate(token: string, confirmationData: UserProfileConfirmRequest): Promise<void> {
+        const response: void = await this.service.confirmUserProfileUpdate(token, confirmationData);
+        return response;
     }
 }
