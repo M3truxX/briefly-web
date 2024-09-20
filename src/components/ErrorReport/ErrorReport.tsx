@@ -15,30 +15,24 @@ import { Success } from '../../data/models/enums/Success';
 
 const ErrorReport: React.FC = () => {
     // Hooks e estados
-    const { repository, user } = useAppContext();
-    const navigate = useNavigate();
-
-    const [reportText, setReportText] = useState('');
-
-    const [ctrlEntEmail, setCtrlEntEmail] = useState(0);
-    const [controlEntNome, setControlEntNome] = useState(0);
-    const [ctrlEntApelido, setCtrlEntApelido] = useState(0);
-
-    const [resetEntApelido, setResetEntApelido] = useState(false);
-    const [resetEntEmail, setResetEntEmail] = useState(false);
-    const [resetEntNome, setResetEntNome] = useState(false);
-
-
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [activateButton, setActivateButton] = useState(false)
+    const { repository, user } = useAppContext(); // Contexto da aplicação
+    const navigate = useNavigate(); // Hook de navegação
+    const [reportText, setReportText] = useState(''); // Estado para o texto do relatório
+    const [ctrlEntEmail, setCtrlEntEmail] = useState(0); // Controle do estado do email
+    const [controlEntNome, setControlEntNome] = useState(0); // Controle do estado do nome
+    const [ctrlEntApelido, setCtrlEntApelido] = useState(0); // Controle do estado do apelido
+    const [resetEntApelido, setResetEntApelido] = useState(false); // Reset do estado do apelido
+    const [resetEntEmail, setResetEntEmail] = useState(false); // Reset do estado do email
+    const [resetEntNome, setResetEntNome] = useState(false); // Reset do estado do nome
+    const [email, setEmail] = useState(''); // Estado para o email
+    const [name, setName] = useState(''); // Estado para o nome
+    const [isLoading, setIsLoading] = useState(false); // Estado para o carregamento
+    const [activateButton, setActivateButton] = useState(false); // Estado para o botão de envio
 
     // Funções para manipulação de inputs
-    const entApelido = (text: string) => { checkInputApelido(text); setReportText(text) }
-    const entradaNome = (text: string) => { setName(text); checkInputNome(text); }
-    const entEmail = (text: string) => { checkInputEmail(text); setEmail(text) }
+    const entApelido = (text: string) => { checkInputApelido(text); setReportText(text) } // Função para manipular o apelido
+    const entradaNome = (text: string) => { setName(text); checkInputNome(text); } // Função para manipular o nome
+    const entEmail = (text: string) => { checkInputEmail(text); setEmail(text) } // Função para manipular o email
 
     // Efeito para validar os campos e ativar o botão
     useEffect(() => {
@@ -104,7 +98,7 @@ const ErrorReport: React.FC = () => {
 
         try {
             await repository.sendReport(user?.token || '', reportData);
-            toast(Success.REPORT_ENVIADO);
+            toast.success(Success.REPORT_ENVIADO);
             setResetEntNome(prev => !prev);
             setResetEntEmail(prev => !prev);
             setResetEntApelido(prev => !prev);
@@ -118,11 +112,11 @@ const ErrorReport: React.FC = () => {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 401) {
-                    toast(Errors.ACESSO_NAO_AUTORIZADO);
+                    toast.error (Errors.ACESSO_NAO_AUTORIZADO);
                 } else if (axiosError.response?.status === 429) {
-                    toast(Errors.MUITAS_REQUISCOES);
+                    toast.error(Errors.MUITAS_REQUISCOES);
                 } else {
-                    toast(Errors.ERRO_ENVIAR_RELATORIO);
+                    toast.error(Errors.ERRO_ENVIAR_RELATORIO);
                 }
             }
         } finally {

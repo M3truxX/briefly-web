@@ -1,6 +1,6 @@
 // Função para validar o nome
 export function validationName(text: string) {
-    const containsDesiredPattern = /^(?=.*[a-zA-Z])(?!.*[^a-zA-Z\s]).{5,}$/.test(text);
+    const containsDesiredPattern = /^(?=.*[a-zA-ZÀ-ÿ])(?!.*[^a-zA-ZÀ-ÿ\s]).{5,}$/.test(text);
     return containsDesiredPattern;
 }
 

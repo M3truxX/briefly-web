@@ -12,18 +12,18 @@ import { useNavigate } from 'react-router-dom';
 import { validationEmail } from '../../utils/validation';
 
 const LoginComponent: React.FC = () => {
-    const { login } = useAppContext();
+    const { login } = useAppContext(); // Contexto da aplicação
     const navigate = useNavigate(); // Hook para navegação
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [resetEntEmail, setResetEntEmail] = useState(false);
-    const [ctrlEntEmail, setCtrlEntEmail] = useState(0);
-    const [resetEntSenha, setResetEntSenha] = useState(false);
-    const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
-    const entEmail = (text: string) => { checkInputSenha(text); setEmail(text) }
-    const entSenha = (text: string) => { checkInputSenha(text); setPassword(text) }
-    const [isLoading, setIsLoading] = useState(false);
-    const [activateButton, setActivateButton] = useState(false);
+    const [email, setEmail] = useState(''); // Guarda o valor do email  
+    const [password, setPassword] = useState(''); // Guarda o valor da senha
+    const [resetEntEmail, setResetEntEmail] = useState(false); // Controle do reset do email
+    const [ctrlEntEmail, setCtrlEntEmail] = useState(0); // Controle do email
+    const [resetEntSenha, setResetEntSenha] = useState(false); // Controle do reset da senha
+    const [ctrlEntSenha, setCtrlEntSenha] = useState(0); // Controle da senha
+    const entEmail = (text: string) => { checkInputSenha(text); setEmail(text) } // Função para atualizar o email
+    const entSenha = (text: string) => { checkInputSenha(text); setPassword(text) } // Função para atualizar a senha
+    const [isLoading, setIsLoading] = useState(false); // Controle de carregamento
+    const [activateButton, setActivateButton] = useState(false); // Controle do botão
 
     // Verifica a validade dos inputs ao alterá-los
     useEffect(() => {
@@ -43,6 +43,7 @@ const LoginComponent: React.FC = () => {
         }
     }, [password]);
 
+    // Verifica se a senha é válida
     function checkInputSenha(text: string): boolean {
         if (text === '') {
             setCtrlEntSenha(0);
@@ -56,6 +57,7 @@ const LoginComponent: React.FC = () => {
         return true;
     }
 
+    // Verifica se o email é válido
     const checkInputEmail = (email: string) => {
         if (email === '') {
             setCtrlEntEmail(0);
@@ -68,6 +70,7 @@ const LoginComponent: React.FC = () => {
         return false;
     };
 
+    // Função para realizar o login
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
         const loginData: LoggedDataRequest = { email, password };
@@ -75,7 +78,7 @@ const LoginComponent: React.FC = () => {
         try {
             const response = await login(loginData);
             if (response) {
-                toast(Success.LOGGED_ACCOUNT);
+                toast.success(Success.LOGGED_ACCOUNT);
                 setResetEntEmail(prev => !prev);
                 setResetEntSenha(prev => !prev);
                 setTimeout(() => {
@@ -88,13 +91,13 @@ const LoginComponent: React.FC = () => {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 404) {
-                    toast(Errors.LINK_NAO_ENCONTRADO);
+                    toast.error(Errors.LINK_NAO_ENCONTRADO);
                 } else if (axiosError.response?.status === 401) {
-                    toast(Errors.SENHA_EMAIL_ERRADO);
+                    toast.error(Errors.SENHA_EMAIL_ERRADO);
                 } else if (axiosError.response?.status === 403) {
-                    toast(Errors.ATIVE_CONTA);
+                    toast.error(Errors.ATIVE_CONTA);
                 } else {
-                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                    toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
                 }
             }
         } finally {

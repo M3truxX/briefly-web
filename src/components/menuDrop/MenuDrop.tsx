@@ -20,7 +20,6 @@ function MenuDrop() {
 
     // Funções de navegação
     const handleClickPerfil = () => navigate('/perfil');
-    const handleClickEditImage = () => navigate('/editImage');
     const handleClickhistorico = () => navigate('/historico');
     const handleClickEntrar = () => navigate('/login');
     const handleClickCriar = () => navigate('/register');
@@ -59,6 +58,7 @@ function MenuDrop() {
         setIsOpen(!isOpen);
     };
 
+    // Trunca o nome do usuário para exibir no dropdown
     function truncateUserName(name: string, maxLength: number): string {
         if (name.length <= maxLength) return name;
         const lastSpaceIndex = name.slice(0, maxLength).lastIndexOf(' ');
@@ -127,8 +127,8 @@ function MenuDrop() {
                         </div>
                     </div>
                 </div>
-                <div className='img-res-img ml-25' onClick={handleClickEditImage}>
-                    <img className='img-res-img' src={logado && user ? user.account.profileImageUrl === '' ? person : user.account.profileImageUrl : person} alt="Ícone de análise" />
+                <div className='img-res-img ml-25'>
+                    <img className='img-res-img' src={logado && user ? user.account.profileImageUrl === '' ? person : user.account.profileImageUrl : person} alt="Ícone de perfil" />
                 </div>
             </div>
         </div>

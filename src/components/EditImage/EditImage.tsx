@@ -1,46 +1,41 @@
+// Importações necessárias
 import './editImage.scss';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import person from '../../img/person.png';
 import { useAppContext } from '../../contexts/AppContext';
-import { Errors } from '../../data/models/enums/Errors';
-import { toast, ToastContainer } from 'react-toastify';
-import { Success } from '../../data/models/enums/Success';
 import React, { useEffect, useRef, useState } from 'react';
-import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import CustonButtom from '../CustomButtom/CustonButtom';
-import { useNavigate } from 'react-router-dom';
 import { UploadImageResponse } from '../../data/models/interfaces/UploadImageResponse';
+import { EditImageProps } from '../../data/models/interfaces/EditImageProps';
 
-function EditImage() {
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean | undefined>(false);
+// Componente para editar a imagem de perfil do usuário
+const EditImage: React.FC<EditImageProps> = ({ onAxiosError }) => {
+    const [selectedFile, setSelectedFile] = useState<File | null>(null); // Armazena o arquivo selecionado
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null); // Armazena a URL da imagem de preview
+    const [loading, setLoading] = useState<boolean | undefined>(false); // Controla o estado de carregamento
     const { user, setUser, repository } = useAppContext(); // Use o contexto geral
-    const navigate = useNavigate(); // Hook para navegação
 
     // Ref para o input de arquivo
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    // Atualiza a prévia da imagem quando o arquivo selecionado muda
-    useEffect(() => {
-        if (selectedFile) {
-            const objectUrl = URL.createObjectURL(selectedFile);
-            setPreviewUrl(objectUrl);
-
-            // Limpa a URL criada quando o componente é desmontado ou o arquivo muda
-            return () => URL.revokeObjectURL(objectUrl);
-        }
-    }, [selectedFile]);
-
+    // Função para lidar com a mudança no input de arquivo
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
-            setSelectedFile(event.target.files[0]);
+            // Revoga a URL anterior se existir
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+
+            const file = event.target.files[0];
+            const objectUrl = URL.createObjectURL(file);
+            setSelectedFile(file);
+            setPreviewUrl(objectUrl);
         }
     };
 
+    // Função para enviar a imagem selecionada para o servidor
     const handleUpload = async () => {
         if (!selectedFile) {
-            toast(Errors.SELECT_ARQUIVO);
             return;
         }
 
@@ -68,18 +63,10 @@ function EditImage() {
 
                 // Atualiza o estado global do usuário
                 setUser(updatedUser);
-                toast(Success.IMAGEM_ENVIADA);
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                const axiosError = error as AxiosError<AxiosErrorResponse>;
-                if (axiosError.response?.status === 400) {
-                    toast(Errors.ERRO_TIPO_IMG);
-                } else if (axiosError.response?.status === 401) {
-                    toast(Errors.ERRO_ENVIO_ARQUIVO);
-                } else {
-                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
-                }
+                onAxiosError(error); // Use a função de callback aqui
             }
         } finally {
             setLoading(false);
@@ -96,28 +83,21 @@ function EditImage() {
 
     // Função para limpar a imagem selecionada
     const handleCancelSelection = () => {
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+        }
         setSelectedFile(null);
         setPreviewUrl(null);
     };
 
-    const handleClickHome = () => {
-        navigate('/');
+    const getImageSource = () => {
+        if (previewUrl) return previewUrl;
+        if (user && user.account.profileImageUrl !== '') return user.account.profileImageUrl;
+        return person;
     };
 
     return (
         <div className='img-container'>
-            <ToastContainer
-                position="bottom-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
             <input
                 type="file"
                 ref={fileInputRef}
@@ -125,36 +105,28 @@ function EditImage() {
                 onChange={handleFileChange}
                 accept="image/*"
             />
-            <h1 className={`fs-24 font-bold color-primary`}>Alterar a imagem</h1>
-            <p className={`fs-14 mb-10 color-secondary`}>Click aqui</p>
             <div className='img-edit-perfil mb-20' onClick={handleDivClick}>
                 <img
                     className={`img-edit-perfil ${selectedFile && 'disable'}`}
-                    src={previewUrl ? previewUrl : person}
+                    src={getImageSource()}
                     alt="Imagem de perfil"
                 />
             </div>
-            {selectedFile ? (
-                <div className='img-btn-container'>
-                    <div>
-                        <CustonButtom
-                            text='Cacelar'
-                            secondary={true}
-                            onClick={handleCancelSelection} />
-                    </div>
-                    <div className='ml-10'>
-                        <CustonButtom
-                            text='Enviar'
-                            loading={loading}
-                            onClick={handleUpload} />
-                    </div>
+            <div className='img-btn-container'>
+                <div>
+                    <CustonButtom
+                        text='descartar'
+                        secondary={true}
+                        onClick={handleCancelSelection} />
                 </div>
-            ) : (
-                <CustonButtom
-                    text='Home'
-                    loading={loading}
-                    onClick={handleClickHome} />
-            )}
+                <div className='ml-10'>
+                    <CustonButtom
+                        text='Atualizar'
+                        loading={loading}
+                        activate={selectedFile !== null && !loading}
+                        onClick={handleUpload} />
+                </div>
+            </div>
         </div>
     );
 };

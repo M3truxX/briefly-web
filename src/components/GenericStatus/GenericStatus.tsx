@@ -2,14 +2,14 @@ import './genericStatus.scss';
 import '../../utils/cssConf.scss'
 import { useNavigate } from 'react-router-dom';
 import CustonButtom from '../CustomButtom/CustonButtom';
-import { StatusPrps } from '../../data/models/interfaces/StatusPrps';
+import { StatusProps } from '../../data/models/interfaces/statusPrps';
 
-const GenericStatus: React.FC<StatusPrps> = ({
-    title, subTitle, activatebutton = false,
-    nomeBotaoAction = 'none', onClick,
-    sizeTitle = 55,
-    sizeSubTitle = 14,
-    isLoading = false
+const GenericStatus: React.FC<StatusProps> = ({
+    title, subTitle, activatebutton = false, // Define se o botão de ação está ativo
+    nomeBotaoAction = 'none', onClick, // Define o nome do botão de ação e a função de clique
+    sizeTitle = 55, // Define o tamanho do título
+    sizeSubTitle = 14, // Define o tamanho do subtítulo
+    isLoading = false // Define se o carregamento está ativo
 }) => {
     const navigate = useNavigate(); // Hook para navegação
 
@@ -18,6 +18,7 @@ const GenericStatus: React.FC<StatusPrps> = ({
         onClick && onClick(); // Chama onClick somente se for uma função
     };
 
+    // Manipula o clique no botão de volta para a página inicial
     const handleClickHome = () => {
         navigate('/');
     };

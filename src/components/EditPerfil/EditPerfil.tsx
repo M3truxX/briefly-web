@@ -15,12 +15,15 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 import InputCode from '../InputCode/InputCode';
 import { UserProfileConfirmRequest } from '../../data/models/interfaces/UserProfileConfirmRequest';
+import EditImage from '../EditImage/EditImage';
 
 // Componente para edição de informações do usuário
 function EditUserInfo() {
+
     // Hooks e estados
-    const { user, setUser, repository } = useAppContext();
-    const navigate = useNavigate();
+    const { user, setUser, repository } = useAppContext(); // Contexto da aplicação
+    const navigate = useNavigate(); // Hook de navegação
+    const [axiosErrorImage, setAxiosErrorImage] = useState<AxiosError<AxiosErrorResponse> | null>(null); // Estado para armazenar erros do componente EditImage
 
     // Estados para controle de inputs e comportamento
     const [phone, setPhone] = useState(''); // Estado do input de telefone
@@ -29,15 +32,16 @@ function EditUserInfo() {
     const [resetEntNome, setResetEntNome] = useState(false); // Estado de reset do input de nome
     const [controlEntPhone, setControlEntPhone] = useState(0); // Estado de controle do input de telefone
     const [controlEntNome, setControlEntNome] = useState(0); // Estado de controle do input de nome
-    const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
     const [isModalVisible, setModalVisible] = useState(false); // Estado de visibilidade do modal
-    const [codigoDigitado, setCodigoDigitado] = useState<string[]>([]); // Estado do código digitado
+
     const [activateNameButton, setActivateNameButton] = useState(false); // Estado de ativação do botão de atualizar nome
     const [activatePhoneButton, setActivatePhoneButton] = useState(false); // Estado de ativação do botão de atualizar telefone
 
+    const [isLoadingName, setIsLoadingName] = useState(false); // Estado de carregamento do input de nome
+    const [isLoadingPhone, setIsLoadingPhone] = useState(false); // Estado de carregamento do input de telefone
+
     // Funções para manipulação de inputs
     const entradaPhone = (text: string) => { setPhone(text); checkInputPhone(text); } // Função para manipular o input de telefone
-
     const entradaNome = (text: string) => { setName(text); checkInputNome(text); } // Função para manipular o input de nome
 
     // Efeito para validar os campos e ativar os botões individualmente
@@ -45,6 +49,18 @@ function EditUserInfo() {
         setActivateNameButton(name.trim() !== '' && checkInputNome(name));
         setActivatePhoneButton(phone.trim() !== '' && checkInputPhone(phone));
     }, [phone, name]);
+
+    useEffect(() => {
+        if (axiosErrorImage) {
+            if (axiosErrorImage.response?.status === 400) {
+                toast.error(Errors.ERRO_TIPO_IMG);
+            } else if (axiosErrorImage.response?.status === 401) {
+                toast.error(Errors.ERRO_ENVIO_ARQUIVO);
+            } else {
+                toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
+            }
+        }
+    }, [axiosErrorImage]);
 
     // Função para verificar a validade do nome
     const checkInputNome = (nome: string) => {
@@ -72,11 +88,18 @@ function EditUserInfo() {
         return false;
     };
 
+    // Função para lidar com erros do Axios do componente EditImage
+    const handleAxiosError = useCallback((error: AxiosError<AxiosErrorResponse> | null) => {
+        setAxiosErrorImage(error);
+    }, []);
+
     // Função para lidar com o envio do formulário (atualizada)
     const handleSubmit = async (field: 'name' | 'phone') => {
         if ((field === 'name' && !activateNameButton) || (field === 'phone' && !activatePhoneButton)) return;
 
-        setIsLoading(true);
+        const setLoading = field === 'name' ? setIsLoadingName : setIsLoadingPhone;
+        setLoading(true);
+
         try {
             const updateData: any = {};
             if (field === 'name' && name) updateData.name = name;
@@ -86,7 +109,7 @@ function EditUserInfo() {
 
             if (field === 'name') {
                 if (updatedAccount) {
-                    toast(Success.USER_UPDATE_SUCCESS);
+                    toast.success(Success.USER_UPDATE_SUCCESS);
                     setResetEntNome(prev => !prev);
                     setName('');
                     setControlEntNome(0);
@@ -105,13 +128,13 @@ function EditUserInfo() {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 429) {
-                    toast(Errors.MUITAS_REQUISCOES);
+                    toast.error(Errors.MUITAS_REQUISCOES);
                 } else {
-                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                    toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
                 }
             }
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
@@ -150,8 +173,6 @@ function EditUserInfo() {
 
     // Função para lidar com a mudança de valores no input de código
     const handleInputChange = useCallback((values: string[]) => {
-        setCodigoDigitado(values);
-
         if (values.length === 6 && values.every(valor => valor !== "")) {
             const codigo = parseInt(values.join(''), 10);
             const confirmationData: UserProfileConfirmRequest = {
@@ -162,7 +183,7 @@ function EditUserInfo() {
 
             repository.confirmUserProfileUpdate(user?.token || '', confirmationData)
                 .then(() => {
-                    toast(Success.USER_UPDATE_SUCCESS);
+                    toast.success(Success.USER_UPDATE_SUCCESS);
                     closeModal();
                     setResetEntNome(prev => !prev);
                     setResetEntPhone(prev => !prev);
@@ -173,11 +194,11 @@ function EditUserInfo() {
                     if (axios.isAxiosError(error)) {
                         const axiosError = error as AxiosError<AxiosErrorResponse>;
                         if (axiosError.response?.status === 403) {
-                            toast(Errors.CODIGO_INVALIDO);
+                            toast.error(Errors.CODIGO_INVALIDO);
                         } else if (axiosError.response?.status === 429) {
-                            toast(Errors.MUITAS_REQUISCOES);
+                            toast.error(Errors.MUITAS_REQUISCOES);
                         } else {
-                            toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                            toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
                         }
                     }
                 });
@@ -207,11 +228,17 @@ function EditUserInfo() {
             {configTosatify()}
             {modal()}
             <h1 className="fs-24 font-bold color-primary">Editar Informações do Usuário</h1>
-            <p className="fs-14 mb-20 color-secondary">Preencha os campos que deseja alterar</p>
+            <p className="fs-14 color-secondary">Preencha os campos que deseja alterar</p>
             <div className='edit-user-info-form'>
-                <div className='edit-user-info-form'>
-                    <p className='color-primary mb-10 fs-14 font-bold'>Digite seu novo nome de usuário</p>
-                    <div className="input-container">
+                <div className='edit-user-info-form mt-30'>
+                    <p className='color-primary mb-10 fs-14 font-bold'>Alterar foto de perfil</p>
+                    <div>
+                        <EditImage
+                            onAxiosError={handleAxiosError}
+                        />
+                    </div>
+                    <p className='color-primary mb-10 fs-14 font-bold mt-30'>Digite seu novo nome de usuário</p>
+                    <div className='input-container-perfil'>
                         <CustonInputText
                             textPlaceholder="Novo nome de usuário"
                             estado={controlEntNome}
@@ -222,14 +249,15 @@ function EditUserInfo() {
                         />
                         <div className='ml-10'>
                             <CustonButtom
+                                type="button"
                                 text="Atualizar"
                                 activate={activateNameButton}
-                                loading={isLoading}
+                                loading={isLoadingName}
                                 onClick={() => handleSubmit('name')} />
                         </div>
                     </div>
-                    <p className='color-primary mb-10 fs-14 font-bold mt-10'>Novo número de telefone</p>
-                    <div className="input-container">
+                    <p className='color-primary mb-10 fs-14 font-bold mt-30'>Novo número de telefone</p>
+                    <div className='input-container-perfil'>
                         <CustonInputText
                             textPlaceholder="Seu telefone"
                             estado={controlEntPhone}
@@ -243,14 +271,15 @@ function EditUserInfo() {
                         />
                         <div className='ml-10'>
                             <CustonButtom
+                                type="button"
                                 text="Atualizar"
                                 activate={activatePhoneButton}
-                                loading={isLoading}
+                                loading={isLoadingPhone}
                                 onClick={() => handleSubmit('phone')} />
                         </div>
                     </div>
                 </div>
-                <div className="edit-user-info-buttons">
+                <div className="edit-user-info-buttons mt-20">
                     <CustonButtom
                         text='Cancelar'
                         onClick={handleClickHome}

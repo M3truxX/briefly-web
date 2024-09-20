@@ -15,12 +15,12 @@ import InactivatePage from './pages/InactivatePage/InactivatePage';
 import { useAppContext } from './contexts/AppContext';
 import { useEffect } from 'react';
 import ReportPage from './pages/ReportPage/ReportPage';
-import EditImagePage from './pages/EditImagePage/EditImagePage';
 
 // Componente que define as rotas da aplicação
 function RoutApp() {
     const { user, session } = useAppContext(); // Use o contexto geral
 
+    // Efeito para verificar se o usuário está logado e chamar a função de sessão
     useEffect(() => {
         if (user) {
             session()
@@ -34,15 +34,15 @@ function RoutApp() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='*' element={<Erro />} />
+                    <Route path='/404/' element={<Erro />} />
                     <Route path='/inactive' element={<InactivatePage />} />
                     <Route path='/report' element={<ReportPage />} />
+                    <Route path="/protected/:id" element={<Protected/>} />
                     <Route path="/register" element={<PublicRoute component={Register} />} />
-                    <Route path="/protected/:id" element={<PublicRoute component={Protected} />} />
                     <Route path="/expired/:email" element={<PublicRoute component={ActivatePage} />} />
                     <Route path="/activated/" element={<PublicRoute component={ActivatePage} />} />
                     <Route path="/login" element={<PublicRoute component={LoginPage} />} />
                     <Route path="/historico" element={<LoggedRoute component={HistoryPage} />} />
-                    <Route path="/editImage" element={<LoggedRoute component={EditImagePage} />} />
                     <Route path="/perfil" element={<LoggedRoute component={perfilPage} />} />
                 </Routes>
                 <Rodape />

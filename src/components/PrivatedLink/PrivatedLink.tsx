@@ -15,6 +15,7 @@ import CustonButtom from '../CustomButtom/CustonButtom';
 import CustonInputText from '../CustonInputText/CustonInputText';
 import { useAppContext } from '../../contexts/AppContext';
 
+// Componente para acessar links protegidos
 function PrivatedLink() {
     const { repository } = useAppContext(); // Use o contexto geral
     const [resetEntSenha, setResetEntSenha] = useState(false); // Estado para reset de senha
@@ -68,11 +69,11 @@ function PrivatedLink() {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 404) {
-                    toast(Errors.LINK_NAO_ENCONTRADO);
+                    toast.error(Errors.LINK_NAO_ENCONTRADO);
                 } else if (axiosError.response?.status === 401) {
-                    toast(Errors.SENHA_ERRADA);
+                    toast.error(Errors.SENHA_ERRADA);
                 } else {
-                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                    toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
                 }
             }
         } finally {

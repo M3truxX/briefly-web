@@ -2,6 +2,7 @@
 @import '../../utils/variables';
 
 .accordion-links {
+    background-color: $light-color;
     border: none;
     width: 500px;
     border-radius: 10px;
@@ -14,7 +15,7 @@
         font-size: 16px;
         width: 100%;
         border-bottom: 1px solid $secondary-color;
-        background-color: rgb(240, 240, 240);
+        background-color: $light-color; 
         color: $dark-color;
         border: none;
         cursor: pointer;
@@ -42,6 +43,15 @@
         &.open::after {
             transform: rotate(180deg);
         }
+
+        .detalhes-btn {
+            cursor: pointer;
+        }
+
+        .detalhes-btn:hover {
+            color: $primary-color;
+        }
+        
     }
 
     .accordion-content {

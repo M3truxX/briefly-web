@@ -57,7 +57,7 @@ export class ApiService {
 
     // Novo método para enviar um relatório
     async sendReport(token: string, reportData: ReportingRequest): Promise<void> {
-        const response = await axios.post<void>(
+        const response = await this.axios.post<void>(
             `${Config.BASE_URL}/reporting`,
             reportData,
             {
@@ -82,7 +82,7 @@ export class ApiService {
     async uploadUserImage(formData: FormData, token: string): Promise<UploadImageResponse> {
 
         // Realiza a requisição e captura a resposta
-        const response = await axios.post<UploadImageResponse>(
+        const response = await this.axios.post<UploadImageResponse>(
             Config.BASE_URL + "/media",
             formData,
             {
@@ -95,11 +95,10 @@ export class ApiService {
         return response.data
     }
 
-
     // Método para atualizar usuário
     async sessionUser(token: string): Promise<Account> {
         // Realiza a requisição e captura a resposta
-        const response = await axios.post<Account>(
+        const response = await this.axios.post<Account>(
             Config.BASE_URL + "/authentication/session",
             null,
             {
@@ -114,7 +113,7 @@ export class ApiService {
     // Método desligar o usuário
     async signOutUser(token: string): Promise<void> {
         // Realiza a requisição e captura a resposta
-        const response = await axios.delete<void>(
+        const response = await this.axios.delete<void>(
             Config.BASE_URL + "/authentication/session",
             {
                 headers: {
@@ -135,7 +134,7 @@ export class ApiService {
 
     // Método para gerar um novo link para o user
     async generateUserLinkEntry(token: string, userLinkRequest: LinkDataRequest): Promise<LinkDataResponse> {
-        const response = await axios.post<LinkDataResponse>(
+        const response = await this.axios.post<LinkDataResponse>(
             Config.BASE_URL + "/link",
             userLinkRequest,
             {
@@ -150,7 +149,7 @@ export class ApiService {
     // Método para recuperar informações de link criado por um usuário
     async getUserLinkEntry(token: string, link: string): Promise<LinkDataResponse> {
         const extractShortLink: string = this.extractCode(link);
-        const response = await axios.get<LinkDataResponse>(
+        const response = await this.axios.get<LinkDataResponse>(
             `${Config.BASE_URL}/link?short=${extractShortLink}`,
             {
                 headers: {
@@ -164,7 +163,7 @@ export class ApiService {
     // Método para mudar status dos links criados por um usuário
     async updateUserLinkEntry(token: string, link: string, linkStatus: boolean): Promise<void> {
         const extractShortLink: string = this.extractCode(link);
-        const response = await axios.put<void>(
+        const response = await this.axios.put<void>(
             `${Config.BASE_URL}/user/link?short=${extractShortLink}&active=${linkStatus}`,
             null,
             {
@@ -179,7 +178,7 @@ export class ApiService {
     // Método para mudar status dos links criados por um usuário
     async deleteUserLinkEntry(token: string, link: string): Promise<void> {
         const extractShortLink: string = this.extractCode(link);
-        const response = await axios.delete<void>(
+        const response = await this.axios.delete<void>(
             `${Config.BASE_URL}/user/link?short=${extractShortLink}`,
             {
                 headers: {
@@ -192,7 +191,7 @@ export class ApiService {
 
     // Método para recuperar historico do usuário
     async updateHistory(token: string, page: number, size: number): Promise<GetHistoryDataResponse> {
-        const response = await axios.get<GetHistoryDataResponse>(
+        const response = await this.axios.get<GetHistoryDataResponse>(
             `${Config.BASE_URL}/link?page=${page}&size=${size}`,
             {
                 headers: {
@@ -205,7 +204,7 @@ export class ApiService {
 
     // Método para atualizar usuário
     async updateUserProfile(token: string, updateData: UpdateUserProfileRequest): Promise<Account> {
-        const response = await axios.put<Account>(
+        const response = await this.axios.put<Account>(
             `${Config.BASE_URL}/user/profile`,
             updateData,
             {
@@ -220,7 +219,7 @@ export class ApiService {
 
     // Método para confirmar a alteração dos dados do usuário
     async confirmUserProfileUpdate(token: string, confirmationData: UserProfileConfirmRequest): Promise<void> {
-        const response = await axios.post<void>(
+        const response = await this.axios.post<void>(
             `${Config.BASE_URL}/user/phone`,
             confirmationData,
             {

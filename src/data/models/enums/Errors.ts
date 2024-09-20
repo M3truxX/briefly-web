@@ -18,5 +18,6 @@ export enum Errors {
     ACESSO_NAO_AUTORIZADO = "Acesso não autorizado.",
     ERRO_ENVIAR_RELATORIO = "Erro ao enviar o relatório. Tente novamente mais tarde.",
     CAMPO_RELATO_DESCRICAO = "Campo de descrição do relatório obrigatório",
-    CODIGO_INVALIDO = "Código inválido, verifique se o código foi digitado corretamente"
+    CODIGO_INVALIDO = "Código inválido, verifique se o código foi digitado corretamente",
+    LINK_NAO_PERTENCE_USUARIO = "Link não pertence ao usuário"
 }

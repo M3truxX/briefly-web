@@ -23,9 +23,10 @@ const CustonInputText: React.FC<CustomInputText> = ({
 }) => {
 
     const [text, setText] = useState(''); // Estado do texto no input
-    const [opacity, setOpacity] = useState(0);
+    const [opacity, setOpacity] = useState(0); // Controle da opacidade do texto
     const [animExecuted, setAnimExecuted] = useState(false); // Controle da animação de fade
 
+    // Reseta o texto e a animação de fade quando resetText é alterado
     useEffect(() => {
         setText('');
         setAnimExecuted(false);
@@ -54,6 +55,7 @@ const CustonInputText: React.FC<CustomInputText> = ({
         });
     };
 
+    // Função para resetar a animação de fade
     const resetFadeIn = () => {
         setOpacity(0);
         setAnimExecuted(false);
@@ -111,7 +113,7 @@ const CustonInputText: React.FC<CustomInputText> = ({
                 />
             </div>
             {showTextdescription && (
-                <div className="fading-container" style={{ opacity: opacity, transition: 'opacity 0.7s ease-in-out' }}>
+                <div className="fading-container mb-10 fs-12" style={{ opacity: opacity, transition: 'opacity 0.7s ease-in-out' }}>
                     <span className="text-coment">{textdescription}</span>
                 </div>
             )}

@@ -1,4 +1,5 @@
 export interface CustomButtomProps {
+    type?: 'submit' | 'reset' | 'button'; // tipo de botão
     secondary?: boolean // tipo de tema do botão secundario
     text: string; // Texto a ser exibido no botão
     activate?: boolean; // Indica se o botão está ativado ou desativado. Opcional.

@@ -21,24 +21,24 @@ import formatToIso from '../../utils/formatToIso';
 
 // Componente principal de geração de links
 function LinkGenerator() {
-  const currentDate = moment().format('DD/MM/YYYY');
+  const currentDate = moment().format('DD/MM/YYYY'); // Define a data atual
 
   // Estados para controle de entradas e comportamento
   const { user, repository } = useAppContext(); // Use o contexto geral
-  const [resetEntlink, setResetEntlink] = useState(false);
-  const [resetEntSenha, setResetEntSenha] = useState(false);
-  const [resetEntApelido, setResetEntApelido] = useState(false);
-  const [resetEntData, setResetEntData] = useState(false);
+  const [resetEntlink, setResetEntlink] = useState(false); // Reset do estado do link
+  const [resetEntSenha, setResetEntSenha] = useState(false); // Reset do estado da senha
+  const [resetEntApelido, setResetEntApelido] = useState(false); // Reset do estado do apelido
+  const [resetEntData, setResetEntData] = useState(false); // Reset do estado da data
 
-  const [ctrllEntlink, setCtrlEntlink] = useState(0);
+  const [ctrllEntlink, setCtrlEntlink] = useState(0); // Controle do estado do link
   const [ctrlEntSenha, setCtrlEntSenha] = useState(0);
-  const [ctrlEntApelido, setCtrlEntApelido] = useState(0);
-  const [ctrlEntData, setCtrlEntData] = useState(0);
+  const [ctrlEntApelido, setCtrlEntApelido] = useState(0); // Controle do estado do apelido
+  const [ctrlEntData, setCtrlEntData] = useState(0); // Controle do estado da data
 
-  const [linkText, setLinkText] = useState('');
-  const [senhaText, setSenhaText] = useState('');
-  const [apelidoText, setApelidoText] = useState('');
-  const [dataText, setDataText] = useState('');
+  const [linkText, setLinkText] = useState(''); // Guarda o valor do link
+  const [senhaText, setSenhaText] = useState(''); // Guarda o valor da senha
+  const [apelidoText, setApelidoText] = useState(''); // Guarda o valor do apelido
+  const [dataText, setDataText] = useState(''); // Guarda o valor da data
 
   // Funções para manipulação de inputs
   const entLink = (text: string) => { checkInputLink(text); setLinkText(text) }
@@ -48,11 +48,11 @@ function LinkGenerator() {
 
 
   // Estados para controle do botão e requisições
-  const [isLoading, setIsLoading] = useState(false);
-  const [tipoConsulta, setTipoConsulta] = useState(false);
-  const [nomeBotaoAction, setNomeBotaoAction] = useState('Encurtar')
-  const [receiveResponse, setReceiveResponse] = useState<LinkDataResponse | null>(null);
-  const [activateButton, setActivateButton] = useState(false)
+  const [isLoading, setIsLoading] = useState(false); // Controle de carregamento
+  const [tipoConsulta, setTipoConsulta] = useState(false); // Controle de tipo de consulta
+  const [nomeBotaoAction, setNomeBotaoAction] = useState('Encurtar') // Nome do botão
+  const [receiveResponse, setReceiveResponse] = useState<LinkDataResponse | null>(null); // Resposta da requisição
+  const [activateButton, setActivateButton] = useState(false) // Controle do botão
 
   // Verifica a validade dos inputs ao serem alterados
   useEffect(() => {
@@ -170,9 +170,9 @@ function LinkGenerator() {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<AxiosErrorResponse>;
         if (axiosError.response?.status === 409) {
-          toast(Errors.APELIDO_JA_CADASTRADO);
+          toast.error(Errors.APELIDO_JA_CADASTRADO);
         } else {
-          toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+          toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
         }
       }
     } finally {
@@ -197,13 +197,22 @@ function LinkGenerator() {
         setReceiveResponse(linkDataResponse)
       }
     } catch (error) {
-      toast(Errors.LINK_NAO_ENCONTRADO);
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<AxiosErrorResponse>;
+        if (axiosError.response?.status === 404) {
+          toast.error(Errors.LINK_NAO_ENCONTRADO);
+        } else if (axiosError.response?.status === 403) {
+          toast.error(Errors.LINK_NAO_PERTENCE_USUARIO);
+        } else {
+          toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
+        }
+      }
     } finally {
-      setIsLoading(false); // Finaliza o estado de loading
+      setIsLoading(false);
     }
   }
 
-
+  // Configuração do Toastify
   const configTosatify = () => (
     <div>
       <ToastContainer

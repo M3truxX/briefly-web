@@ -18,14 +18,14 @@
     max-width: 300px;
 }
 
-.edit-user-info-input {
-    margin-bottom: 20px;
+.input-container-perfil {
+    display: flex;
+    justify-content: center;
 }
 
 .edit-user-info-buttons {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
 }
 
 @media (max-width: 768px) {

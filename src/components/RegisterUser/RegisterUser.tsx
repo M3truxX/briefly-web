@@ -20,32 +20,33 @@ function RegisterUser() {
     const navigate = useNavigate(); // Hook para navegação
     const { repository } = useAppContext(); // Use o contexto geral
 
-    const [resetEntNome, setResetEntNome] = useState(false);
-    const [resetEntEmail, setResetEntEmail] = useState(false);
-    const [resetEntCell, setResetEntCell] = useState(false);
-    const [resetEntSenha, setResetEntSenha] = useState(false);
+    // Controles de reset dos inputs
+    const [resetEntNome, setResetEntNome] = useState(false); // Controle do reset do nome
+    const [resetEntEmail, setResetEntEmail] = useState(false); // Controle do reset do email
+    const [resetEntCell, setResetEntCell] = useState(false); // Controle do reset do número de telefone
+    const [resetEntSenha, setResetEntSenha] = useState(false); // Controle do reset da senha
 
     // Funções para definir o texto dos inputs
-    const entradaNome = (text: string) => { setName(text) }
-    const entradaEmail = (text: string) => { setEmail(text) }
-    const entradaTelefone = (text: string) => { setPhone(text) };
-    const entradaSenha = (text: string) => { setPassword(text) }
+    const entradaNome = (text: string) => { setName(text) } // Define o nome
+    const entradaEmail = (text: string) => { setEmail(text) } // Define o email
+    const entradaTelefone = (text: string) => { setPhone(text) }; // Define o número de telefone
+    const entradaSenha = (text: string) => { setPassword(text) } // Define a senha
 
     // Estados de controle de validação visual
-    const [controlEntNome, setControlEntNome] = useState(0);
-    const [controlEntEmail, setControlEntEmail] = useState(0);
-    const [controlEntPhone, setControlEntPhone] = useState(0);
-    const [controlEntSenha, setControlEntSenha] = useState(0);
+    const [controlEntNome, setControlEntNome] = useState(0); // Controle do nome
+    const [controlEntEmail, setControlEntEmail] = useState(0); // Controle do email
+    const [controlEntPhone, setControlEntPhone] = useState(0); // Controle do número de telefone
+    const [controlEntSenha, setControlEntSenha] = useState(0); // Controle da senha
 
     // Estados dos valores dos inputs
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [name, setName] = useState(''); // Nome do usuário
+    const [email, setEmail] = useState(''); // Email do usuário
+    const [phone, setPhone] = useState(''); // Número de telefone do usuário
+    const [password, setPassword] = useState(''); // Senha do usuário
 
     // Outros estados
-    const [activateButton, setActivateButton] = useState(false)
-    const [isLoading, setIsLoading] = useState(false);
+    const [activateButton, setActivateButton] = useState(false) // Controle do botão de registro
+    const [isLoading, setIsLoading] = useState(false); // Controle do loading
 
     // Lida com o clique do botão principal
     const handleClick = () => {
@@ -78,6 +79,7 @@ function RegisterUser() {
         return false;
     };
 
+    // Validação do email
     const checkInputEmail = (email: string) => {
         if (email === '') {
             setControlEntEmail(0);
@@ -90,6 +92,7 @@ function RegisterUser() {
         return false;
     };
 
+    // Validação do número de telefone
     const checkInputPhone = (numero: string) => {
         if (numero === '') {
             setControlEntPhone(0);
@@ -102,6 +105,7 @@ function RegisterUser() {
         return false;
     };
 
+    // Validação da senha
     const CheckPassword = (pass: string) => {
         if (pass === '') {
             setControlEntSenha(0);
@@ -114,6 +118,7 @@ function RegisterUser() {
         return false;
     };
 
+    // Função para voltar à página inicial
     const handleClickHome = () => {
         navigate('/');
     };
@@ -139,7 +144,7 @@ function RegisterUser() {
                 setControlEntEmail(0);
                 setControlEntPhone(0);
                 setControlEntSenha(0);
-                toast(Success.USER_CREATE_SUCCESS);
+                toast.success(Success.USER_CREATE_SUCCESS);
                 await repository.ActivateAccont(email);
                 setTimeout(() => {
                     handleClickHome()
@@ -149,11 +154,11 @@ function RegisterUser() {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 409) {
-                    toast(Errors.USER_JA_CADASTRADO);
+                    toast.error(Errors.USER_JA_CADASTRADO);
                 } else if (axiosError.response?.status === 429) {
-                    toast(Errors.MUITAS_REQUISCOES);
+                    toast.error(Errors.MUITAS_REQUISCOES);
                 } else {
-                    toast(Errors.SERVIDOR_NAO_RESPONDENDO);
+                    toast.error(Errors.SERVIDOR_NAO_RESPONDENDO);
                 }
             }
         } finally {
@@ -181,7 +186,7 @@ function RegisterUser() {
                 {/* Primeiro conjunto de inputs */}
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu nome</p>
+                        <p className='color-primary mb-10 fs-14 font-bold'>Digite seu nome</p>
                         <CustonInputText
                             textPlaceholder="Nome e sobrenome"
                             estado={controlEntNome}
@@ -194,7 +199,7 @@ function RegisterUser() {
                 </div>
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu e-mail</p>
+                        <p className='color-primary mb-10 fs-14 font-bold'>Digite seu e-mail</p>
                         <CustonInputText
                             textPlaceholder="Seu email"
                             estado={controlEntEmail}
@@ -211,7 +216,7 @@ function RegisterUser() {
                 {/* Segundo conjunto de inputs */}
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro mbl-10'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu número</p>
+                        <p className='color-primary mb-10 fs-14 font-bold'>Digite seu número</p>
                         <CustonInputText
                             textPlaceholder="Seu telefone"
                             estado={controlEntPhone}
@@ -227,7 +232,7 @@ function RegisterUser() {
                 </div>
                 <div className='card-base-cadastro'>
                     <div className='area-text-cadastro mbl-10'>
-                        <p className='color-dark mb-10 fs-14 font-bold'>Digite seu senha</p>
+                        <p className='color-primary mb-10 fs-14 font-bold'>Digite seu senha</p>
                         <CustonInputText
                             textPlaceholder="Sua senha"
                             estado={controlEntSenha}
