@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './ErrorReport.scss';
 import CustonButtom from '../CustomButtom/CustonButtom';
 import CustonTextarea from '../CustonTextarea/CustonTextarea';
@@ -112,7 +112,7 @@ const ErrorReport: React.FC = () => {
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<AxiosErrorResponse>;
                 if (axiosError.response?.status === 401) {
-                    toast.error (Errors.ACESSO_NAO_AUTORIZADO);
+                    toast.error(Errors.ACESSO_NAO_AUTORIZADO);
                 } else if (axiosError.response?.status === 429) {
                     toast.error(Errors.MUITAS_REQUISCOES);
                 } else {
@@ -122,6 +122,11 @@ const ErrorReport: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    // Função para voltar à página inicial
+    const handleClickHome = () => {
+        navigate('/');
     };
 
     return (
@@ -139,7 +144,7 @@ const ErrorReport: React.FC = () => {
                 theme="colored"
             />
             <h1 className="color-primary fs-24">Reporte erros</h1>
-            <p className="color-secondary fs-14">Ou sugira novidades</p>
+            <p className="color-secondary fs-14">Ou sugira novidades (campos obrigatórios com *)</p>
             <form onSubmit={(e) => e.preventDefault()}>
                 <div className='funcLink-container'>
                     <div className='container-card'>
@@ -175,7 +180,7 @@ const ErrorReport: React.FC = () => {
                     </div>
                 </div>
                 {/* Seleção do tipo de relatório */}
-                <p className="mb-10 mt-25 fs-14 color-primary font-bold">Selecione o tipo de relatório</p>
+                <p className="mb-10 mt-25 fs-14 color-primary font-bold">Selecione o tipo de relatório*</p>
                 <div className='center'>
                     <select className='select-report'>
                         <option value="bug">Bug</option>
@@ -183,9 +188,9 @@ const ErrorReport: React.FC = () => {
                     </select>
                 </div>
                 {/* Campo de texto para o relatório */}
-                <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite uma senha</p>
+                <p className="mb-10 mt-25 fs-14 color-primary font-bold">Digite o relatório*</p>
                 <CustonTextarea
-                    textPlaceholder="Digite um apelido"
+                    textPlaceholder="Digite o relato"
                     estado={ctrlEntApelido}
                     color='black'
                     travelInfo={entApelido}
@@ -194,12 +199,22 @@ const ErrorReport: React.FC = () => {
                     lengthMax={300}
                     textdescription='Deve conter no mínimo 6 e máximo 150 caracteres.' />
             </form>
-            {/* Botão de envio */}
-            <CustonButtom
-                text='Enviar'
-                activate={activateButton}
-                loading={isLoading}
-                onClick={handleSubmit} />
+            <div className="btn-container-report mt-20 ">
+                <div>
+                    <CustonButtom
+                        text="cancelar"
+                        secondary={true}
+                        activate={true}
+                        onClick={handleClickHome} />
+                </div>
+                <div className="ml-10">
+                    <CustonButtom
+                        text='Enviar'
+                        activate={activateButton}
+                        loading={isLoading}
+                        onClick={handleSubmit} />
+                </div>
+            </div>
         </div>
     );
 };

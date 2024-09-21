@@ -8,7 +8,7 @@ import CustonButtom from '../CustomButtom/CustonButtom';
 import { toast, ToastContainer } from 'react-toastify';
 import { Errors } from '../../data/models/enums/Errors';
 import { Success } from '../../data/models/enums/Success';
-import { validationName, validationPhone, validationSenha } from '../../utils/validation';
+import { validationName, validationPhone } from '../../utils/validation';
 import axios, { AxiosError } from 'axios';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
 import { useNavigate } from 'react-router-dom';
@@ -41,8 +41,8 @@ function EditUserInfo() {
     const [isLoadingPhone, setIsLoadingPhone] = useState(false); // Estado de carregamento do input de telefone
 
     // Funções para manipulação de inputs
-    const entradaPhone = (text: string) => { setPhone(text); checkInputPhone(text); } // Função para manipular o input de telefone
-    const entradaNome = (text: string) => { setName(text); checkInputNome(text); } // Função para manipular o input de nome
+    const entradaPhone = useCallback((text: string) => {setPhone(text); checkInputPhone(text); }, []); // Função para manipular o input de telefone
+    const entradaNome = useCallback((text: string) => {setName(text); checkInputNome(text); }, []); // Função para manipular o input de nome
 
     // Efeito para validar os campos e ativar os botões individualmente
     useEffect(() => {

@@ -249,6 +249,7 @@ function RegisterUser() {
                 <div>
                     <CustonButtom
                         text="cancelar"
+                        secondary={true}
                         activate={true}
                         onClick={handleClickHome} />
                 </div>

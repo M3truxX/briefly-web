@@ -8,14 +8,14 @@ import EditUserInfo from '../../components/EditPerfil/EditPerfil';
 // Define o componente funcional da página protectedPage
 function perfilPage() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <EditUserInfo />
             </div>
             <div className="mb-50">
                 <Divider />
             </div>
-            <div className="center mb-50">
+            <div className="center mb-100">
                 <CardFunc />
             </div>
         </div>

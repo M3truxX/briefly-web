@@ -6,7 +6,7 @@ import GenericStatus from '../../components/GenericStatus/GenericStatus';
 // Define o componente funcional da página Erro
 function Erro() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <GenericStatus title='404' subTitle='Página não encontrada!' />
             </div>

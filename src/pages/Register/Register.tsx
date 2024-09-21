@@ -7,14 +7,14 @@ import RegisterUser from '../../components/RegisterUser/RegisterUser';
 // Define o componente funcional da página protectedPage
 function Register() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <RegisterUser />
             </div>
             <div className="mb-50">
                 <Divider />
             </div>
-            <div className="center mb-50">
+            <div className="center mb-100">
                 <CardFunc />
             </div>
         </div>

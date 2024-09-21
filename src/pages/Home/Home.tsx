@@ -7,7 +7,7 @@ import LinkGenerator from '../../components/LinkGenerator/LinkGenerator';
 // Define o componente funcional da página Home
 function Home() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <LinkGenerator />
             </div>

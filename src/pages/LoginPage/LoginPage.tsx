@@ -7,14 +7,14 @@ import Login from '../../components/Login/Login';
 // Define o componente funcional da página protectedPage
 function LoginPage() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <Login />
             </div>
             <div className="mb-50">
                 <Divider />
             </div>
-            <div className="center mb-50">
+            <div className="center mb-100">
                 <CardFunc />
             </div>
         </div>

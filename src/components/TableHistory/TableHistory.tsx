@@ -11,6 +11,11 @@ import { GetHistoryDataResponse } from '../../data/models/interfaces/GetHistoryD
 import Loading from '../Loading/Loading';
 import Modal from "../Modal/Modal";
 import CustonButtom from '../CustomButtom/CustonButtom';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const TableHistory: React.FC = () => {
     // Estado para controlar quais links estão abertos
@@ -26,6 +31,10 @@ const TableHistory: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true); // Inicializa como true para a primeira requisição
     const [isLoadingNextPage, setIsLoadingNextPage] = useState(false); // Estado para controlar o carregamento da próxima página
     const [isLoadingPreviousPage, setIsLoadingPreviousPage] = useState(false); // Estado para controlar o carregamento da página anterior
+
+    // Estados para a paginação no modal
+    const [currentPageModal, setCurrentPageModal] = useState(1);
+    const itemsPerPage = 6;
 
     // Função para receber dados de historico atualizado
     useEffect(() => {
@@ -51,6 +60,15 @@ const TableHistory: React.FC = () => {
                 setLinks(response.linkEntryList);
                 setTotalPages(response.paginationResponse.totalPages);
                 setCurrentPage(page);
+
+                if (isFirstLoad) {
+                    // Inicializa openStates apenas na primeira carga
+                    const initialOpenStates: Record<string, boolean> = {};
+                    response.linkEntryList.forEach(link => {
+                        initialOpenStates[link.shortLink] = false;
+                    });
+                    setOpenStates(initialOpenStates);
+                }
             }
         } catch (error) {
             toast.error(Errors.ERRO_RECEBER_HISTORICO);
@@ -64,9 +82,9 @@ const TableHistory: React.FC = () => {
     // Função para ativar/desativar o link
     const handleToggleActive = async (shortLink: string, linkStatus: boolean) => {
         try {
-            const response = await repository.updateUserLinkEntry(user?.token!!, shortLink, !linkStatus)
+            await repository.updateUserLinkEntry(user?.token!!, shortLink, !linkStatus)
             toast.success(Success.STATUS_LINK_ALTERADO)
-            handleToggleGet(currentPage);
+            handleToggleGet(currentPage); // Chama handleToggleGet sem resetar openStates
         } catch (error) {
             toast.error(Errors.STATUS_LINK_ALTERADO)
         }
@@ -75,7 +93,7 @@ const TableHistory: React.FC = () => {
     // Função para deletar o link
     const handleDeleteLink = async (shortLink: string) => {
         try {
-            const response = await repository.deleteUserLinkEntry(user?.token!!, shortLink)
+            await repository.deleteUserLinkEntry(user?.token!!, shortLink)
             toast.success(Success.LINK_DELETADO)
             handleToggleGet(currentPage);
         } catch (error) {
@@ -129,7 +147,7 @@ const TableHistory: React.FC = () => {
 
     // Abre o modal info
     const openModalInfo = (link: LinkEntry, event: React.MouseEvent) => {
-        event.stopPropagation(); // Impede a propagação do evento para o botão do acordeão
+        event.stopPropagation();
         setSelectedLink(link);
         setModalVisibleInfo(true);
     };
@@ -139,7 +157,8 @@ const TableHistory: React.FC = () => {
         setModalVisibleInfo(false);
     };
 
-    return (
+    // Configuração do Toastify
+    const configTosatify = () => (
         <div>
             <ToastContainer
                 position="bottom-right"
@@ -153,6 +172,131 @@ const TableHistory: React.FC = () => {
                 pauseOnHover
                 theme="colored"
             />
+        </div>
+    );
+
+    // Função para preparar dados para o gráfico de barras dos últimos 6 meses
+    const getBarChartData = () => {
+        const deviceCounts: Record<string, Record<string, number>> = {};
+        const labels: string[] = [];
+
+        // Obter a data atual
+        const currentDate = new Date();
+
+        // Gerar os rótulos para os últimos 6 meses
+        for (let i = 5; i >= 0; i--) {
+            const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+            const month = date.toLocaleString('default', { month: 'short' });
+            const year = date.getFullYear();
+            const label = `${month} ${year}`;
+            labels.push(label);
+            deviceCounts[label] = { desktop: 0, mobile: 0 };
+        }
+
+        // Verificar se selectedLink e suas visitas estão definidos
+        if (selectedLink && selectedLink.totalVisits) {
+            selectedLink.totalVisits.forEach(visit => {
+                const visitDate = new Date(visit.clickedAt);
+                const month = visitDate.toLocaleString('default', { month: 'short' });
+                const year = visitDate.getFullYear();
+                const label = `${month} ${year}`;
+
+                // Verificar se a visita está dentro dos últimos 6 meses
+                if (deviceCounts[label]) {
+                    const deviceType = visit.deviceInfo.deviceType;
+                    if (deviceType === 'desktop' || deviceType === 'mobile') {
+                        deviceCounts[label][deviceType] += 1;
+                    } else {
+                        // Opcional: tratar outros tipos de dispositivos
+                        deviceCounts[label][deviceType] = (deviceCounts[label][deviceType] || 0) + 1;
+                    }
+                }
+            });
+        }
+
+        const desktopData = labels.map(label => deviceCounts[label].desktop);
+        const mobileData = labels.map(label => deviceCounts[label].mobile);
+
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Desktop',
+                    data: desktopData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Mobile',
+                    data: mobileData,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                },
+            ],
+        };
+    };
+
+    // Configuração do gráfico de barras
+    const barOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: 'Visitas por Tipo de Dispositivo nos Últimos 6 Meses',
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Número de Visitas',
+                },
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Dados por Meses',
+                },
+            },
+        },
+    };
+
+    // Função para calcular as visitas a serem exibidas na página atual do modal
+    const getCurrentVisits = () => {
+        if (!selectedLink) return [];
+        const startIndex = (currentPageModal - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return selectedLink.totalVisits.slice(startIndex, endIndex);
+    };
+
+    // Funções de navegação do paginador
+    const handleNextPageModal = () => {
+        if (currentPageModal < Math.ceil((selectedLink?.totalVisits.length || 0) / itemsPerPage)) {
+            setCurrentPageModal(prev => prev + 1);
+        }
+    };
+
+    const handlePreviousPageModal = () => {
+        if (currentPageModal > 1) {
+            setCurrentPageModal(prev => prev - 1);
+        }
+    };
+
+    // Função para resetar a página do modal quando um novo link for selecionado
+    useEffect(() => {
+        setCurrentPageModal(1);
+    }, [selectedLink]);
+
+    return (
+        <div>
+            {configTosatify()}
             <Modal isVisible={isModalVisible} onClose={closeModal}>
                 <div>
                     <h1 className={`fs-20 font-bold color-primary mbl-20`}>Tem certeza que deseja deletar?</h1>
@@ -202,7 +346,7 @@ const TableHistory: React.FC = () => {
                                     </span>
                                 </button>
                             </div>
-                            <div className={`accordion-content pbl-30${openStates[link.shortLink] ? '' : 'open'}`}>
+                            <div className={`accordion-content ${openStates[link.shortLink] ? 'open' : ''}`}>
                                 <div className='center'>
                                     <div className='info-container-acordion'>
                                         <div>
@@ -250,17 +394,38 @@ const TableHistory: React.FC = () => {
             </div >
             {/* Modal de informações */}
             <Modal isVisible={isModalVisibleInfo} onClose={closeModalInfo}>
-                {selectedLink && (
-                    <>
-                        <p className="mb-40 color-primary font-bold">Visitas Totais: {selectedLink.totalVisits.length}</p>
+                {selectedLink ? (
+                    <div>
+                        <p className="color-primary font-bold">Visitas Totais: {selectedLink.totalVisits.length}</p>
+                        <Bar className='mb-40' data={getBarChartData()} options={barOptions} />
                         <ul className="mb-30">
-                            {selectedLink.totalVisits.map((visit, index) => (
+                            {getCurrentVisits().map((visit, index) => (
                                 <li className="list-remove mb-15 mi-20" key={index}>
                                     {visit.deviceInfo.deviceType} - {visit.region.city}, {visit.region.country} - {formatDate(visit.clickedAt)}
                                 </li>
                             ))}
                         </ul>
-                    </>
+                        {/* Paginador */}
+                        <div className="paginator-modal">
+                            <CustonButtom
+                                text="Anterior"
+                                activate={currentPageModal > 1} // Ativo se não for a primeira página
+                                onClick={handlePreviousPageModal}
+                                btnHeight={35}
+                                btnWidth={90} />
+                            <span className="paginator-info mi-10">
+                                Página {currentPageModal} de {Math.ceil((selectedLink?.totalVisits.length || 0) / itemsPerPage)}
+                            </span>
+                            <CustonButtom
+                                text="Próxima"
+                                activate={currentPageModal < Math.ceil((selectedLink?.totalVisits.length || 0) / itemsPerPage)} // Ativo se não for a última página
+                                onClick={handleNextPageModal}
+                                btnHeight={35}
+                                btnWidth={90} />
+                        </div>
+                    </div>
+                ) : (
+                    <p>Carregando informações...</p>
                 )}
             </Modal>
         </div >

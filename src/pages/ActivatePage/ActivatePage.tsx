@@ -53,7 +53,7 @@ function ActivatePage() {
     };
 
     return (
-        <div className='body-size'>
+        <div>
             <ToastContainer
                 position="bottom-right"
                 autoClose={5000}
@@ -89,7 +89,7 @@ function ActivatePage() {
             <div className="mb-50">
                 <Divider />
             </div>
-            <div className="center mb-50">
+            <div className="center mb-100">
                 <CardFunc />
             </div>
         </div>

@@ -34,7 +34,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode, repository: Data
             setUser(response); // Configura o estado do usuário
             return response; // Retorna a resposta
         } catch (error) {
-            throw error; // Propaga o erro
+            throw error;
         }
     };
 

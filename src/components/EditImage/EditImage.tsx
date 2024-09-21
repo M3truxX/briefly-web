@@ -66,7 +66,7 @@ const EditImage: React.FC<EditImageProps> = ({ onAxiosError }) => {
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                onAxiosError(error); // Use a função de callback aqui
+                onAxiosError(error);
             }
         } finally {
             setLoading(false);
@@ -88,6 +88,9 @@ const EditImage: React.FC<EditImageProps> = ({ onAxiosError }) => {
         }
         setSelectedFile(null);
         setPreviewUrl(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     };
 
     const getImageSource = () => {

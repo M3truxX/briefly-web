@@ -2,7 +2,7 @@
 import './LinkGenerator.scss';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LinkDataResponse } from "../../data/models/interfaces/LinkDataResponse";
 import { LinkDataRequest } from "../../data/models/interfaces/LinkDataRequest";
 import GraphInfo from "../GraphInfo/GraphInfo.";
@@ -21,8 +21,6 @@ import formatToIso from '../../utils/formatToIso';
 
 // Componente principal de geração de links
 function LinkGenerator() {
-  const currentDate = moment().format('DD/MM/YYYY'); // Define a data atual
-
   // Estados para controle de entradas e comportamento
   const { user, repository } = useAppContext(); // Use o contexto geral
   const [resetEntlink, setResetEntlink] = useState(false); // Reset do estado do link
@@ -41,11 +39,10 @@ function LinkGenerator() {
   const [dataText, setDataText] = useState(''); // Guarda o valor da data
 
   // Funções para manipulação de inputs
-  const entLink = (text: string) => { checkInputLink(text); setLinkText(text) }
-  const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) }
-  const entApelido = (text: string) => { checkInputApelido(text); setApelidoText(text) }
-  const entData = (text: string) => { checkInputDate(text); setDataText(text) }
-
+  const entLink = useCallback((text: string) => { checkInputLink(text); setLinkText(text) }, []); // Função para manipular o link
+  const entSenha = useCallback((text: string) => { checkInputSenha(text); setSenhaText(text) }, []); // Função para manipular a senha
+  const entApelido = useCallback((text: string) => { checkInputApelido(text); setApelidoText(text) }, []); // Função para manipular o apelido
+  const entData = useCallback((text: string) => { checkInputDate(text); setDataText(text) }, []); // Função para manipular a data
 
   // Estados para controle do botão e requisições
   const [isLoading, setIsLoading] = useState(false); // Controle de carregamento

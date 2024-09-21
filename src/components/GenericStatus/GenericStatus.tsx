@@ -31,6 +31,7 @@ const GenericStatus: React.FC<StatusProps> = ({
                 <div>
                     <CustonButtom
                         text="Home"
+                        secondary={true}
                         activate={true}
                         onClick={handleClickHome} />
                 </div>

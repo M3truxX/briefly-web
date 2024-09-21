@@ -19,3 +19,13 @@ body {
   align-items: center;
   flex-direction: column;
 }
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Altura mínima de 100% da viewport */
+}
+
+.main-content {
+    flex: 1; /* Permite que o conteúdo principal expanda */
+}

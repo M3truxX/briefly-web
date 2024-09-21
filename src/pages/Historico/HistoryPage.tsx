@@ -7,14 +7,14 @@ import TableHistory from '../../components/TableHistory/TableHistory';
 // Define o componente funcional da página protectedPage
 function HistoryPage() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <TableHistory/>
             </div>
             <div className="mb-50">
                 <Divider />
             </div>
-            <div className="center mb-50">
+            <div className="center mb-100">
                 <CardFunc />
             </div>
         </div>

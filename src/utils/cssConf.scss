@@ -27,20 +27,6 @@ $colors: (
     }
 }
 
-// Formatação padrão das páginas
-.body-size {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-// Ajuste da formatação padrão das páginas no mobile
-@media (max-width: 768px) {
-    .body-size {
-        margin-inline: 30px;
-    }
-}
-
 // Gerar classes de cor
 @include color-classes;
 

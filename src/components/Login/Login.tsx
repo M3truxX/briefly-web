@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+// importação de estilos globais e bibliotecas necessárias
+import './login.scss';
+import '../../utils/cssConf.scss'
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppContext } from '../../contexts/AppContext';
 import { LoggedDataRequest } from '../../data/models/interfaces/LoggedDataRequest'
 import CustonInputText from '../CustonInputText/CustonInputText';
@@ -11,6 +14,7 @@ import { Success } from '../../data/models/enums/Success';
 import { useNavigate } from 'react-router-dom';
 import { validationEmail } from '../../utils/validation';
 
+// Componente principal de login
 const LoginComponent: React.FC = () => {
     const { login } = useAppContext(); // Contexto da aplicação
     const navigate = useNavigate(); // Hook para navegação
@@ -20,8 +24,8 @@ const LoginComponent: React.FC = () => {
     const [ctrlEntEmail, setCtrlEntEmail] = useState(0); // Controle do email
     const [resetEntSenha, setResetEntSenha] = useState(false); // Controle do reset da senha
     const [ctrlEntSenha, setCtrlEntSenha] = useState(0); // Controle da senha
-    const entEmail = (text: string) => { checkInputSenha(text); setEmail(text) } // Função para atualizar o email
-    const entSenha = (text: string) => { checkInputSenha(text); setPassword(text) } // Função para atualizar a senha
+    const entEmail = useCallback((text: string) => { checkInputEmail(text); setEmail(text) }, []); // Função para atualizar o email
+    const entSenha = useCallback((text: string) => { checkInputSenha(text); setPassword(text) }, []); // Função para atualizar a senha
     const [isLoading, setIsLoading] = useState(false); // Controle de carregamento
     const [activateButton, setActivateButton] = useState(false); // Controle do botão
 
@@ -110,6 +114,11 @@ const LoginComponent: React.FC = () => {
         handleLogin(new Event('click') as any); // Emula o evento para o login
     };
 
+    // Função para voltar à página inicial
+    const handleClickHome = () => {
+        navigate('/');
+    };
+
     return (
         <div>
             <ToastContainer
@@ -152,13 +161,22 @@ const LoginComponent: React.FC = () => {
                     />
                 </form>
             </div>
-            <div className='center mt-20'>
-                <CustonButtom
-                    text='Login'
-                    activate={activateButton}
-                    loading={isLoading}
-                    onClick={handleButtomClick} // Passa o manipulador de clique
-                />
+            <div className="btn-container-create mt-20 ">
+                <div>
+                    <CustonButtom
+                        text="cancelar"
+                        secondary={true}
+                        activate={true}
+                        onClick={handleClickHome} />
+                </div>
+                <div className="ml-10">
+                    <CustonButtom
+                        text='Login'
+                        activate={activateButton}
+                        loading={isLoading}
+                        onClick={handleButtomClick}
+                    />
+                </div>
             </div>
         </div>
     );

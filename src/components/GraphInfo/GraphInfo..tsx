@@ -80,27 +80,88 @@ const GraphInfo: React.FC<GraphInfoProps> = ({ receiveResponse }) => {
     setModalVisible(false);
   };
 
+  // Estados para a paginação no modal
+  const [currentPageModal, setCurrentPageModal] = useState(1);
+  const itemsPerPage = 6;
+
+  // Função para calcular as visitas a serem exibidas na página atual do modal
+  const getCurrentVisits = () => {
+    if (!receiveResponse) return [];
+    const startIndex = (currentPageModal - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return receiveResponse.totalVisits.slice(startIndex, endIndex);
+  };
+
+  // Funções de navegação do paginador
+  const handleNextPageModal = () => {
+    if (receiveResponse && currentPageModal < Math.ceil((receiveResponse.totalVisits.length || 0) / itemsPerPage)) {
+      setCurrentPageModal(prev => prev + 1);
+    }
+  };
+
+  const handlePreviousPageModal = () => {
+    if (currentPageModal > 1) {
+      setCurrentPageModal(prev => prev - 1);
+    }
+  };
+
+  // Função para resetar a página do modal quando o receiveResponse mudar
+  useEffect(() => {
+    setCurrentPageModal(1);
+  }, [receiveResponse]);
+
+  // Adicione esta constante com as opções do gráfico
+  const options = {
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
+  };
+
   return (
     <div>
       <Modal isVisible={isModalVisible} onClose={closeModal}>
-        {receiveResponse && (
-          <div className={` ${receiveResponse ? 'visible' : ''}`}>
+        {receiveResponse ? (
+          <div>
             <p className="mb-40 color-primary font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
             <ul className="mb-30">
-              {receiveResponse.totalVisits.map((visit, index) => (
+              {getCurrentVisits().map((visit, index) => (
                 <li className="list-remove mb-15 mi-20" key={index}>
                   {visit.deviceInfo.deviceType} - {visit.region.city}, {visit.region.country} - {formatDate(visit.clickedAt)}
                 </li>
               ))}
             </ul>
+            {/* Paginador */}
+            <div className="paginator-modal">
+              <CustonButtom
+                text="Anterior"
+                activate={currentPageModal > 1}
+                onClick={handlePreviousPageModal}
+                btnHeight={35}
+                btnWidth={90}
+              />
+              <span className="paginator-info mi-10">
+                Página {currentPageModal} de {Math.ceil((receiveResponse.totalVisits.length || 0) / itemsPerPage)}
+              </span>
+              <CustonButtom
+                text="Próxima"
+                activate={currentPageModal < Math.ceil((receiveResponse.totalVisits.length || 0) / itemsPerPage)}
+                onClick={handleNextPageModal}
+                btnHeight={35}
+                btnWidth={90}
+              />
+            </div>
           </div>
+        ) : (
+          <p>Carregando informações...</p>
         )}
       </Modal>
       {receiveResponse ? (
         <div className="visit-container pbl-20 pi-50">
           <p className="color-dark font-bold">Visitas Totais: {receiveResponse.totalVisits.length}</p>
           <div className="mt-10 graph-size">
-            <Pie data={data} />
+            <Pie data={data} options={options} />
           </div>
           <span className="mt-10"><CustonButtom text="Detalhes" onClick={openModal} /></span>
         </div>

@@ -2,11 +2,10 @@
 import './privatedLink.scss';
 import '../../utils/cssConf.scss'
 import 'react-toastify/dist/ReactToastify.css';
-import { DatabaseRepository } from "../../data/models/class/DatabaseRepository";
 import { LinkProtectedResponse } from '../../data/models/interfaces/LinkProtectedResponse';
 import { LinkProtectedRequest } from '../../data/models/interfaces/LinkProtectedRequest';
 import { AxiosErrorResponse } from '../../data/models/interfaces/AxiosErroResponse';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import axios, { AxiosError } from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -20,7 +19,7 @@ function PrivatedLink() {
     const { repository } = useAppContext(); // Use o contexto geral
     const [resetEntSenha, setResetEntSenha] = useState(false); // Estado para reset de senha
     const [ctrlEntSenha, setCtrlEntSenha] = useState(0); // Controle do estado de senha
-    const entSenha = (text: string) => { checkInputSenha(text); setSenhaText(text) } // Função de entrada de senha
+    const entSenha = useCallback((text: string) => { checkInputSenha(text); setSenhaText(text) }, []); // Função de entrada de senha
     const [senhaText, setSenhaText] = useState(''); // Estado da senha
     const [isLoading, setIsLoading] = useState(false); // Controle de loading
     const { id } = useParams(); // Obtém o parâmetro de rota

@@ -7,7 +7,7 @@ import ErrorReport from '../../components/ErrorReport/ErrorReport';
 // Define o componente funcional da página Home
 function ReportPage() {
     return (
-        <div className='body-size'>
+        <div>
             <div className='center mbl-80'>
                 <ErrorReport />
             </div>
